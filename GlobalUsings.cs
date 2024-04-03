@@ -1,0 +1,9 @@
+global using Adroit_v8.Models;
+global using Adroit_v8.Repository;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Swashbuckle.AspNetCore.Annotations;
+global using System.Data;
+global using Adroit_v8.Models.UtilityModel;
+global using System.Reflection;
+global using Adroit_v8.MongoConnections;

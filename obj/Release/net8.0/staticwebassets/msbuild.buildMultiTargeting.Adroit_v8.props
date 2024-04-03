@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Adroit_v8.props" />
+</Project>
