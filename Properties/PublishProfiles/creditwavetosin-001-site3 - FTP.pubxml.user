@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
     <_PublishTargetUrl>ftp://win5202.site4now.net:21/adroit-backend</_PublishTargetUrl>
-    <History>False|2024-04-02T10:28:22.1384036Z;</History>
+    <History>False|2024-04-04T10:37:46.6858320Z;False|2024-04-02T11:28:22.1384036+01:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

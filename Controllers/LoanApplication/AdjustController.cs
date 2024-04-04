@@ -26,7 +26,6 @@ namespace Adroit_v8.Controllers.LoanApplication
         private readonly IAdroitRepository<RegularLoan> _repo;
         private readonly IAdroitRepository<RegularLoanStepSix> _repoDoc;
         private readonly IAdroitRepository<RegularLoanReasonToDecline> _repoRTD;
-        private readonly ICustomerCentricRepository<RegularLoanRestructure> _repoLR;
         private readonly IAdroitRepository<RegularLoanAdjustment> _repoRLA;
         private readonly IMongoCollection<RegularLoan> _customerLoan;
         private readonly IFilterRepository _repoF;
@@ -35,11 +34,10 @@ namespace Adroit_v8.Controllers.LoanApplication
         string errMsg = "Unable to process request, kindly try again";
         private readonly IConfiguration _config;
         string clientId = "";
-        public AdjustController(IAdroitRepository<RegularLoan> repo, ICustomerCentricRepository<RegularLoanRestructure> repoLR, AdroitDbContext context, IAdroitRepository<RegularLoanAdjustment> repoRLA, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config,
+        public AdjustController(IAdroitRepository<RegularLoan> repo,  AdroitDbContext context, IAdroitRepository<RegularLoanAdjustment> repoRLA, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config,
             IAdroitRepository<RegularLoanReasonToDecline> repoRTD, IFilterRepository repoF, IAdroitRepository<RegularLoanStepSix> repoDoc, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _repo = repo;
-            _repoLR = repoLR;
             _context = context;
             _repoRLA = repoRLA;
             _repoRS = repoRS;

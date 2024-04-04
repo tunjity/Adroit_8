@@ -6020,6 +6020,76 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
+    "Method": "GetAllLoanRepayment",
+    "RelativePath": "api/CustomerCentric/getallloanRepayment",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Det",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Status",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "StartDate",
+        "Type": "System.DateOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "EndDate",
+        "Type": "System.DateOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "SearchType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SearchName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PasgeSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
     "Method": "GetAllp2ps",
     "RelativePath": "api/CustomerCentric/getallp2ps",
     "HttpMethod": "GET",
@@ -6472,6 +6542,41 @@
       {
         "Name": "loanOfferId",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
+    "Method": "GetloanRepaymentByCustomerId",
+    "RelativePath": "api/CustomerCentric/GetloanRepaymentByCusId/{cusId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cusId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -14276,6 +14381,11 @@
       {
         "Name": "Comment",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "BankStatement",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       },
       {

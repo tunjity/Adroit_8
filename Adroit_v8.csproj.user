@@ -2,6 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>C:\Users\Temitayo Oyetunji\Desktop\FromXLaptop\CreditWave\8\Adroit_v8\Properties\PublishProfiles\creditwavetosin-001-site3 - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\Temitayo Oyetunji\Desktop\FromXLaptop\CreditWave\Adroit_8\Properties\PublishProfiles\creditwavetosin-001-site3 - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

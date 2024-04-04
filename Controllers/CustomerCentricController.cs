@@ -3,6 +3,7 @@ using Adroit_v8.Model;
 using Adroit_v8.Models.FormModel;
 using Adroit_v8.MongoConnections;
 using Adroit_v8.MongoConnections.CustomerCentric;
+using Adroit_v8.MongoConnections.LoanApplication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,12 @@ namespace Adroit_v8.Controllers
     {
         private readonly AdroitDbContext _context;
         private ICustomerCentricRepository<CustomerCentricSavings> _repo;
-        private ICustomerCentricRepository<LoanOffer> _repoLoanOffer;
         private ICustomerCentricRepository<LoanBidding> _repoLoanBidding;
+        private readonly IMongoRepository<RegularLoanDisbursement> _repoLD;
         private ICustomerCentricRepository<ConsumerCentricEscrow> _repoEs;
         private ICustomerCentricRepository<CustomerCentricPayment> _repoPayment;
         private ICustomerCentricRepository<CustomerCentricWalleToBankTransfer> _repoTransfer;
+        private readonly IAdroitRepository<RegularLoanRepaymentPlan> _repoRegularLoanRepaymentPlan;
         private ICustomerCentricRepository<CustomerCentricWalleToBankTransferStatus> _repoTransferStatus;
         private ICustomerCentricRepository<CustomerCentricAirtime> _repoAirtime;
         private ICustomerCentricRepository<CustomerCentricP2p> _repoP2p;
@@ -30,16 +32,17 @@ namespace Adroit_v8.Controllers
         AuthDto auth = new AuthDto();
         public CustomerCentricController(AdroitDbContext context,
             ICustomerCentricRepository<CustomerCentricData> repoData,
-            ICustomerCentricRepository<LoanOffer> repoLoanOffer,
             ICustomerCentricRepository<LoanBidding> repoLoanBidding,
             ICustomerCentricRepository<ConsumerCentricEscrow> repoEs,
             ICustomerCentricRepository<CustomerCentricAirtime> repoAirtime,
-            ICustomerCentricRepository<CustomerCentricP2p> repoP2p,
+            ICustomerCentricRepository<CustomerCentricP2p> repoP2p, IMongoRepository<RegularLoanDisbursement> repoLD,
+             IAdroitRepository<RegularLoanRepaymentPlan> repoRegularLoanRepaymentPlan,
              ICustomerCentricRepository<MobileAppP2PLoanRequestMonthlyRepaymentCollection> repoP2pRepay,
             ICustomerCentricRepository<CustomerCentricWalleToBankTransferStatus> repoTransferStatus,
             ICustomerCentricRepository<CustomerCentricWalleToBankTransfer> repoTransfer,
             ICustomerCentricRepository<CustomerCentricPayment> repoPayment,
-            ICustomerCentricRepository<CustomerCentricSavings> repo, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+            ICustomerCentricRepository<CustomerCentricSavings> repo, IHttpContextAccessor httpContextAccessor)
+            : base(httpContextAccessor)
         {
             if (auth.ClientId == null)
             {
@@ -58,9 +61,10 @@ namespace Adroit_v8.Controllers
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _repoData = repoData;
-            _repoLoanOffer = repoLoanOffer;
             _repoLoanBidding = repoLoanBidding;
             _repoP2p = repoP2p;
+            _repoLD = repoLD;
+            _repoRegularLoanRepaymentPlan = repoRegularLoanRepaymentPlan;
             _repoAirtime = repoAirtime;
             _repoTransferStatus = repoTransferStatus;
             _repoTransfer = repoTransfer;
@@ -367,6 +371,7 @@ namespace Adroit_v8.Controllers
                 {
                     case 1:
                         allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id)
+                        //allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id)
                         && o.DateCreated > obj.StartDate
                         && o.DateCreated < obj.EndDate.AddDays(1)).ToList();
                         foreach (var item in allSav)
@@ -754,6 +759,143 @@ namespace Adroit_v8.Controllers
             {
                 // If an error occurs, return a 500 Internal Server Error status code
                 // along with the error message
+                return (StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                }));
+            }
+        }
+        #endregion
+
+        #region  loanRepayment
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("getallloanRepayment")]
+        public IActionResult GetAllLoanRepayment([FromQuery] CustomerCentricFilter obj)
+        {
+            IEnumerable<CustomerCentricResponse> neRes = null;
+            List<Customer> allSav = null;
+            var r = new ReturnObject();
+            var eget = false;
+            try
+            {
+                var lstOfCusId = _repoRegularLoanRepaymentPlan.AsQueryable().Select(o => new { o.CustomerId,o.StatusName}).ToList();
+
+                switch (obj.Det)
+                {
+                    case 1:
+                        allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id)
+                             && o.DateCreated > obj.StartDate
+                        && o.DateCreated < obj.EndDate.AddDays(1)).ToList();
+                        foreach (var item in allSav)
+                        {
+                            item.CustomerCentricStatus = lstOfCusId.FirstOrDefault(o => o.CustomerId == item.Id).StatusName;
+                        }
+                        if (obj.Status != 0)
+                            allSav = allSav.Where(o => o.Status.GetValueOrDefault() == obj.Status).ToList();
+                        break;
+                    case 2:
+                        if (string.IsNullOrWhiteSpace(obj.SearchName))
+                        {
+                            allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id)).ToList();
+                            foreach (var item in allSav)
+                            {
+                                item.CustomerCentricStatus = lstOfCusId.FirstOrDefault(o => o.CustomerId == item.Id).StatusName;
+                            }
+                        }
+                        else
+                        {
+                            switch (obj.SearchType.ToLower())
+                            {
+                                case "email":
+                                    allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id) &&
+                                    o.EmailAddress.ToLower().Contains(obj.SearchName.ToLower())
+                                    ).ToList();
+                                    foreach (var item in allSav)
+                                    {
+                                        item.CustomerCentricStatus = lstOfCusId?.FirstOrDefault(o => o.CustomerId == item.Id)?.StatusName;
+                                    }
+                                    break;
+                                case "phone":
+                                    allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id) &&
+                                    o.PhoneNumber.ToLower().Contains(obj.SearchName.ToLower())
+                                    ).ToList();
+                                    foreach (var item in allSav)
+                                    {
+                                        item.CustomerCentricStatus = lstOfCusId?.FirstOrDefault(o => o.CustomerId == item.Id)?.StatusName;
+                                    }
+                                    break;
+                                case "name":
+                                    allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id) &&
+                                                 o.FirstName.ToLower().Contains(obj.SearchName.ToLower())
+                                              || o.LastName.ToLower().Contains(obj.SearchName.ToLower())
+                                              || o.MiddleName.ToLower().Contains(obj.SearchName.ToLower())).ToList();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                var fneRes = allSav.Skip((obj.PageNumber - 1) * obj.PasgeSize)
+                    .Take(obj.PasgeSize);
+                if (allSav.Any())
+                    eget = true;
+                r.status = eget ? true : false;
+                r.message = eget ? "Record Fetched Successfully" : "No Record Found";
+                r.data = fneRes.ToList();
+                r.recordCount = allSav.Count();
+                r.recordPageNumber = obj.PageNumber;
+                return (Ok(r));
+
+            }
+            catch (Exception ex)
+            {
+                return (StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                }));
+            }
+        }
+
+        // Method for getting all savings by customer ID
+        // Returns a list of savings or an error message with status code
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("GetloanRepaymentByCusId/{cusId}")]
+        public IActionResult GetloanRepaymentByCustomerId(int cusId)
+        {
+            var r = new ReturnObject();
+            var eget = false;
+            try
+            {
+                var lstOfCusId = _repoLD.AsQueryable().Where(o => o.CustomerId == cusId).ToList();
+                var allSav = _context.Customers.FirstOrDefault(p => p.Id == cusId);
+                var res = new CustomerCentricResponseForView();
+                if (lstOfCusId.Any())
+                {
+                    eget = true;
+                    res.PhoneNumber = allSav.PhoneNumber;
+                    res.EmailAddress = allSav.EmailAddress;
+                    res.FullName = $"{allSav.FirstName} {allSav.MiddleName} {allSav.LastName}";
+                    res.DateOfBirth = allSav.DateOfBirth;
+                    res.Bvn = allSav.Bvn;
+                    res.ListItem = lstOfCusId;
+                }
+                r.status = eget ? true : false;
+                r.message = eget ? "Record Fetched Successfully" : "No Record Found";
+                r.data = eget ? res : "";
+                return (Ok(r));
+            }
+            catch (Exception ex)
+            {
                 return (StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
                 {
                     status = false,
@@ -1464,7 +1606,7 @@ namespace Adroit_v8.Controllers
                 _repoP2pRepay.ReplaceOne(lstRe);
                 r.status = eget ? true : false;
                 r.message = eget ? "Record Updated Successfully" : "No Record Found";
-                
+
                 return (Ok(r));
             }
             catch (Exception ex)
@@ -1754,13 +1896,13 @@ namespace Adroit_v8.Controllers
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetloanbiddingByLoanOfferId/{loanOfferId}")]
         public IActionResult GetloanbiddingByLoanOfferId(string loanOfferId)
-        {                                                                                                                                             
+        {
             var r = new ReturnObject();
             var eget = false;
             try
             {
                 var lstOfCusId = _repoLoanBidding.AsQueryable().FirstOrDefault(o => o.LoanOfferId == loanOfferId);
-               
+
                 if (lstOfCusId is not null)
                     eget = true;
                 r.status = eget ? true : false;
@@ -1833,7 +1975,7 @@ namespace Adroit_v8.Controllers
                     case 2:
                         if (string.IsNullOrWhiteSpace(obj.SearchName))
                         {
-                           // allSav = allSav.Where(o => lstOfCusId.Select(o => Convert.ToInt64(o.SellerId)).Contains(o.Id)).ToList();
+                            // allSav = allSav.Where(o => lstOfCusId.Select(o => Convert.ToInt64(o.SellerId)).Contains(o.Id)).ToList();
                             foreach (var item in lstOfCusId)
                             {
                                 var by = allSav.FirstOrDefault(x => x.Id == Convert.ToInt64(item.BuyerId));
