@@ -3,6 +3,7 @@ using Adroit_v8.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using static Adroit_v8.Config.Helper;
 
@@ -49,6 +50,8 @@ namespace Adroit_v8.Controllers
         private IGenericRepository<UtilityBillType> _repoUtilityBillType;
         private string errMsg = "Unable to process request, kindly try again";
         string clientid = "";
+        private const string bankListCacheKey = "bankList";
+        private IMemoryCache _cache;
         public GeneralSetUpController(
             IGenericRepository<FixedDepositPreliquidationCharges> repoFixedDepositPreliquidationCharges,
         IGenericRepository<FixedDepositTenor> repoFixedDepositTenor,
@@ -59,7 +62,7 @@ namespace Adroit_v8.Controllers
        IGenericRepository<RegularLoanCharge> repoRegularLoanCharge,
        IGenericRepository<RegularLoanInterestRate> repoRegularLoanInterestRate,
        IGenericRepository<FixedDepositInterestRate> repoFixedDepositInterestRate,
-        IGenericRepository<Bank> repoBank, IGenericRepository<GovernmentIDCardType> repoGovernmentIDCardType, IGenericRepository<RegularLoanTenor> repoRegularLoanTenor, IGenericRepository<EmploymentSector> repoEmploymentSector, IGenericRepository<Applicationchannel> repoApplicationchannel, IGenericRepository<Educationallevel> repoEducationallevel,
+        IGenericRepository<Bank> repoBank, IGenericRepository<GovernmentIDCardType> repoGovernmentIDCardType, IMemoryCache cache, IGenericRepository<RegularLoanTenor> repoRegularLoanTenor, IGenericRepository<EmploymentSector> repoEmploymentSector, IGenericRepository<Applicationchannel> repoApplicationchannel, IGenericRepository<Educationallevel> repoEducationallevel,
             IGenericRepository<Employmentstatus> repoEmploymentstatus, IGenericRepository<Employmenttype> repoEmploymenttype, IGenericRepository<Gender> repoGender, IGenericRepository<Lga> repoLga,
            IMapper mapper, IGenericRepository<DeclineReason> repoDeclineReason, IGenericRepository<Maritalstatus> repoMaritalstatus, IGenericRepository<Nationality> repoNationality, IGenericRepository<Noofdependant> repoNoofdependant,
             IGenericRepository<Noofyearofresidence> repoNoofyearofresidence, IGenericRepository<Organization> repoOrganization, IGenericRepository<Residentialstatus> repoResidentialstatus,
@@ -80,6 +83,7 @@ namespace Adroit_v8.Controllers
             _repoFeeFrequency = repoFeeFrequency;
             _repoLateFeePrincipal = repoLateFeePrincipal;
             _repoGovernmentIDCardType = repoGovernmentIDCardType;
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _repoRegularLoanTenor = repoRegularLoanTenor;
             _repoEmploymentSector = repoEmploymentSector;
             _repoApplicationchannel = repoApplicationchannel;
@@ -102,7 +106,7 @@ namespace Adroit_v8.Controllers
             _context = context;
             _repoFixedDepositAmountRange = repoFixedDepositAmountRange;
             clientid = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId").Value;
-               
+
         }
 
         #region LateFeePrincipal
@@ -119,7 +123,7 @@ namespace Adroit_v8.Controllers
             {
                 var ret = _context.LateFeePrincipals.FirstOrDefault(
                     o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid
+                    && o.clientid == clientid
                     && o.Isdeleted == 0
                     );
                 if (ret != null)
@@ -287,7 +291,7 @@ namespace Adroit_v8.Controllers
             try
             {
                 var ret = _context.LateFeeTypes.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -452,7 +456,7 @@ namespace Adroit_v8.Controllers
             try
             {
                 var ret = _context.DeclineReasons.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -617,7 +621,7 @@ namespace Adroit_v8.Controllers
             try
             {
                 var ret = _context.FeeFrequencys.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -781,8 +785,8 @@ namespace Adroit_v8.Controllers
             r.message = "Record Saved Successfully";
             try
             {
-                var ret = _context.GovernmentIDCardTypes.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() 
-                    && o.clientid ==clientid
+                var ret = _context.GovernmentIDCardTypes.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
+                    && o.clientid == clientid
                     && o.Isdeleted == 0);
                 if (ret != null)
                 {
@@ -948,7 +952,7 @@ namespace Adroit_v8.Controllers
             try
             {
                 var ret = _context.FixedDepositTenors.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -1615,7 +1619,7 @@ namespace Adroit_v8.Controllers
                     InterestRate = obj.InterestRate,
                     LoanAmountFrom = obj.LoanAmountFrom,
                     LoanAmountTo = obj.LoanAmountTo,
-                    FixedDepositTenor =obj.FixedDepositTenor,
+                    FixedDepositTenor = obj.FixedDepositTenor,
                     Status = obj.Status
                 };
                 _repoFixedDepositInterestRate.Insert(FixedDepositTenor);
@@ -1945,7 +1949,7 @@ namespace Adroit_v8.Controllers
             r.message = "Record Saved Successfully";
             try
             {
-                var ret = _context.FixedDepositStatuses.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid ==clientid&& o.Isdeleted == 0);
+                var ret = _context.FixedDepositStatuses.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -2108,7 +2112,7 @@ namespace Adroit_v8.Controllers
             r.message = "Record Saved Successfully";
             try
             {
-                var ret = _context.Banks.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid ==clientid&& o.Isdeleted == 0);
+                var ret = _context.Banks.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -2274,7 +2278,7 @@ namespace Adroit_v8.Controllers
             r.message = "Record Saved Successfully";
             try
             {
-                var ret = _context.RegularLoanTenors.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid ==clientid&& o.Isdeleted == 0);
+                var ret = _context.RegularLoanTenors.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -2439,7 +2443,7 @@ namespace Adroit_v8.Controllers
             try
             {
                 Applicationchannel Applicationchannel = new Applicationchannel { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
-                var ret = _context.Applicationchannels.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid ==clientid&& o.Isdeleted == 0);
+                var ret = _context.Applicationchannels.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -2602,7 +2606,7 @@ namespace Adroit_v8.Controllers
             try
             {
                 Educationallevel educationallevel = new Educationallevel { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
-                var ret = _context.Educationallevels.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid ==clientid&& o.Isdeleted == 0);
+                var ret = _context.Educationallevels.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -2765,7 +2769,7 @@ namespace Adroit_v8.Controllers
             try
             {
                 Employmentstatus Employmentstatus = new Employmentstatus { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
-                var ret = _context.Employmentstatuses.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid ==clientid&& o.Isdeleted == 0);
+                var ret = _context.Employmentstatuses.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -2928,8 +2932,8 @@ namespace Adroit_v8.Controllers
             try
             {
                 EmploymentSector Employmentstatus = new EmploymentSector { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
-                var ret = _context.EmploymentSectors.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() 
-                    && o.clientid ==clientid&& o.Isdeleted == 0);
+                var ret = _context.EmploymentSectors.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -3093,8 +3097,8 @@ namespace Adroit_v8.Controllers
             try
             {
                 Employmenttype Employmenttype = new Employmenttype { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
-                 var ret = _context.Employmenttypes.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                var ret = _context.Employmenttypes.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
+                   && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -3258,7 +3262,7 @@ namespace Adroit_v8.Controllers
             {
                 Gender Gender = new Gender { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Genders.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -3421,9 +3425,9 @@ namespace Adroit_v8.Controllers
             r.message = "Record Saved Successfully";
             try
             {
-                Lga Lga = new Lga { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, stateid = obj.DetId,Status = obj.StatusID };
+                Lga Lga = new Lga { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, stateid = obj.DetId, Status = obj.StatusID };
                 var ret = _context.Lgas.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -3612,7 +3616,7 @@ namespace Adroit_v8.Controllers
             {
                 Maritalstatus Maritalstatus = new Maritalstatus { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Maritalstatuses.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -3777,7 +3781,7 @@ namespace Adroit_v8.Controllers
             {
                 Nationality Nationality = new Nationality { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Nationalities.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -3942,7 +3946,7 @@ namespace Adroit_v8.Controllers
             {
                 Nationality Nationality = new Nationality { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Nationalities.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -4107,7 +4111,7 @@ namespace Adroit_v8.Controllers
             {
                 Noofdependant Noofdependant = new Noofdependant { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Noofdependants.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -4272,7 +4276,7 @@ namespace Adroit_v8.Controllers
             {
                 Noofyearofresidence Noofyearofresidence = new Noofyearofresidence { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Noofyearofresidences.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -4437,7 +4441,7 @@ namespace Adroit_v8.Controllers
             {
                 Organization Organization = new Organization { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Organizations.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -4601,7 +4605,7 @@ namespace Adroit_v8.Controllers
             {
                 Residentialstatus Residentialstatus = new Residentialstatus { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Residentialstatuses.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -4766,7 +4770,7 @@ namespace Adroit_v8.Controllers
             {
                 Salarypaymentdate Salarypaymentdate = new Salarypaymentdate { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Salarypaymentdates.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -4931,7 +4935,7 @@ namespace Adroit_v8.Controllers
             {
                 Salaryrange Salaryrange = new Salaryrange { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Salaryranges.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -5094,9 +5098,9 @@ namespace Adroit_v8.Controllers
             r.message = "Record Saved Successfully";
             try
             {
-                State State = new State { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Countryid = obj.DetId,Status = obj.StatusID };
+                State State = new State { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Countryid = obj.DetId, Status = obj.StatusID };
                 var ret = _context.States.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -5284,7 +5288,7 @@ namespace Adroit_v8.Controllers
             {
                 Title Title = new Title { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.Titles.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;
@@ -5449,7 +5453,7 @@ namespace Adroit_v8.Controllers
             {
                 UtilityBillType UtilityBillType = new UtilityBillType { UniqueId = Guid.NewGuid().ToString(), Name = obj.Name, Status = obj.StatusID };
                 var ret = _context.UtilityBillTypes.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower()
-                    && o.clientid ==clientid && o.Isdeleted == 0);
+                    && o.clientid == clientid && o.Isdeleted == 0);
                 if (ret != null)
                 {
                     r.status = false;

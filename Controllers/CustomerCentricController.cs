@@ -773,62 +773,57 @@ namespace Adroit_v8.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallloanRepayment")]
-        public IActionResult GetAllLoanRepayment([FromQuery] CustomerCentricFilter obj)
+        public async Task<IActionResult> GetAllLoanRepayment([FromQuery] CustomerCentricFilter obj)
         {
             IEnumerable<CustomerCentricResponse> neRes = null;
-            List<Customer> allSav = null;
             var r = new ReturnObject();
             var eget = false;
             try
             {
-                var lstOfCusId = _repoRegularLoanRepaymentPlan.AsQueryable().Select(o => new { o.CustomerId,o.StatusName}).ToList();
+                //var lstOfCusId = _repoRegularLoanRepaymentPlan.AsQueryable().Select(o => new { o.CustomerId,o.StatusName}).ToList();
+                var lstOfCusId = await (from rd in _context.LoanRepaymentDetails
+                                        join c in _context.Customers
+                                        on rd.CustomerId equals c.Id
+                                        select new
+                                        {
+                                            rd.CustomerId,
+                                            c.CustomerRef,
+                                            c.EmailAddress,
+                                            c.FirstName,
+                                            c.LastName,
+                                            c.MiddleName,
+                                            c.DateOfBirth,
+                                            c.PhoneNumber,
+                                            rd.DateCreated,
+                                            Statusname = "To Be Reviewed",
+                                            Status =1
+                                        }).ToListAsync();
 
                 switch (obj.Det)
                 {
                     case 1:
-                        allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id)
-                             && o.DateCreated > obj.StartDate
-                        && o.DateCreated < obj.EndDate.AddDays(1)).ToList();
-                        foreach (var item in allSav)
-                        {
-                            item.CustomerCentricStatus = lstOfCusId.FirstOrDefault(o => o.CustomerId == item.Id).StatusName;
-                        }
+                        lstOfCusId = lstOfCusId.Where(o => o.DateCreated.Value >Convert.ToDateTime(obj.StartDate)
+                        && o.DateCreated < Convert.ToDateTime(obj.EndDate).AddDays(1)).ToList();
                         if (obj.Status != 0)
-                            allSav = allSav.Where(o => o.Status.GetValueOrDefault() == obj.Status).ToList();
+                            lstOfCusId = lstOfCusId.Where(o => o.Status == obj.Status).ToList();
+
                         break;
                     case 2:
-                        if (string.IsNullOrWhiteSpace(obj.SearchName))
-                        {
-                            allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id)).ToList();
-                            foreach (var item in allSav)
-                            {
-                                item.CustomerCentricStatus = lstOfCusId.FirstOrDefault(o => o.CustomerId == item.Id).StatusName;
-                            }
-                        }
-                        else
+                        if (!string.IsNullOrWhiteSpace(obj.SearchName)) 
                         {
                             switch (obj.SearchType.ToLower())
                             {
                                 case "email":
-                                    allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id) &&
-                                    o.EmailAddress.ToLower().Contains(obj.SearchName.ToLower())
+                                    lstOfCusId = lstOfCusId.Where(o => o.EmailAddress.ToLower().Contains(obj.SearchName.ToLower())
                                     ).ToList();
-                                    foreach (var item in allSav)
-                                    {
-                                        item.CustomerCentricStatus = lstOfCusId?.FirstOrDefault(o => o.CustomerId == item.Id)?.StatusName;
-                                    }
                                     break;
                                 case "phone":
-                                    allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id) &&
-                                    o.PhoneNumber.ToLower().Contains(obj.SearchName.ToLower())
+
+                                    lstOfCusId = lstOfCusId.Where(o => o.PhoneNumber.ToLower().Contains(obj.SearchName.ToLower())
                                     ).ToList();
-                                    foreach (var item in allSav)
-                                    {
-                                        item.CustomerCentricStatus = lstOfCusId?.FirstOrDefault(o => o.CustomerId == item.Id)?.StatusName;
-                                    }
                                     break;
                                 case "name":
-                                    allSav = _context.Customers.Where(o => lstOfCusId.Select(o => o.CustomerId).Contains(o.Id) &&
+                                    lstOfCusId = lstOfCusId.Where(o =>
                                                  o.FirstName.ToLower().Contains(obj.SearchName.ToLower())
                                               || o.LastName.ToLower().Contains(obj.SearchName.ToLower())
                                               || o.MiddleName.ToLower().Contains(obj.SearchName.ToLower())).ToList();
@@ -842,17 +837,16 @@ namespace Adroit_v8.Controllers
                         break;
                 }
 
-                var fneRes = allSav.Skip((obj.PageNumber - 1) * obj.PasgeSize)
+                var fneRes = lstOfCusId.Skip((obj.PageNumber - 1) * obj.PasgeSize)
                     .Take(obj.PasgeSize);
-                if (allSav.Any())
+                if (lstOfCusId.Any())
                     eget = true;
                 r.status = eget ? true : false;
                 r.message = eget ? "Record Fetched Successfully" : "No Record Found";
                 r.data = fneRes.ToList();
-                r.recordCount = allSav.Count();
+                r.recordCount = lstOfCusId.Count();
                 r.recordPageNumber = obj.PageNumber;
                 return (Ok(r));
-
             }
             catch (Exception ex)
             {
@@ -876,10 +870,12 @@ namespace Adroit_v8.Controllers
             var eget = false;
             try
             {
-                var lstOfCusId = _repoLD.AsQueryable().Where(o => o.CustomerId == cusId).ToList();
+                //formally from big data but we have to revamp to the postgree db
+                var lstOf = _repoLD.AsQueryable().Where(o => o.CustomerId == cusId).ToList();
+                var lstOfCusId = _context.LoanRepaymentDetails.AsQueryable().Where(o => lstOf.Select(o => o.LoanApplicationId).Contains(o.LoanApplicationId)).ToList();
                 var allSav = _context.Customers.FirstOrDefault(p => p.Id == cusId);
                 var res = new CustomerCentricResponseForView();
-                if (lstOfCusId.Any())
+                if (allSav != null)
                 {
                     eget = true;
                     res.PhoneNumber = allSav.PhoneNumber;
@@ -887,7 +883,7 @@ namespace Adroit_v8.Controllers
                     res.FullName = $"{allSav.FirstName} {allSav.MiddleName} {allSav.LastName}";
                     res.DateOfBirth = allSav.DateOfBirth;
                     res.Bvn = allSav.Bvn;
-                    res.ListItem = lstOfCusId;
+                    res.ListItem = new { loanAmount = "666666", tenor = 6, status = "failed", isbankDebit = true, startDate =DateTime.Now.AddDays(-5),endDate = DateTime.Now.AddDays(5), transactionDate =DateTime.Now.AddDays(-6)};
                 }
                 r.status = eget ? true : false;
                 r.message = eget ? "Record Fetched Successfully" : "No Record Found";
