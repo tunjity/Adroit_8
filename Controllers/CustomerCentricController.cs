@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using System.Text;
 using Adroit_v8.Model;
+using Adroit_v8.Models.CRM;
 using Adroit_v8.Models.FormModel;
 using Adroit_v8.MongoConnections;
 using Adroit_v8.MongoConnections.CustomerCentric;
@@ -7,7 +9,9 @@ using Adroit_v8.MongoConnections.LoanApplication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using static Adroit_v8.Config.Helper;
+using Customer = Adroit_v8.Model.Customer;
 
 namespace Adroit_v8.Controllers
 {
@@ -16,6 +20,8 @@ namespace Adroit_v8.Controllers
     [ApiController]
     public class CustomerCentricController : AuthController
     {
+
+        private readonly IConfiguration _config;
         private readonly AdroitDbContext _context;
         private ICustomerCentricRepository<CustomerCentricSavings> _repo;
         private ICustomerCentricRepository<LoanBidding> _repoLoanBidding;
@@ -34,7 +40,7 @@ namespace Adroit_v8.Controllers
             ICustomerCentricRepository<CustomerCentricData> repoData,
             ICustomerCentricRepository<LoanBidding> repoLoanBidding,
             ICustomerCentricRepository<ConsumerCentricEscrow> repoEs,
-            ICustomerCentricRepository<CustomerCentricAirtime> repoAirtime,
+            ICustomerCentricRepository<CustomerCentricAirtime> repoAirtime, IConfiguration config,
             ICustomerCentricRepository<CustomerCentricP2p> repoP2p, IMongoRepository<RegularLoanDisbursement> repoLD,
              IAdroitRepository<RegularLoanRepaymentPlan> repoRegularLoanRepaymentPlan,
              ICustomerCentricRepository<MobileAppP2PLoanRequestMonthlyRepaymentCollection> repoP2pRepay,
@@ -66,6 +72,7 @@ namespace Adroit_v8.Controllers
             _repoLD = repoLD;
             _repoRegularLoanRepaymentPlan = repoRegularLoanRepaymentPlan;
             _repoAirtime = repoAirtime;
+            _config = config;
             _repoTransferStatus = repoTransferStatus;
             _repoTransfer = repoTransfer;
             _repoPayment = repoPayment;
@@ -775,55 +782,72 @@ namespace Adroit_v8.Controllers
         [Route("getallloanRepayment")]
         public async Task<IActionResult> GetAllLoanRepayment([FromQuery] CustomerCentricFilter obj)
         {
-            IEnumerable<CustomerCentricResponse> neRes = null;
+            List<CustomerCentricResponse> neRes = new();
             var r = new ReturnObject();
             var eget = false;
             try
             {
-                //var lstOfCusId = _repoRegularLoanRepaymentPlan.AsQueryable().Select(o => new { o.CustomerId,o.StatusName}).ToList();
-                var lstOfCusId = await (from rd in _context.LoanRepaymentDetails
-                                        join c in _context.Customers
-                                        on rd.CustomerId equals c.Id
-                                        select new
-                                        {
-                                            rd.CustomerId,
-                                            c.CustomerRef,
-                                            c.EmailAddress,
-                                            c.FirstName,
-                                            c.LastName,
-                                            c.MiddleName,
-                                            c.DateOfBirth,
-                                            c.PhoneNumber,
-                                            rd.DateCreated,
-                                            Statusname = "To Be Reviewed",
-                                            Status =1
-                                        }).ToListAsync();
+                // all customer
+                var cus = await _context.Customers.ToListAsync();
+                //master data
+                var distinctLoanRepaymentDetails = await _context.LoanRepaymentDetails
+                .Where(o => o.HasPaid == false)
+                .GroupBy(o => o.CustomerId)
+                .Select(group => group.First())
+                .ToListAsync();
+
+
+                //total count of debtors
+                var countOfdistinctLoanRepaymentDetails = distinctLoanRepaymentDetails.Count();
+
+                //get paginated records
+                distinctLoanRepaymentDetails = distinctLoanRepaymentDetails.Skip((obj.PageNumber - 1) * obj.PasgeSize)
+                .Take(obj.PasgeSize).ToList();
+
+                foreach (var item in distinctLoanRepaymentDetails)
+                {
+                    var getCus = cus.FirstOrDefault(o => o.Id == item.CustomerId);
+                    var ddd = new CustomerCentricResponse
+                    {
+                        CustomerId = getCus.Id,
+                        CustomerRef = getCus.CustomerRef,
+                        EmailAddress = getCus.EmailAddress,
+                        FirstName = getCus.FirstName,
+                        LastName = getCus.LastName,
+                        MiddleName = getCus.MiddleName,
+                        DateOfBirth = getCus.DateOfBirth,
+                        PhoneNumber = getCus.PhoneNumber,
+                        DateCreated = (DateTimeOffset)item.DateCreated,
+                        StatusName = "Debtor"
+                    };
+                    neRes.Add(ddd);
+                }
 
                 switch (obj.Det)
                 {
                     case 1:
-                        lstOfCusId = lstOfCusId.Where(o => o.DateCreated.Value >Convert.ToDateTime(obj.StartDate)
+                        neRes = neRes.Where(o => o.DateCreated > Convert.ToDateTime(obj.StartDate)
                         && o.DateCreated < Convert.ToDateTime(obj.EndDate).AddDays(1)).ToList();
                         if (obj.Status != 0)
-                            lstOfCusId = lstOfCusId.Where(o => o.Status == obj.Status).ToList();
+                            neRes = neRes.Where(o => o.Status == obj.Status).ToList();
 
                         break;
                     case 2:
-                        if (!string.IsNullOrWhiteSpace(obj.SearchName)) 
+                        if (!string.IsNullOrWhiteSpace(obj.SearchName))
                         {
                             switch (obj.SearchType.ToLower())
                             {
                                 case "email":
-                                    lstOfCusId = lstOfCusId.Where(o => o.EmailAddress.ToLower().Contains(obj.SearchName.ToLower())
+                                    neRes = neRes.Where(o => o.EmailAddress.ToLower().Contains(obj.SearchName.ToLower())
                                     ).ToList();
                                     break;
                                 case "phone":
 
-                                    lstOfCusId = lstOfCusId.Where(o => o.PhoneNumber.ToLower().Contains(obj.SearchName.ToLower())
+                                    neRes = neRes.Where(o => o.PhoneNumber.ToLower().Contains(obj.SearchName.ToLower())
                                     ).ToList();
                                     break;
                                 case "name":
-                                    lstOfCusId = lstOfCusId.Where(o =>
+                                    neRes = neRes.Where(o =>
                                                  o.FirstName.ToLower().Contains(obj.SearchName.ToLower())
                                               || o.LastName.ToLower().Contains(obj.SearchName.ToLower())
                                               || o.MiddleName.ToLower().Contains(obj.SearchName.ToLower())).ToList();
@@ -836,17 +860,15 @@ namespace Adroit_v8.Controllers
                     default:
                         break;
                 }
-
-                var fneRes = lstOfCusId.Skip((obj.PageNumber - 1) * obj.PasgeSize)
-                    .Take(obj.PasgeSize);
-                if (lstOfCusId.Any())
+                if (neRes.Any())
                     eget = true;
                 r.status = eget ? true : false;
                 r.message = eget ? "Record Fetched Successfully" : "No Record Found";
-                r.data = fneRes.ToList();
-                r.recordCount = lstOfCusId.Count();
+                r.data = neRes.ToList();
+                r.recordCount = countOfdistinctLoanRepaymentDetails;
                 r.recordPageNumber = obj.PageNumber;
                 return (Ok(r));
+
             }
             catch (Exception ex)
             {
@@ -858,21 +880,41 @@ namespace Adroit_v8.Controllers
             }
         }
 
-        // Method for getting all savings by customer ID
-        // Returns a list of savings or an error message with status code
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetloanRepaymentByCusId/{cusId}")]
-        public IActionResult GetloanRepaymentByCustomerId(int cusId)
+        public async Task<IActionResult> GetloanRepaymentByCustomerIdAsync(int cusId)
         {
+            List<LoanTransaction> staticData = new List<LoanTransaction>();
             var r = new ReturnObject();
             var eget = false;
             try
             {
+                var allBigData = _repoLD.AsQueryable();
+                var distinctLoanRepaymentDetails = await _context.LoanRepaymentDetails
+               .Where(o => o.CustomerId == cusId)
+               .GroupBy(o => o.LoanApplicationId)
+               .Select(group => group.First())
+               .ToListAsync();
+
+                foreach (var item in distinctLoanRepaymentDetails)
+                {
+                    var rex = allBigData.FirstOrDefault(o => o.LoanApplicationId == item.LoanApplicationId);
+                    staticData.Add(new LoanTransaction
+                    {
+                        LoanApplicationId = rex.LoanApplicationId,
+                        LoanRepaymentId = rex.UniqueId,
+                        LoanAmount = rex.LoanAmount.ToString(),
+                        Tenor = rex.LoanTenor,
+                        Status = rex.StatusName,
+                        IsBankDebit = item.IsPartialRepayment.Value,
+                        StartDate = DateTime.Now.AddDays(-5),
+                        EndDate = DateTime.Now.AddDays(5),
+                        TransactionDate = DateTime.Now.AddDays(-6)
+                    });
+                }
                 //formally from big data but we have to revamp to the postgree db
-                var lstOf = _repoLD.AsQueryable().Where(o => o.CustomerId == cusId).ToList();
-                var lstOfCusId = _context.LoanRepaymentDetails.AsQueryable().Where(o => lstOf.Select(o => o.LoanApplicationId).Contains(o.LoanApplicationId)).ToList();
                 var allSav = _context.Customers.FirstOrDefault(p => p.Id == cusId);
                 var res = new CustomerCentricResponseForView();
                 if (allSav != null)
@@ -883,7 +925,8 @@ namespace Adroit_v8.Controllers
                     res.FullName = $"{allSav.FirstName} {allSav.MiddleName} {allSav.LastName}";
                     res.DateOfBirth = allSav.DateOfBirth;
                     res.Bvn = allSav.Bvn;
-                    res.ListItem = new { loanAmount = "666666", tenor = 6, status = "failed", isbankDebit = true, startDate =DateTime.Now.AddDays(-5),endDate = DateTime.Now.AddDays(5), transactionDate =DateTime.Now.AddDays(-6)};
+                    res.ListItem = staticData;
+
                 }
                 r.status = eget ? true : false;
                 r.message = eget ? "Record Fetched Successfully" : "No Record Found";
@@ -898,7 +941,91 @@ namespace Adroit_v8.Controllers
                     message = ex.Message
                 }));
             }
+        }  
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("GetRepaymentPlanByCusId/{cusId}")]
+        public async Task<IActionResult> GetRepaymentPlanByCustomerId(int cusId)
+        {
+            List<LoanTransaction> staticData = new List<LoanTransaction>();
+            var r = new ReturnObject();
+            var eget = true;
+            try
+            {
+                var distinctLoanRepaymentDetails = await _context.LoanRepaymentDetails
+               .Where(o => o.CustomerId == cusId && o.HasPaid == false)
+               .Select( o=>new{
+               
+               repaymentAmount = o.RepaymentAmount,
+               repaymentDate = o.RepaymentDate})
+               .ToListAsync();
+
+                
+                r.status = eget ? true : false;
+                r.message = eget ? "Record Fetched Successfully" : "No Record Found";
+                r.data = eget ? distinctLoanRepaymentDetails : "";
+                return (Ok(r));
+            }
+            catch (Exception ex)
+            {
+                return (StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                }));
+            }
         }
+        [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("ManualRepayment")]
+        public async Task<IActionResult> ManualRepayment([FromBody] ManualRepayment obj)
+        {
+            try
+            {
+                var r = new ReturnObject();
+                int statusCode = 0;
+                StringContent? requestApi = null;
+                HttpResponseMessage? rawResponse = null;
+                var disburseUrl = _config.GetSection("DisburseTo:RepaymentLoanUrl").Value;
+
+
+                var ra = new
+                {
+                    customerId = obj.CustomerId,
+                    repaymentId = obj.RepaymentId,
+                    adroitUserId = auth.UserId,
+                    loanApplicationId = obj.LoanApplicationId,
+                    amount = obj.Amount,
+                    clientId = auth.ClientId
+                };
+                using var httpclient = new HttpClient();
+                var objApi = JsonConvert.SerializeObject(ra);
+                requestApi = new StringContent(objApi, Encoding.UTF8, "application/json");
+                rawResponse = await httpclient.PostAsync(disburseUrl, requestApi);
+                var r1 = await rawResponse.Content.ReadAsStringAsync();
+                statusCode = (int)rawResponse.StatusCode;
+                if (statusCode != 200)
+                {
+                    r.status = false;
+                    r.message = "Error From Repayment API";
+                    return Ok(r);
+                }
+                r.status = true;
+                r.message = "Repayment API Successfully Done";
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return (StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                }));
+            }
+        }
+
         #endregion
 
         #region  transfer

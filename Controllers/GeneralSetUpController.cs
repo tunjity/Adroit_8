@@ -51,7 +51,7 @@ namespace Adroit_v8.Controllers
         private string errMsg = "Unable to process request, kindly try again";
         string clientid = "";
         private const string bankListCacheKey = "bankList";
-        private IMemoryCache _cache;
+        //private IMemoryCache _cache;
         public GeneralSetUpController(
             IGenericRepository<FixedDepositPreliquidationCharges> repoFixedDepositPreliquidationCharges,
         IGenericRepository<FixedDepositTenor> repoFixedDepositTenor,
@@ -62,7 +62,7 @@ namespace Adroit_v8.Controllers
        IGenericRepository<RegularLoanCharge> repoRegularLoanCharge,
        IGenericRepository<RegularLoanInterestRate> repoRegularLoanInterestRate,
        IGenericRepository<FixedDepositInterestRate> repoFixedDepositInterestRate,
-        IGenericRepository<Bank> repoBank, IGenericRepository<GovernmentIDCardType> repoGovernmentIDCardType, IMemoryCache cache, IGenericRepository<RegularLoanTenor> repoRegularLoanTenor, IGenericRepository<EmploymentSector> repoEmploymentSector, IGenericRepository<Applicationchannel> repoApplicationchannel, IGenericRepository<Educationallevel> repoEducationallevel,
+        IGenericRepository<Bank> repoBank, IGenericRepository<GovernmentIDCardType> repoGovernmentIDCardType,  IGenericRepository<RegularLoanTenor> repoRegularLoanTenor, IGenericRepository<EmploymentSector> repoEmploymentSector, IGenericRepository<Applicationchannel> repoApplicationchannel, IGenericRepository<Educationallevel> repoEducationallevel,
             IGenericRepository<Employmentstatus> repoEmploymentstatus, IGenericRepository<Employmenttype> repoEmploymenttype, IGenericRepository<Gender> repoGender, IGenericRepository<Lga> repoLga,
            IMapper mapper, IGenericRepository<DeclineReason> repoDeclineReason, IGenericRepository<Maritalstatus> repoMaritalstatus, IGenericRepository<Nationality> repoNationality, IGenericRepository<Noofdependant> repoNoofdependant,
             IGenericRepository<Noofyearofresidence> repoNoofyearofresidence, IGenericRepository<Organization> repoOrganization, IGenericRepository<Residentialstatus> repoResidentialstatus,
@@ -83,7 +83,7 @@ namespace Adroit_v8.Controllers
             _repoFeeFrequency = repoFeeFrequency;
             _repoLateFeePrincipal = repoLateFeePrincipal;
             _repoGovernmentIDCardType = repoGovernmentIDCardType;
-            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+          //  _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _repoRegularLoanTenor = repoRegularLoanTenor;
             _repoEmploymentSector = repoEmploymentSector;
             _repoApplicationchannel = repoApplicationchannel;

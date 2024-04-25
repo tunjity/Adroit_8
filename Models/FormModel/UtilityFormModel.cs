@@ -12,7 +12,7 @@ namespace Adroit_v8.Models.FormModel
         public decimal AdjustedAmount { get; set; }
         public string AdjustedTenor { get; set; }
         public string? Comment { get; set; }
-        public IFormFile BankStatement { get; set; }
+        public IFormFile? BankStatement { get; set; }
     }
 
     public class CommentFormModelToGet : RegularLoanCommentFormModelToGet

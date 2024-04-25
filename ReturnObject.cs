@@ -1,4 +1,8 @@
 ﻿
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using static MongoDB.Driver.WriteConcern;
+
 namespace Adroit_v8
 {
     public class AuthDto
@@ -48,12 +52,12 @@ namespace Adroit_v8
         public int Status { get; set; }
         public string StatusName { get; set; }
         public DateTimeOffset DateCreated { get; set; }
-    }  
+    }
     public class CustomerCentricLoanBiddingResponse
     {
         public string LenderPhoneNumber { get; set; }
         public string LenderEmailAddress { get; set; }
-        public string LenderName { get; set; } 
+        public string LenderName { get; set; }
         public string BorrowerPhoneNumber { get; set; }
         public string BorrowerEmailAddress { get; set; }
         public string BorrowerName { get; set; }
@@ -83,7 +87,7 @@ namespace Adroit_v8
         public string LoanAmount { get; set; }
         public int Status { get; set; }
         public DateTime DateSubmitted { get; set; }
-    }  
+    }
     public class LoanTopUpResponse
     {
         public decimal NewLoanTopUpAmount { get; set; }
@@ -110,6 +114,19 @@ namespace Adroit_v8
         // public int Status { get; set; }
         public DateTime DateSubmitted { get; set; }
     }
+    public class LoanTransaction
+    {
+        public string LoanAmount { get; set; }
+        public string LoanApplicationId { get; set; }
+        public string LoanRepaymentId { get; set; }
+        public string Tenor { get; set; }
+        public string Status { get; set; }
+        public bool IsBankDebit { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public DateTime TransactionDate { get; set; }
+    }
+
     public class CustomerCentricResponseForView
     {
         public string EmailAddress { get; set; }
@@ -140,49 +157,242 @@ namespace Adroit_v8
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
     }
-    public class PaginationWithOutFilterModel
-    {
-        public int PasgeSize { get; set; }
-        public int PageNumber { get; set; }
-    }
-    public class FilterModel
-    {
-        public string SearchBy { get; set; }
-    }
-    public class FilterBy
-    {
-        public int Status { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-    }
-    public class APIResponseforAll
-    {
-        public string id { get; set; }
-        public bool status { get; set; }
-        public string message { get; set; }
-        public int statusCode { get; set; }
-        public dynamic data { get; set; }
-    }
-    public class APIResponseWithToken
-    {
-        public string id { get; set; }
-        public bool status { get; set; }
-        public string message { get; set; }
-        public int statusCode { get; set; }
-        public data data { get; set; }
-    }
 
-    public class data
+    public class ManualRepayment
     {
-
-        public string userId { get; set; }
-        public string clientId { get; set; }
-        public string applicationId { get; set; }
-        public string email { get; set; }
-        public string description { get; set; }
-        public string firstname { get; set; }
-        public string lastname { get; set; }
-        public string token { get; set; }
-        public string tokenExpirationTime { get; set; }
+        public long CustomerId { get; set; }
+        public string RepaymentId { get; set; }
+        public string LoanApplicationId { get; set; }
+        public string Amount { get; set; }
     }
+}
+public class PaginationWithOutFilterModel
+{
+    public int PasgeSize { get; set; }
+    public int PageNumber { get; set; }
+}
+public class FilterModel
+{
+    public string SearchBy { get; set; }
+}
+public class FilterBy
+{
+    public int Status { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+}
+public class UserApplicationPagesAndPermission
+{
+    public dynamic Modules { get; set; }
+    public dynamic Pages { get; set; }
+    public dynamic Permission { get; set; }
+}
+
+public class ApplicationPermissionGetDTo
+{
+
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
+    public string ApplicationPermissionId { get; set; }
+    public string ApplicationPageId { get; set; }
+    public string ApplicationId { get; set; }
+    public string ApplicationRoleName { get; set; }
+    public string ApplicationPageName { get; set; }
+    public int Status { get; set; }
+    public int IsDeleted { get; set; }
+    public DateTime DateCreated { get; set; }
+    public bool CanView { get; set; }
+    public bool CanAdd { get; set; }
+    public bool CanUpdate { get; set; }
+    public bool CanRemove { get; set; }
+    public bool CanApprove { get; set; }
+    public bool CanReject { get; set; }
+    public bool CanDecline { get; set; }
+    public bool CanAssign { get; set; }
+    public bool CanReAssign { get; set; }
+    public bool CanReview { get; set; }
+    public bool CanAdjust { get; set; }
+    public bool CanComment { get; set; }
+    public bool CanDownload { get; set; }
+    public bool CanUpload { get; set; }
+    public bool CanSearch { get; set; }
+    public bool CanDisburse { get; set; }
+    public bool CanReturn { get; set; }
+    public bool CanDecide { get; set; }
+    public bool CanEditRepayment { get; set; }
+}
+
+public class ApplicationPermissionGetDTo1
+{
+    public ObjectId Id { get; set; }
+    public string ApplicationPermissionId { get; set; }
+    public string ApplicationRoleId { get; set; }
+    public string ApplicationName { get; set; }
+    public string ApplicationPageId { get; set; }
+    public string ApplicationId { get; set; }
+    public string ApplicationRoleName { get; set; }
+    public string ApplicationPageName { get; set; }
+    public int Status { get; set; }
+    public int IsDeleted { get; set; }
+    public DateTime DateCreated { get; set; }
+    public bool CanView { get; set; }
+    public bool CanAdd { get; set; }
+    public bool CanUpdate { get; set; }
+    public bool CanRemove { get; set; }
+    public bool CanApprove { get; set; }
+    public bool CanReject { get; set; }
+    public bool CanDecline { get; set; }
+    public bool CanAssign { get; set; }
+    public bool CanReAssign { get; set; }
+    public bool CanReview { get; set; }
+    public bool CanAdjust { get; set; }
+    public bool CanComment { get; set; }
+    public bool CanDownload { get; set; }
+    public bool CanUpload { get; set; }
+    public bool CanSearch { get; set; }
+    public bool CanDisburse { get; set; }
+    public bool CanReturn { get; set; }
+    public bool CanDecide { get; set; }
+    public bool CanEditRepayment { get; set; }
+}
+
+[BsonIgnoreExtraElements]
+[BsonCollection("SSO_ApplicationRoleCollection")]
+public class ApplicationRoleGetDTO : BaseDtoII
+{
+    public string ApplicationRoleId { get; set; }
+    public string ApplicationId { get; set; }
+    public string ApplicationModuleId { get; set; }
+    public string ApplicationRoleName { get; set; }
+    public string ApplicationRoleCode { get; set; }
+    public string ApplicationRoleDescription { get; set; }
+}
+public class ApplicationGetModuleDTO : BaseDtoII
+{
+    public string ApplicationId { get; set; }
+    public string ApplicationName { get; set; }
+    public string ApplicationModuleId { get; set; }
+    public string ApplicationModuleName { get; set; }
+    public string ApplicationModuleCode { get; set; }
+    public string ApplicationModuleDescription { get; set; }
+}
+
+[BsonIgnoreExtraElements]
+[BsonCollection("SSO_ApplicationModuleCollection")]
+public class ApplicationGetModuleDTO1 : BaseDtoII
+{
+    public string ApplicationId { get; set; }
+    public string ApplicationName { get; set; }
+    public string ApplicationModuleId { get; set; }
+    public string ApplicationModuleName { get; set; }
+    public string ApplicationModuleCode { get; set; }
+    public string ApplicationModuleDescription { get; set; }
+    public dynamic ApplicationPages { get; set; }
+}
+
+[BsonIgnoreExtraElements]
+[BsonCollection("SSO_ApplicationsCollection")]
+public class ApplicationGetDTO : BaseDtoII
+{
+    public string ApplicationId { get; set; }
+    public string ApplicationName { get; set; }
+    public string ApplicationCode { get; set; }
+    public int Status { get; set; }
+    public string Description { get; set; }
+}
+
+public class ApplicationPermissionActionListGetDto : BaseDtoII
+{
+    public string PermissionActionId { get; set; }
+    public string PermissionActionName { get; set; }
+}
+[BsonIgnoreExtraElements]
+[BsonCollection("SSO_ApplicationPermission")]
+public class ApplicationPermissionGetDto1 : BaseDtoII
+{
+    public string ApplicationId { get; set; }
+    public string ApplicationRoleId { get; set; }
+    public string ApplicationPageId { get; set; }
+    public string ApplicationPermissionId { get; set; }
+    public bool CanView { get; set; }
+    public bool CanAdd { get; set; }
+    public bool CanUpdate { get; set; }
+    public bool CanRemove { get; set; }
+    public bool CanApprove { get; set; }
+    public bool CanReject { get; set; }
+    public bool CanDecline { get; set; }
+    public bool CanAssign { get; set; }
+    public bool CanReAssign { get; set; }
+    public bool CanReview { get; set; }
+    public bool CanAdjust { get; set; }
+    public bool CanComment { get; set; }
+    public bool CanDownload { get; set; }
+    public bool CanUpload { get; set; }
+    public bool CanSearch { get; set; }
+    public bool CanDisburse { get; set; }
+    public bool CanReturn { get; set; }
+    public bool CanDecide { get; set; }
+    public bool CanEditRepayment { get; set; }
+}
+
+[BsonIgnoreExtraElements]
+[BsonCollection("SSO_UserApplicationRoleCollection")]
+public class UserApplicationRoleGetDTO : BaseDtoII
+{
+    public string UserApplicationRoleId { get; set; }
+    public string ApplicationId { get; set; }
+    public string UserId { get; set; }
+    public string ApplicationRoleId { get; set; }
+    public int Status { get; set; }
+    //public int IsDeleted { get; set; }
+    public string Description { get; set; }
+   // public DateTime DateCreated { get; set; }
+}
+
+[BsonIgnoreExtraElements]
+[BsonCollection("SSO_ApplicationsCollection")]
+public class ApplicationGetPageDTO : BaseDtoII
+{
+    public string ApplicationPageId { get; set; }
+    public string ApplicationId { get; set; }
+    public string ApplicationName { get; set; }
+    public string ApplicationModuleId { get; set; }
+    public string ApplicationModuleName { get; set; }
+    public string ApplicationPageName { get; set; }
+    public string ApplicationPageCode { get; set; }
+    public string ApplicationPageDescription { get; set; }
+    public int Status { get; set; }
+}
+
+
+public class APIResponseforAll
+{
+    public string id { get; set; }
+    public bool status { get; set; }
+    public string message { get; set; }
+    public int statusCode { get; set; }
+    public dynamic data { get; set; }
+}
+public class APIResponseWithToken
+{
+    public string id { get; set; }
+    public bool status { get; set; }
+    public string message { get; set; }
+    public int statusCode { get; set; }
+    public data data { get; set; }
+}
+
+public class data
+{
+
+    public string userId { get; set; }
+    public string clientId { get; set; }
+    public string applicationId { get; set; }
+    public string email { get; set; }
+    public string description { get; set; }
+    public string firstname { get; set; }
+    public string lastname { get; set; }
+    public string token { get; set; }
+    public string tokenExpirationTime { get; set; }
 }

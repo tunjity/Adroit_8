@@ -262,6 +262,7 @@ namespace Adroit_v8.Config
         {
             //Services
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+            services.AddScoped(typeof(ISSMongoRepository<>), typeof(SSMongoRepository<>));
             services.AddScoped(typeof(ICustomerCentricRepository<>), typeof(CustomerCentricRepository<>));
             services.AddScoped(typeof(IAdroitRepository<>), typeof(AdroitRepository<>));
             services.AddSingleton(configuration.GetSection(nameof(MongoDBSettings)).Get<MongoDBSettings>());

@@ -75,6 +75,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
     public class RegularLoanDisbursement : BaseDtoII
     {
         public long CustomerId { get; set; }
+        public int RetryCount { get; set; }
         public string DisbursedTo { get; set; }
         public string Description { get; set; }
         public string EncryptedCardDetails { get; set; }

@@ -1708,6 +1708,35 @@
     ]
   },
   {
+    "ContainingType": "Adroit_v8.Controllers.ApplicationPermissionController",
+    "Method": "GetUserApplicationPagesAndPermission",
+    "RelativePath": "api/ApplicationPermission/GetUserApplicationPagesAndPermission",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
     "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.ApprovalController",
     "Method": "AddComment",
     "RelativePath": "api/Approval/addComment",
@@ -5451,7 +5480,7 @@
     "Parameters": [
       {
         "Name": "obj",
-        "Type": "Adroit_v8.FilterModel",
+        "Type": "FilterModel",
         "IsRequired": true
       }
     ],
@@ -5556,7 +5585,7 @@
     "Parameters": [
       {
         "Name": "obj",
-        "Type": "Adroit_v8.FilterModel",
+        "Type": "FilterModel",
         "IsRequired": true
       }
     ],
@@ -5690,7 +5719,7 @@
     "Parameters": [
       {
         "Name": "obj",
-        "Type": "Adroit_v8.FilterModel",
+        "Type": "FilterModel",
         "IsRequired": true
       }
     ],
@@ -5894,7 +5923,7 @@
     "Parameters": [
       {
         "Name": "obj",
-        "Type": "Adroit_v8.FilterModel",
+        "Type": "FilterModel",
         "IsRequired": true
       }
     ],
@@ -6238,7 +6267,7 @@
     "Parameters": [
       {
         "Name": "obj",
-        "Type": "Adroit_v8.FilterModel",
+        "Type": "FilterModel",
         "IsRequired": true
       }
     ],
@@ -6372,7 +6401,7 @@
     "Parameters": [
       {
         "Name": "obj",
-        "Type": "Adroit_v8.FilterModel",
+        "Type": "FilterModel",
         "IsRequired": true
       }
     ],
@@ -6568,7 +6597,7 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
-    "Method": "GetloanRepaymentByCustomerId",
+    "Method": "GetloanRepaymentByCustomerIdAsync",
     "RelativePath": "api/CustomerCentric/GetloanRepaymentByCusId/{cusId}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -6612,6 +6641,41 @@
       {
         "Name": "P2PLoanRequestId",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
+    "Method": "GetRepaymentPlanByCustomerId",
+    "RelativePath": "api/CustomerCentric/GetRepaymentPlanByCusId/{cusId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cusId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -6682,6 +6746,41 @@
       {
         "Name": "cusId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
+    "Method": "ManualRepayment",
+    "RelativePath": "api/CustomerCentric/ManualRepayment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "Adroit_v8.ManualRepayment",
         "IsRequired": true
       }
     ],
