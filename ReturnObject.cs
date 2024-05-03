@@ -2,6 +2,8 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using static MongoDB.Driver.WriteConcern;
+using System.Security;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Adroit_v8
 {
@@ -24,6 +26,12 @@ namespace Adroit_v8
         public int statusCode { get; set; }
         public int recordCount { get; set; }
         public int recordPageNumber { get; set; }
+        public dynamic data { get; set; }
+    } public class NewPermissionReturnObject
+    {
+        public bool status { get; set; }
+        public string message { get; set; }
+        public int statusCode { get; set; }
         public dynamic data { get; set; }
     }
     public class CustomerCentricResponseEscrow
@@ -279,6 +287,31 @@ public class ApplicationGetModuleDTO : BaseDtoII
 }
 
 [BsonIgnoreExtraElements]
+[BsonCollection("SSO_ApplicationPageCollection")]
+public class ApplicationPage : BaseDtoII
+{
+    public string ApplicationId { get; set; }
+    public string ApplicationModuleId { get; set; }
+    public string ApplicationPageId { get; set; }
+    public string ApplicationPageName { get; set; }
+    public string ApplicationPageCode { get; set; }
+    public string ApplicationPageDescription { get; set; }
+    [NotMapped]
+    public List<ApplicationPermissionGetDto1> permissions { get; } = new List<ApplicationPermissionGetDto1>();
+}
+public class ApplicationPageII
+{
+    public string ApplicationId { get; set; }
+    public string ApplicationModuleId { get; set; }
+    public string ApplicationPageId { get; set; }
+    public string ApplicationPageName { get; set; }
+    public string ApplicationPageCode { get; set; }
+    public string ApplicationPageDescription { get; set; }
+    public List<ApplicationPermissionGetDto1II> permissions { get; } = new List<ApplicationPermissionGetDto1II>();
+}
+
+
+[BsonIgnoreExtraElements]
 [BsonCollection("SSO_ApplicationModuleCollection")]
 public class ApplicationGetModuleDTO1 : BaseDtoII
 {
@@ -289,6 +322,8 @@ public class ApplicationGetModuleDTO1 : BaseDtoII
     public string ApplicationModuleCode { get; set; }
     public string ApplicationModuleDescription { get; set; }
     public dynamic ApplicationPages { get; set; }
+    [NotMapped]
+    public List<ApplicationPage> forms { get; } = new();
 }
 
 [BsonIgnoreExtraElements]
@@ -302,11 +337,6 @@ public class ApplicationGetDTO : BaseDtoII
     public string Description { get; set; }
 }
 
-public class ApplicationPermissionActionListGetDto : BaseDtoII
-{
-    public string PermissionActionId { get; set; }
-    public string PermissionActionName { get; set; }
-}
 [BsonIgnoreExtraElements]
 [BsonCollection("SSO_ApplicationPermission")]
 public class ApplicationPermissionGetDto1 : BaseDtoII
@@ -335,7 +365,41 @@ public class ApplicationPermissionGetDto1 : BaseDtoII
     public bool CanDecide { get; set; }
     public bool CanEditRepayment { get; set; }
 }
-
+public class ApplicationPermissionGetDto1II 
+{
+    public string ApplicationId { get; set; }
+    public string ApplicationRoleId { get; set; }
+    public string ApplicationPageId { get; set; }
+    public string ApplicationPermissionId { get; set; }
+    public bool CanView { get; set; }
+    public bool CanAdd { get; set; }
+    public bool CanUpdate { get; set; }
+    public bool CanRemove { get; set; }
+    public bool CanApprove { get; set; }
+    public bool CanReject { get; set; }
+    public bool CanDecline { get; set; }
+    public bool CanAssign { get; set; }
+    public bool CanReAssign { get; set; }
+    public bool CanReview { get; set; }
+    public bool CanAdjust { get; set; }
+    public bool CanComment { get; set; }
+    public bool CanDownload { get; set; }
+    public bool CanUpload { get; set; }
+    public bool CanSearch { get; set; }
+    public bool CanDisburse { get; set; }
+    public bool CanReturn { get; set; }
+    public bool CanDecide { get; set; }
+    public bool CanEditRepayment { get; set; }
+}
+public class PermissionReturnObject
+{
+    public string ModuleName { get; set; }
+    public List<ApplicationPageII> Forms { get; set; } = new();
+}
+public class PermissionReturn
+{
+    public List<PermissionReturnObject> modules { get; set; } = new();
+}
 [BsonIgnoreExtraElements]
 [BsonCollection("SSO_UserApplicationRoleCollection")]
 public class UserApplicationRoleGetDTO : BaseDtoII
@@ -347,7 +411,7 @@ public class UserApplicationRoleGetDTO : BaseDtoII
     public int Status { get; set; }
     //public int IsDeleted { get; set; }
     public string Description { get; set; }
-   // public DateTime DateCreated { get; set; }
+    // public DateTime DateCreated { get; set; }
 }
 
 [BsonIgnoreExtraElements]
@@ -385,7 +449,6 @@ public class APIResponseWithToken
 
 public class data
 {
-
     public string userId { get; set; }
     public string clientId { get; set; }
     public string applicationId { get; set; }

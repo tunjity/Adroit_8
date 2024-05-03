@@ -26,6 +26,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string NameOnCard { get; set; }
         public string CardNumber { get; set; }
         public string ExpiryDate { get; set; }
+        public bool IsAcceptedOfferLetter { get; set; }
         public string CVV { get; set; }
         public string CardPin { get; set; }
         public string BankName { get; set; }
@@ -78,7 +79,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public int RetryCount { get; set; }
         public string DisbursedTo { get; set; }
         public string Description { get; set; }
-        public string EncryptedCardDetails { get; set; }
+        //public string EncryptedCardDetails { get; set; }
         public int GenderId { get; set; }
         public bool IsClosed { get; set; }
         public bool Treated { get; set; }
@@ -115,6 +116,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string ChannelId { get; set; }
         public string ChannelName { get; set; }
         public string InterestRate { get; set; }
+        public byte[] EncryptedCardDetails { get; set; }
     }
     public class PaymentDetails
     {
@@ -259,7 +261,8 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string AdjustedAmount { get; set; }
         public string LoanCategory { get; set; }
     }
-
+    //RegularLoanStageHolder
+    [BsonCollection("RegularLoanStageHolder")]
     public class RegularLoanStageHolder : BaseDto
     {
         public int CustomerId { get; set; }

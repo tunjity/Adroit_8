@@ -20,33 +20,13 @@ namespace Adroit_v8.Controllers
         string errMsg = "Unable to process request, kindly try again";
         string clientId = "";
         private readonly IMapper _mapper;
-        //private readonly ISSMongoRepository<ApplicationGetPageDTO> _ApplicationPageGet;
-        //private readonly ISSMongoRepository<ApplicationGetDTO> _ApplicationGet;
-        //private readonly ISSMongoRepository<UserApplicationRoleGetDTO> _UserApplicationRoleGet;
-        //private readonly ISSMongoRepository<ApplicationRoleGetDTO> _ApplicationRoleGet;
-        //private readonly ISSMongoRepository<ApplicationPermissionGetDto1> _ApplicationPermissionActionListGet;
-        //private readonly ISSMongoRepository<ApplicationGetModuleDTO1> _ApplicationModuleGet1;
         public LoginController(IConfiguration config, IMapper mapper,
-            //ISSMongoRepository<UserApplicationRoleGetDTO> UserApplicationRoleGet,
-            //ISSMongoRepository<ApplicationRoleGetDTO> ApplicationRoleGet,
-            //ISSMongoRepository<ApplicationPermissionGetDto1> ApplicationPermissionActionListGet,
-            //ISSMongoRepository<ApplicationGetModuleDTO1> ApplicationModuleGet1, ISSMongoRepository<ApplicationGetDTO> ApplicationGet,
-            //ISSMongoRepository<ApplicationGetPageDTO> ApplicationPageGet,
-            
             IHttpContextAccessor httpContextAccessor)
             : base(httpContextAccessor)
         {
-            //_ApplicationGet = ApplicationGet;
-            //_UserApplicationRoleGet = UserApplicationRoleGet;
-            //_ApplicationRoleGet = ApplicationRoleGet;
-            //_ApplicationPermissionActionListGet = ApplicationPermissionActionListGet;
-            //_ApplicationModuleGet1 = ApplicationModuleGet1;
-            //_ApplicationPageGet = ApplicationPageGet;
             _config = config;
             clientId = _config.GetSection("MongoDB").GetSection("ConnectionURI").Value;
-            // cache = cache;
             _mapper = mapper;
-           // _repo = repo;
         }
 
         [HttpPost]

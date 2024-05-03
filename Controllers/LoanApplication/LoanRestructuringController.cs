@@ -171,3 +171,5 @@ namespace Adroit_v8.Controllers.LoanApplication
 
     }
 }
+
+//api/LoanApplication/Adjust/UpdateWithBankStatement

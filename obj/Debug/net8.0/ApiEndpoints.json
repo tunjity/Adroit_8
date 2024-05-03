@@ -1717,7 +1717,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "Adroit_v8.ReturnObject",
+        "Type": "Adroit_v8.NewPermissionReturnObject",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1726,7 +1726,7 @@
         "StatusCode": 200
       },
       {
-        "Type": "Adroit_v8.ReturnObject",
+        "Type": "Adroit_v8.NewPermissionReturnObject",
         "MediaTypes": [
           "text/plain",
           "application/json",

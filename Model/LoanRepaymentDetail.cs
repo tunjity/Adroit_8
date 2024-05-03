@@ -10,6 +10,7 @@
         public decimal? RepaymentAmount { get; set; }
 
         public bool? IsPartialRepayment { get; set; }
+        public bool IsClosed { get; set; }
 
         public int? RepaymentStage { get; set; }
 

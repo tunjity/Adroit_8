@@ -405,23 +405,27 @@ namespace Adroit_v8.Controllers.LoanApplication
                     default:
                         break;
                 }
-                var bas = Helper.ConvertIFormFilesToBase64(obj.BankStatement);
-                string docName = $"{Guid.NewGuid().ToString()}{"_"}{Path.GetFileName(obj.BankStatement.FileName)}";
-                var objra = new
+                if (obj.BankStatement != null)
                 {
-                    statementOfAccount = bas,
-                    fileName = docName,
-                    customerId = cusId
-                };
-                var Api = JsonConvert.SerializeObject(objra);
-                requestApi = new StringContent(Api, Encoding.UTF8, "application/json");
-                rawResponse = await httpclient.PostAsync(bankStatementUrl, requestApi);
-                var r11 = await rawResponse.Content.ReadAsStringAsync();
-                statusCode = (int)rawResponse.StatusCode;
-                if (statusCode != 200)
-                {
-                    r.status = false;
-                    r.message = "Error From The Document API";
+                    var bas = Helper.ConvertIFormFilesToBase64(obj.BankStatement);
+                    string docName = $"{Guid.NewGuid().ToString()}{"_"}{Path.GetFileName(obj.BankStatement.FileName)}";
+                    var objra = new
+                    {
+                        statementOfAccount = bas,
+                        fileName = docName,
+                        customerId = cusId
+                    };
+                    var Api = JsonConvert.SerializeObject(objra);
+                    requestApi = new StringContent(Api, Encoding.UTF8, "application/json");
+                    rawResponse = await httpclient.PostAsync(bankStatementUrl, requestApi);
+                    var r11 = await rawResponse.Content.ReadAsStringAsync();
+                    statusCode = (int)rawResponse.StatusCode;
+                    if (statusCode != 200)
+                    {
+                        r.status = false;
+                        r.message = "Error From The Document API";
+                    }
+
                 }
                 else
                 {

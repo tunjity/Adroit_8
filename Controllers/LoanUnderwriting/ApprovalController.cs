@@ -36,7 +36,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
         private readonly IAdroitRepository<RegularLoanStepSix> _repoDoc;
         private readonly IAdroitRepository<RegularLoanComment> _repoComment;
         private readonly IAdroitRepository<RegularLoanReasonToDecline> _repoRTD;
-        private readonly IAdroitRepository<RegularLoanAdjustment> _repoRLA;
+        private readonly IAdroitRepository<RegularLoanStageHolder> _repoRLA;
         private readonly IMongoCollection<RegularLoan> _customerLoan;
         private readonly IMongoCollection<RegularLoanDisbursement> _customerDet;
         private readonly IConfiguration _config;
@@ -44,7 +44,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
         AuthDto auth = new AuthDto();
         string errMsg = "Unable to process request, kindly try again";
         public ApprovalController(IAdroitRepository<RegularLoan> repo, AdroitDbContext db, ICustomerCentricRepository<LoanTopUp> repoTP, ICustomerCentricRepository<RegularLoanRestructure> repoRS, IFilterRepository repoF, IMongoRepository<RegularLoanDisbursement> repoLD,
-         IMongoRepository<ClientEmploymentHistory> reo, IMongoRepository<ClientNextOfKin> repoNK, CreditWaveContext context, IConfiguration config, IAdroitRepository<RegularLoanAdjustment> repoRLA,
+         IMongoRepository<ClientEmploymentHistory> reo, IMongoRepository<ClientNextOfKin> repoNK, CreditWaveContext context, IConfiguration config, IAdroitRepository<RegularLoanStageHolder> repoRLA,
          IAdroitRepository<RegularLoanReasonToDecline> repoRTD, IAdroitRepository<RegularLoanRepaymentPlan> repoRegularLoanRepaymentPlan, IAdroitRepository<RegularLoanComment> repoComment, IAdroitRepository<RegularLoanStepSix> repoDoc,
          IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
@@ -621,12 +621,22 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             var disburseTo = _config.GetSection("DisburseTo:Key1").Value;
             var disburseUrl = _config.GetSection("DisburseTo:Url").Value;
             var r = new ReturnObject();
+            Random generator = new Random();
+            string rr = generator.Next(7, 1000000).ToString("D6");
+            var ap = $"APP-{DateTime.Now.ToString("dd.m.hh.mm.ss.fff").Replace(".", "")}-{rr}";
+
             try
             {
                 using var httpclient = new HttpClient();
                 RegularLoanDisbursement rd = null;
                 RegularLoan res = null;
                 res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
+                if(res.IsAcceptedOfferLetter != true)
+                {
+                    r.status =false;
+                    r.message =  "Offer Letter Not Accepted Yet";
+                    return Ok(r);
+                }
                 Models.CRM.Customer? cus = null;
                 List<ClientNextOfKin>? next = null;
                 List<ClientEmploymentHistory>? emp = null;
@@ -663,7 +673,6 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     RepaymentAPI ra = new();
                     ra.clientId = auth.ClientId;
                     ra.loanCustomerId = cus.Id;
-                    ra.loanApplicationId = obj.LoanApplicationId;
                     ra.adroitUserId = auth.UserId;
                     ra.createdBy = auth.CreatedBy;
                     List<LoanRepaymentSchedule> lo = new();
@@ -679,14 +688,13 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     }
                     rd = new RegularLoanDisbursement
                     {
+                        EncryptedCardDetails = res.EncryptedCardDetails,
                         LoanRepaymentSchedule = lo,
                         UniqueId = Guid.NewGuid().ToString(),
                         DisbursedTo = disburseTo,
                         CustomerId = cus.Id,
                         Bvn = await encrpt.EncryptAsync(b, _passPhrase),
                         GenderId = cus.GenderId.GetValueOrDefault(),
-                        LoanApplicationId = res.LoanApplicationId,
-                        LoanTenor = res.LoanDuration.ToString(),
                         EmploymentType = res.EmploymentType,
                         CustomerEmail = cus.EmailAddress,
                         IsClosed = false,
@@ -712,18 +720,23 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                         DisbursementError = listOfString,
                         CustomerPhoneNumber = listOfNumbers
                     };
+                    var formalStage = _repoRLA.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == obj.LoanApplicationId);
 
                     switch (obj.LoanCategory.ToLower().Trim())
                     {
                         case "regularloan":
                             rd.LoanAmount = res.LoanAmount;
                             rd.LoanType = "Regular Loan";
+                            rd.LoanTenor = res.LoanDuration.ToString();
+                            rd.LoanApplicationId = res.LoanApplicationId;
                             var recVal = Helper.GetTotalLoanAmount(res.LoanAmount, res.InterestRate);
                             rd.LoanAmountWithInterest = recVal.FirstOrDefault().Value;
                             _ = _repoLD.InsertOneAsync(rd);
                             //call for repayment schedule
                             ra.loanType = rd.LoanType;
                             ra.DisbursementId = rd.UniqueId;
+
+                            ra.loanApplicationId = obj.LoanApplicationId;
                             var objApi = JsonConvert.SerializeObject(ra);
                             requestApi = new StringContent(objApi, Encoding.UTF8, "application/json");
                             rawResponse = await httpclient.PostAsync(disburseUrl, requestApi);
@@ -742,18 +755,20 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                             r.status = res != null ? true : false;
                             r.message = res != null ? "Record Found Successfully" : "Not Found";
                             return Ok(r);
-
                         case "loantopup":
                             var resII = _repoTP.AsQueryable().FirstOrDefault(o => o.CurrentLoanApplicationId == obj.LoanApplicationId);
                             if (resII != null)
                             {
-                                rd.LoanAmount = Convert.ToDecimal(resII.NewLoanAmount);
+                                rd.LoanAmount = Convert.ToDecimal(resII.NewLoanTopUpAmount);
                                 rd.LoanType = "Loan TopUp";
+                                rd.LoanTenor = resII.NewLoanTopUpTenor.ToString();
+                                rd.LoanApplicationId = ap;
                                 var recValII = Helper.GetTotalLoanAmount(Convert.ToDecimal(resII.NewLoanAmount), Convert.ToDecimal(resII.InterestRate));
                                 rd.LoanAmountWithInterest = recValII.FirstOrDefault().Value;
                                 _ = _repoLD.InsertOneAsync(rd);
                                 ra.loanType = rd.LoanType;
                                 ra.DisbursementId = rd.UniqueId;
+                                ra.loanApplicationId = ap;
                                 requestApi = new StringContent(JsonConvert.SerializeObject(ra), Encoding.UTF8, "application/json");
                                 rawResponse = await httpclient.PostAsync(disburseUrl, requestApi);
                                 statusCode = (int)rawResponse.StatusCode;
@@ -766,20 +781,19 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                                 resII.Status = (int)AdroitLoanApplicationStatus.Disburse;
                                 _repoTP.ReplaceOne(resII);
 
-                                Random generator = new Random();
-                                string rr = generator.Next(7, 1000000).ToString("D6");
-                                o.LoanApplicationId = $"APP-{DateTime.Now.ToString("dd.m.hh.mm.ss.fff").Replace(".", "")}-{rr}";
+                                o.LoanApplicationId = ap; o.ApplicantNumber = ap;
                                 o.CVV = res.CVV;
                                 o.LoanDurationValue = resII.NewLoanTopUpTenor;
                                 o.LoanCategory = "Loan TopUp";
                                 o.CardNumber = res.CardNumber;
-                                o.ApplicantNumber = $"APP-{DateTime.Now.ToString("dd.m.hh.mm.ss.fff").Replace(".", "")}-{rr}";
                                 o.WorkEmail = res.WorkEmail;
                                 o.AccountHolderName = res.AccountHolderName;
                                 o.ApplicationChannel = res.ApplicationChannel;
                                 o.BankAccount = res.BankAccount;
                                 o.Bank = res.Bank;
                                 o.BankName = res.BankName;
+                                o.LoanDuration = Convert.ToInt32(resII.NewLoanTopUpTenor);
+                                o.IsAcceptedOfferLetter = res.IsAcceptedOfferLetter;
                                 o.BankStatementOfAccount = res.BankStatementOfAccount;
                                 o.BusinessAddress = res.BusinessAddress;
                                 o.BusinessAge = res.BusinessAge;
@@ -796,6 +810,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                                 o.EmploymentType = res.EmploymentType;
                                 o.ExpiryDate = res.ExpiryDate;
                                 o.FirstName = res.FirstName;
+                                o.Interest = resII.Interest;
+                                o.InterestRate = Convert.ToDecimal(resII.InterestRate);
                                 o.GrossSalaryOrIncome = res.GrossSalaryOrIncome;
                                 o.LoanAmount = Convert.ToDecimal(resII.NewLoanTopUpAmount);
                                 o.StageName = res.StageName;
@@ -808,7 +824,10 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                                 _repo.InsertOne(o);
                                 res.Status = (int)AdroitLoanApplicationStatus.Closed;
                                 _repo.ReplaceOne(res);
-                                r.data = resII;
+
+                                formalStage.LoanApplicationId = o.LoanApplicationId;
+                                _repoRLA.ReplaceOne(formalStage);
+                                r.data = o;
                             }
                             r.status = resII != null ? true : false;
                             r.message = resII != null ? "Record Found Successfully" : "Not Found";
@@ -819,12 +838,17 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                             {
                                 rd.LoanAmount = Convert.ToDecimal(resIII.LoanAmount);
                                 rd.LoanType = "Loan Restructure";
+                                rd.LoanTenor = resIII.TenorId.ToString();
+                                rd.DisbursementStatus = true;
+                                rd.LoanApplicationId = ap;
+                                ra.loanApplicationId = ap;
                                 var recValIII = Helper.GetTotalLoanAmount(Convert.ToDecimal(resIII.LoanAmount), Convert.ToDecimal(res.InterestRate));
                                 rd.LoanAmountWithInterest = recValIII.FirstOrDefault().Value;
                                 _ = _repoLD.InsertOneAsync(rd);
                                 ra.loanType = rd.LoanType;
                                 ra.DisbursementId = rd.UniqueId;
-                                requestApi = new StringContent(JsonConvert.SerializeObject(ra), Encoding.UTF8, "application/json");
+                                var stringContent = JsonConvert.SerializeObject(ra);
+                                requestApi = new StringContent(stringContent, Encoding.UTF8, "application/json");
                                 rawResponse = await httpclient.PostAsync(disburseUrl, requestApi);
                                 statusCode = (int)rawResponse.StatusCode;
                                 if (statusCode != 200)
@@ -837,17 +861,18 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                                 _repoRS.ReplaceOne(resIII);
 
 
-                                o.LoanApplicationId = $"{res.LoanApplicationId}-R";
+                                o.LoanApplicationId = ap;
+                                o.ApplicantNumber = ap;
                                 o.CVV = res.CVV;
-                                o.LoanCategory = "Loanr Restructure";
-                                o.LoanDurationValue = res.LoanDurationValue;
+                                o.LoanCategory = "Loan Restructure";
+                                o.LoanDurationValue = resIII.TenorValue;
                                 o.CardNumber = res.CardNumber;
-                                o.ApplicantNumber = res.ApplicantNumber;
                                 o.WorkEmail = res.WorkEmail;
                                 o.AccountHolderName = res.AccountHolderName;
                                 o.ApplicationChannel = res.ApplicationChannel;
                                 o.BankAccount = res.BankAccount;
                                 o.Bank = res.Bank;
+                                o.LoanDuration = resIII.TenorId;
                                 o.BankName = res.BankName;
                                 o.BankStatementOfAccount = res.BankStatementOfAccount;
                                 o.BusinessAddress = res.BusinessAddress;
@@ -856,6 +881,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                                 o.CardNumber = res.CardNumber;
                                 o.CardPin = res.CardPin;
                                 o.ClientId = res.ClientId;
+                                o.IsAcceptedOfferLetter = res.IsAcceptedOfferLetter;
                                 o.CreatedBy = res.CreatedBy;
                                 o.CustomerId = res.CustomerId;
                                 o.DocumentPassword = res.DocumentPassword;
@@ -865,6 +891,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                                 o.EmploymentType = res.EmploymentType;
                                 o.ExpiryDate = res.ExpiryDate;
                                 o.FirstName = res.FirstName;
+                                o.Interest = res.Interest;
+                                o.InterestRate = res.InterestRate;
                                 o.GrossSalaryOrIncome = res.GrossSalaryOrIncome;
                                 o.LoanAmount = Convert.ToDecimal(resIII.LoanAmount);
                                 o.StageName = res.StageName;
@@ -877,6 +905,9 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                                 _repo.InsertOne(o);
                                 res.Status = (int)AdroitLoanApplicationStatus.Closed;
                                 _repo.ReplaceOne(res);
+                                formalStage.LoanApplicationId = o.LoanApplicationId;
+                                _repoRLA.ReplaceOne(formalStage);
+                                r.data = o;
                             }
                             r.status = resIII != null ? true : false;
                             r.message = resIII != null ? "Record Found Successfully" : "Not Found";
