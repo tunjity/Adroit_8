@@ -5,6 +5,22 @@ using System.ComponentModel.DataAnnotations;
 namespace Adroit_v8.MongoConnections.LoanApplication
 {
     [BsonIgnoreExtraElements]
+    [BsonCollection("MobileAppCustomerAddressCollection")]
+    public class MobileAppCustomerAddressCollection : BaseDto
+    {
+        public long CustomerId { get; set; }
+        public string HouseNumber { get; set; }
+        public string StreetName { get; set; }
+        public string LandMark { get; set; }
+        public string LGA { get; set; }
+        public int StateId { get; set; }
+        public int CountryId { get; set; }
+        public int NumberOfYearsAtResident { get; set; }
+        public int ResidentialStatusId { get; set; }
+        public int IsActive { get; set; }
+        public string CustomerAddressId { get; set; }
+    }
+    [BsonIgnoreExtraElements]
     [BsonCollection("RegularLoan")]
     public class RegularLoan : BaseDto
     {

@@ -122,6 +122,47 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
+        
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("getbyLoanId/{loanId}")]
+        public async Task<IActionResult> GetByLoanId([FromRoute] string loanId)
+        {
+            var r = new ReturnObject();
+            try
+            {
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == loanId);
+                if (res != null)
+                {
+                    var resBs = _repoDoc.AsQueryable().FirstOrDefault(o => o.CustomerId == res.CustomerId && o.LoanApplicationId == res.LoanApplicationId);
+                    string? enumName = Enum.GetName(typeof(AdroitLoanApplicationStatus), res.Status);
+                    LoanApplicationVM aa = new LoanApplicationVM();
+                    aa.ApplicationId = res.ApplicantNumber;
+                    aa.SubmissionDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
+                    aa.ApplicationDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
+                    aa.ProcessingFee = "N/A";
+                    aa.Duration = res.LoanDuration.ToString();
+                    aa.AssignedLoanOfficer = "N/A";
+                    aa.Status = enumName != null ? enumName : "N/A";
+                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.TotalAmount = res.LoanAmount.ToString();
+                    var finalres = new { Information = aa, bankStatement = resBs };
+                    r.data = finalres;
+                }
+                r.status = res != null ? true : false;
+                r.message = res != null ? "Record Found Successfully" : "Not Found";
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
 
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]

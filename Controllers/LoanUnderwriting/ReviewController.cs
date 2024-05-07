@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using MongoDB.Driver;
 using Nancy.Json;
 using Newtonsoft.Json;
+using Adroit_v8.Models.Administration;
+using Adroit_v8.Config;
 
 namespace Adroit_v8.Controllers.LoanUnderwriting
 {
@@ -21,6 +23,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
     {
         private readonly AdroitDbContext _context;
         private readonly IAdroitRepository<RegularLoan> _repo;
+        private readonly IAdroitRepository<MobileAppCustomerAddressCollection> _repoCAC;
+        private readonly IAdroitRepository<RegularLoanRepaymentPlan> _repoRegularLoanRepaymentPlan;
         private readonly IAdroitRepository<RegularLoanStepSix> _repoDoc;
         private readonly IAdroitRepository<RegularLoanComment> _repoComment;
         private readonly IAdroitRepository<RegularLoanReasonToDecline> _repoRTD;
@@ -31,17 +35,19 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
         private readonly IFilterRepository _repoF;
         private readonly IConfiguration _config;
         string errMsg = "Unable to process request, kindly try again";
-        public ReviewController(IAdroitRepository<RegularLoan> repo, AdroitDbContext context, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config, IFilterRepository repoF,
-            IAdroitRepository<RegularLoanAdjustment> repoRLA, IAdroitRepository<RegularLoanReasonToDecline> repoRTD,
+        public ReviewController(IAdroitRepository<RegularLoan> repo, IAdroitRepository<RegularLoanRepaymentPlan> repoRegularLoanRepaymentPlan, AdroitDbContext context, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config, IFilterRepository repoF,
+            IAdroitRepository<RegularLoanAdjustment> repoRLA, IAdroitRepository<MobileAppCustomerAddressCollection> repoCAC, IAdroitRepository<RegularLoanReasonToDecline> repoRTD,
             IAdroitRepository<RegularLoanComment> repoComment, IAdroitRepository<RegularLoanStepSix> repoDoc, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _repo = repo;
+            _repoRegularLoanRepaymentPlan = repoRegularLoanRepaymentPlan;
             _context = context;
             _repoRS = repoRS;
             _repoTP = repoTP;
             _config = config;
             _repoF = repoF;
             _repoRLA = repoRLA;
+            _repoCAC = repoCAC;
             _repoRTD = repoRTD;
             _repoComment = repoComment;
             string? connectionURI = _config.GetSection("MongoDB").GetSection("ConnectionURI").Value;
@@ -52,6 +58,82 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             _repoDoc = repoDoc;
         }
 
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("offerLetterDetail")]
+        public async Task<IActionResult> GetOfferLetterDetail([FromQuery] OfferLetterModel obj)
+        {
+            var r = new ReturnObject();
+            try
+            {
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == obj.LoanApplicationId);
+                if (res == null)
+                {
+                    r.status = false;
+                    r.message = "No record found";
+                    return StatusCode(StatusCodes.Status404NotFound, r);
+                }
+                var allSav = _context.Customers.FirstOrDefault(o => o.Id == res.CustomerId);
+                if (allSav == null)
+                {
+                    r.status = false;
+                    r.message = "No customer record found";
+                    return StatusCode(StatusCodes.Status404NotFound, r);
+                }
+                var ad = _repoCAC.AsQueryable().FirstOrDefault(o => o.CustomerId == allSav.Id);
+                var lga =( from l in _context.Lgas
+                          where l.Id == Convert.ToInt32(ad.LGA)
+                          join s in _context.States
+                          on l.Stateid equals Convert.ToString(s.Id)
+                          join c in _context.Nationalities
+                          on s.Countryid equals Convert.ToString(c.Id)
+                          select new
+                          { state = s.Name, lg = l.Name, coun = c.Name}).FirstOrDefault();
+                List<RegularLoanRepaymentReturnModel> lstRes = new();
+                var rec = _repoRegularLoanRepaymentPlan.AsQueryable().Where(o => o.LoanApplicationId == obj.LoanApplicationId);
+                foreach (var o in rec)
+                {
+                    //calculate interest
+                    decimal inter = Convert.ToDecimal(o.InterestRate);
+                    decimal prin = Convert.ToDecimal(o.LoanAmount);
+
+                    var recVal = Helper.GetTotalLoanAmount(prin, inter);
+                    lstRes.Add(new RegularLoanRepaymentReturnModel
+                    {
+                        repaymentDate = o.MonthlyRepaymentDate,
+                        principal = o.LoanAmount,
+                        Interest = recVal.FirstOrDefault().Key.ToString(),
+                        TotalPayment = recVal.FirstOrDefault().Value.ToString()
+                    });
+                }
+
+                var fneRes = new
+                {
+                    date = res.DateCreated,
+                    loanId = res.LoanApplicationId,
+                    customerName = allSav.FirstName + " " + allSav.MiddleName + " " + allSav.LastName,
+                    customerAddress = $"{ad.HouseNumber}, {ad.StreetName} of {lga.lg},{lga.state} ,{lga.coun}",
+                    loanAmount = res.LoanAmount,
+                    loanTenor = res.LoanDuration,
+                    firstrepaymentDate = DateTime.Now.AddMonths(1),
+                    finalrepaymentDate = DateTime.Now.AddMonths(1 + res.LoanDuration),
+                    interestRate = res.InterestRate,
+                    creditwaveaza = "i no know yet ooo",
+                    repayDet = lstRes
+                };
+
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
 
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
@@ -251,6 +333,60 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 if (res != null)
                 {
                     var resBs = _repoDoc.AsQueryable().FirstOrDefault(o => o.CustomerId == cusId && o.LoanApplicationId == res.LoanApplicationId);
+                    if (resBs is not null)
+                    {
+                        var SavePath = $"{_config["FileFolder:BankStatementPath"]}/{resBs.BankStatementOfAccount}";
+
+                        var client = new HttpClient();
+                        var request = new HttpRequestMessage(HttpMethod.Get, SavePath);
+
+                        var response = await client.SendAsync(request);
+                        response.EnsureSuccessStatusCode();
+                        var image = await response.Content.ReadAsByteArrayAsync();
+
+                        resBs.BankStatementOfAccount = Convert.ToBase64String(image);
+                    }
+                    string? enumName = Enum.GetName(typeof(AdroitLoanApplicationStatus), res.Status);
+                    LoanApplicationVM aa = new LoanApplicationVM();
+                    aa.ApplicationId = res.ApplicantNumber;
+                    aa.SubmissionDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
+                    aa.ApplicationDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
+                    aa.ProcessingFee = "N/A";
+                    aa.Duration = res.LoanDuration.ToString();
+                    aa.AssignedLoanOfficer = "N/A";
+                    aa.Status = enumName != null ? enumName : "N/A";
+                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.TotalAmount = res.LoanAmount.ToString();
+                    var finalres = new { Information = aa, bankStatement = resBs };
+                    r.data = finalres;
+                }
+                r.status = res != null ? true : false;
+                r.message = res != null ? "Record Found Successfully" : "Not Found";
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        } 
+       
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("getbyLoanId/{loanId}")]
+        public async Task<IActionResult> GetByLoanId([FromRoute] string loanId)
+        {
+            var r = new ReturnObject();
+            try
+            {
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == loanId);
+                if (res != null)
+                {
+                    var resBs = _repoDoc.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == res.LoanApplicationId);
                     if (resBs is not null)
                     {
                         var SavePath = $"{_config["FileFolder:BankStatementPath"]}/{resBs.BankStatementOfAccount}";
@@ -494,7 +630,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     AdjustedTenor = obj.AdjustedTenor
                 };
                 var repo = await _repoRLA.InsertOneAsync(com);
-             
+
                 return Ok(repo);
             }
             catch (Exception ex)

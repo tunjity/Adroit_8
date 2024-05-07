@@ -2,6 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Adroit_v8.Models.FormModel
 {
+    public class OfferLetterModel
+    {
+        public string LoanApplicationId { get; set; }
+    }
+
     public class FilFormModel:PaginationWithOutFilterModel
     {
         public string? ApplicationId { get; set; }
@@ -28,7 +33,7 @@ namespace Adroit_v8.Models.FormModel
     public class FilFormModelIn:FilFormModel
     { public string FilterDet { get; set; }
     }
-
+   
     public class DropDownDetail{
         public int Id { get; set; }
         public string Name { get; set; }

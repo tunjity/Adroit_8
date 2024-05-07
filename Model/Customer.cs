@@ -66,3 +66,7 @@ public partial class Customer
 
     public string? LinkedinId { get; set; }
 }
+
+
+
+

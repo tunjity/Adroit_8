@@ -168,7 +168,72 @@ namespace Adroit_v8.Controllers.LoanApplication
                     message = ex.Message
                 });
             }
+        } 
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("getbyLoanId/{loanId}")]
+        public async Task<IActionResult> GetByLoanId([FromRoute] string loanId)
+        {
+            var r = new ReturnObject();
+            try
+            {
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == loanId && o.Status == (int)AdroitLoanApplicationStatus.Adjust);
+                if (res != null)
+                {
+                    var det = _repoRLA.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == res.LoanApplicationId);
+                    var resBs = _repoDoc.AsQueryable().FirstOrDefault(o => o.CustomerId == res.CustomerId && o.LoanApplicationId == res.LoanApplicationId);
+                    if (resBs is not null)
+                    {
+                        var SavePath = $"{_config["FileFolder:BankStatementPath"]}/{resBs.BankStatementOfAccount}";
+
+                        var client = new HttpClient();
+                        var request = new HttpRequestMessage(HttpMethod.Get, SavePath);
+
+                        var response = await client.SendAsync(request);
+                        response.EnsureSuccessStatusCode();
+                        var image = await response.Content.ReadAsByteArrayAsync();
+
+                        resBs.BankStatementOfAccount = Convert.ToBase64String(image);
+                    }
+                    string? enumName = Enum.GetName(typeof(AdroitLoanApplicationStatus), res.Status);
+                    LoanApplicationVM aa = new LoanApplicationVM();
+                    aa.ApplicationId = res.ApplicantNumber;
+                    aa.SubmissionDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
+                    aa.ApplicationDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
+                    aa.ProcessingFee = "N/A";
+                    aa.Duration = res.LoanDuration.ToString();
+                    aa.AssignedLoanOfficer = "N/A";
+                    aa.Status = enumName != null ? enumName : "N/A";
+                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.TotalAmount = res.LoanAmount.ToString();
+
+                    var newAdjustedDetail = new
+                    {
+                        adjustAmount = det != null ? det.AdjustedAmount : "0.00",
+                        initialLoanAmount = res.LoanAmount,
+                        initialLoanTenor = res.LoanDuration,
+                        adjustedLoanTenor = det != null ? det.AdjustedTenor : "N/A",
+                        comment = det != null ? det.Description : "N/A"
+                    };
+                    var finalres = new { Information = aa, AdjustedDetail = newAdjustedDetail, bankStatement = resBs };
+                    r.data = finalres;
+                }
+                r.status = res != null ? true : false;
+                r.message = res != null ? "Record Found Successfully" : "Not Found";
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
         }
+
+
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
