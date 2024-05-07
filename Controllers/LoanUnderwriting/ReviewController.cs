@@ -355,7 +355,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -395,6 +395,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                         var request = new HttpRequestMessage(HttpMethod.Get, SavePath);
 
                         var response = await client.SendAsync(request);
+
                         response.EnsureSuccessStatusCode();
                         var image = await response.Content.ReadAsByteArrayAsync();
 
@@ -409,7 +410,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -423,7 +424,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
                 {
                     status = false,
-                    message = ex.Message
+                    message = $"An Error Occured {ex.Message}"
                 });
             }
         }

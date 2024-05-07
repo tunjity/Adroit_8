@@ -73,6 +73,10 @@ namespace Adroit_v8.MongoConnections.LoanApplication
     {
         public long CustomerId { get; set; }
         public string LoanApplicationId { get; set; }
+        public decimal PrincipalAmount { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Fee { get; set; }
+
         public DateTime MonthlyRepaymentDate { get; set; }
         public string MonthlyRepaymentAmount { get; set; }
         public string InterestRate { get; set; }
@@ -95,6 +99,10 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public int RetryCount { get; set; }
         public string DisbursedTo { get; set; }
         public string Description { get; set; }
+        public decimal ManagementFeePercentage { get; set; }
+        public decimal ManagementFeeAmount { get; set; }
+        public decimal InsuranceFeePercentage { get; set; }
+        public decimal InsuranceFeeAmount { get; set; }
         //public string EncryptedCardDetails { get; set; }
         public int GenderId { get; set; }
         public bool IsClosed { get; set; }

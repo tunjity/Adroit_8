@@ -136,7 +136,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -157,7 +157,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
           [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
-        [Route("getbyLoanId/{cusId}")]
+        [Route("getbyLoanId/{loanId}")]
         public async Task<IActionResult> GetByLoanId([FromRoute] string loanId)
         {
             var r = new ReturnObject();
@@ -191,7 +191,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;

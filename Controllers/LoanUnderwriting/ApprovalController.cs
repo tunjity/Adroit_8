@@ -303,7 +303,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -356,7 +356,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -684,12 +684,12 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 RegularLoanDisbursement rd = null;
                 RegularLoan res = null;
                 res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
-                if(res.IsAcceptedOfferLetter != true)
-                {
-                    r.status =false;
-                    r.message =  "Offer Letter Not Accepted Yet";
-                    return Ok(r);
-                }
+                //if(res.IsAcceptedOfferLetter != true)
+                //{
+                //    r.status =false;
+                //    r.message =  "Offer Letter Not Accepted Yet";
+                //    return Ok(r);
+                //}
                 Models.CRM.Customer? cus = null;
                 List<ClientNextOfKin>? next = null;
                 List<ClientEmploymentHistory>? emp = null;

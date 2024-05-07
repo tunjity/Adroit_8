@@ -34,7 +34,7 @@ namespace Adroit_v8.Controllers.LoanApplication
         string errMsg = "Unable to process request, kindly try again";
         private readonly IConfiguration _config;
         string clientId = "";
-        public AdjustController(IAdroitRepository<RegularLoan> repo,  AdroitDbContext context, IAdroitRepository<RegularLoanAdjustment> repoRLA, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config,
+        public AdjustController(IAdroitRepository<RegularLoan> repo, AdroitDbContext context, IAdroitRepository<RegularLoanAdjustment> repoRLA, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config,
             IAdroitRepository<RegularLoanReasonToDecline> repoRTD, IFilterRepository repoF, IAdroitRepository<RegularLoanStepSix> repoDoc, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _repo = repo;
@@ -142,7 +142,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
 
                     var newAdjustedDetail = new
@@ -168,7 +168,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                     message = ex.Message
                 });
             }
-        } 
+        }
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
@@ -205,7 +205,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
+
                     aa.TotalAmount = res.LoanAmount.ToString();
 
                     var newAdjustedDetail = new

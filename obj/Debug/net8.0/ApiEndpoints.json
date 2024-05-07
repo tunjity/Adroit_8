@@ -1983,6 +1983,41 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.ApprovalController",
+    "Method": "GetByCustomerId",
+    "RelativePath": "api/Approval/getbyLoanId/{loanId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loanId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.ApprovalController",
     "Method": "GetAllByLoanType",
     "RelativePath": "api/Approval/getbyloantype",
     "HttpMethod": "GET",
@@ -7271,6 +7306,46 @@
       {
         "Name": "cusId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.DisbursementController",
+    "Method": "GetByLoanId",
+    "RelativePath": "api/Disbursement/getbyLoanId/{cusId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loanId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cusId",
+        "Type": "",
         "IsRequired": true
       }
     ],
@@ -14321,6 +14396,41 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.LoanApplication.AdjustController",
+    "Method": "GetByLoanId",
+    "RelativePath": "api/LoanApplication/Adjust/getbyLoanId/{loanId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loanId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanApplication.AdjustController",
     "Method": "GetAllByLoanType",
     "RelativePath": "api/LoanApplication/Adjust/getbyloantype",
     "HttpMethod": "GET",
@@ -14856,6 +14966,41 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.LoanApplication.CustomerController",
+    "Method": "GetByLoanId",
+    "RelativePath": "api/LoanApplication/Customer/getbyLoanId/{loanId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loanId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanApplication.CustomerController",
     "Method": "GetAllComment",
     "RelativePath": "api/LoanApplication/Customer/getComments/{loanapplicationId}",
     "HttpMethod": "GET",
@@ -15220,6 +15365,41 @@
       {
         "Name": "cusId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanApplication.DeclinedController",
+    "Method": "GetByLoanId",
+    "RelativePath": "api/LoanApplication/Declined/getbyLoanId/{loanId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loanId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -16144,6 +16324,41 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.ReviewController",
+    "Method": "GetByLoanId",
+    "RelativePath": "api/LoanUnderwriting/Review/getbyLoanId/{loanId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loanId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.ReviewController",
     "Method": "GetAllByLoanType",
     "RelativePath": "api/LoanUnderwriting/Review/getbyloantype",
     "HttpMethod": "GET",
@@ -16294,6 +16509,41 @@
         "Name": "obj",
         "Type": "Adroit_v8.Models.FormModel.RegularLoanCommentFormModelToGet",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.ReviewController",
+    "Method": "GetOfferLetterDetail",
+    "RelativePath": "api/LoanUnderwriting/Review/offerLetterDetail",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "LoanApplicationId",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
