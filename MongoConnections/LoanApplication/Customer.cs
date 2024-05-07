@@ -24,6 +24,14 @@ namespace Adroit_v8.MongoConnections.LoanApplication
     [BsonCollection("RegularLoan")]
     public class RegularLoan : BaseDto
     {
+        public decimal DisbursementAmount { get; set; }
+        public decimal ManagementFeePercentage { get; set; }
+        public decimal ManagementFeeAmount { get; set; }
+        public decimal InsuranceFeePercentage { get; set; }
+        public decimal InsuranceFeeAmount { get; set; }
+
+        public decimal TotalInterestCharge { get; set; }
+
         public int CustomerId { get; set; }
         public int LoanDuration { get; set; }
         public string LoanDurationValue { get; set; }
@@ -76,7 +84,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public decimal PrincipalAmount { get; set; }
         public decimal Interest { get; set; }
         public decimal Fee { get; set; }
-
+        public decimal PaymentDue { get; set; }
         public DateTime MonthlyRepaymentDate { get; set; }
         public string MonthlyRepaymentAmount { get; set; }
         public string InterestRate { get; set; }
@@ -95,6 +103,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
     [BsonCollection("RegularLoanDisbursement")]
     public class RegularLoanDisbursement : BaseDtoII
     {
+        public decimal TotalInterestCharge { get; set; }
         public long CustomerId { get; set; }
         public int RetryCount { get; set; }
         public string DisbursedTo { get; set; }
@@ -103,6 +112,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public decimal ManagementFeeAmount { get; set; }
         public decimal InsuranceFeePercentage { get; set; }
         public decimal InsuranceFeeAmount { get; set; }
+        public decimal DisbursementAmount { get; set; }
         //public string EncryptedCardDetails { get; set; }
         public int GenderId { get; set; }
         public bool IsClosed { get; set; }
