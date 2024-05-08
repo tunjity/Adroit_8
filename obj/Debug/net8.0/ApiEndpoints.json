@@ -7333,7 +7333,7 @@
   {
     "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.DisbursementController",
     "Method": "GetByLoanId",
-    "RelativePath": "api/Disbursement/getbyLoanId/{cusId}",
+    "RelativePath": "api/Disbursement/getbyLoanId/{loanId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -7341,11 +7341,6 @@
       {
         "Name": "loanId",
         "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "cusId",
-        "Type": "",
         "IsRequired": true
       }
     ],
@@ -7547,6 +7542,41 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.DisbursementController",
+    "Method": "manualDisbursement",
+    "RelativePath": "api/Disbursement/manualDisbursement",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "Adroit_v8.Models.FormModel.RegularLoanManualDis",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoanUnderwriting.DisbursementController",
     "Method": "Return",
     "RelativePath": "api/Disbursement/Return",
     "HttpMethod": "PUT",
@@ -7696,6 +7726,41 @@
       {
         "Name": "obj",
         "Type": "Adroit_v8.Models.FormModel.UtilityFormModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.GeneralSetUpController",
+    "Method": "AddCustomerReasonToDecline",
+    "RelativePath": "api/GeneralSetUp/addCustomerReasonToDecline",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "Adroit_v8.Models.FormModel.UtilityReasonFormModel",
         "IsRequired": true
       }
     ],
@@ -8746,6 +8811,41 @@
       {
         "Name": "obj",
         "Type": "Adroit_v8.Models.FormModel.UtilityFormModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.GeneralSetUpController",
+    "Method": "GetCustomerReasonToDeclineById",
+    "RelativePath": "api/GeneralSetUp/CustomerReasonToDeclinebyuniqueid/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -12016,6 +12116,35 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.GeneralSetUpController",
+    "Method": "GetAllCustomerReasonToDecline",
+    "RelativePath": "api/GeneralSetUp/getCustomerReasonToDecline",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.GeneralSetUpController",
     "Method": "GetDeclineReasons",
     "RelativePath": "api/GeneralSetUp/getDeclineReasonbyid/id",
     "HttpMethod": "GET",
@@ -13145,6 +13274,41 @@
       {
         "Name": "obj",
         "Type": "Adroit_v8.Models.FormModel.UtilityModificationFormModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.GeneralSetUpController",
+    "Method": "UpdateCustomerReasonToDecline",
+    "RelativePath": "api/GeneralSetUp/UpdateCustomerReasonToDecline",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "Adroit_v8.Models.FormModel.UtilityReasonFormModelFoUpda",
         "IsRequired": true
       }
     ],

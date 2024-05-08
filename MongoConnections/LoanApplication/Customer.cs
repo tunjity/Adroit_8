@@ -73,6 +73,12 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string ApplicationChannel { get; set; }
         public string StageName { get; set; }
         public byte[] EncryptedCardDetails { get; set; }
+    }  
+    [BsonIgnoreExtraElements]
+    [BsonCollection("CustomerReasonToDecline")]
+    public class CustomerReasonToDecline : BaseDto
+    {
+        public string Name { get; set; }
     }
 
     [BsonIgnoreExtraElements]

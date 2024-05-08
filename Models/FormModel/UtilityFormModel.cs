@@ -1,4 +1,5 @@
 ﻿using Adroit_v8.MongoConnections;
+using Newtonsoft.Json;
 
 namespace Adroit_v8.Models.FormModel
 {
@@ -6,6 +7,17 @@ namespace Adroit_v8.Models.FormModel
     {
         public string LoanApplicationId { get; set; }
         public string LoanCategory { get; set; }
+    }
+
+    public class RegularLoanManualDis
+    {
+        public string LoanApplicationId { get; set; }
+        public string ProcessedBy { get; set; }
+        public string Comment { get; set; }
+        public int AmountPaid { get; set; }
+    }  public class RegularLoanManualDisII : RegularLoanManualDis
+    {
+        public string ClientId { get; set; }
     }
     public class UpdateWithBankStatement : RegularLoanCommentFormModelToGet
     {
@@ -80,6 +92,11 @@ namespace Adroit_v8.Models.FormModel
     public class UtilityReasonFormModel
     {
         public string Name { get; set; }
+    }
+    public class UtilityReasonFormModelFoUpda
+    {
+        public string Name { get; set; }
+        public string UniqueId { get; set; }
     }
     public class UtilityFormModel
     {

@@ -1,4 +1,6 @@
 ﻿using Adroit_v8.Models.FormModel;
+using Adroit_v8.MongoConnections.LoanApplication;
+using Adroit_v8.MongoConnections.Models;
 using Adroit_v8.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using static Adroit_v8.Config.Helper;
+using static Adroit_v8.EnumFile.EnumHelper;
 
 namespace Adroit_v8.Controllers
 {
@@ -14,6 +17,7 @@ namespace Adroit_v8.Controllers
     [Authorize]
     public class GeneralSetUpController : AuthController
     {
+        private readonly IAdroitRepository<CustomerReasonToDecline> _repo;
         private readonly IGenericRepository<FixedDepositAmountRange> _repoFixedDepositAmountRange;
         private readonly IGenericRepository<FixedDepositPreliquidationCharges> _repoFixedDepositPreliquidationCharges;
         private readonly IGenericRepository<FixedDepositTenor> _repoFixedDepositTenor;
@@ -62,6 +66,7 @@ namespace Adroit_v8.Controllers
        IGenericRepository<RegularLoanCharge> repoRegularLoanCharge,
        IGenericRepository<RegularLoanInterestRate> repoRegularLoanInterestRate,
        IGenericRepository<FixedDepositInterestRate> repoFixedDepositInterestRate,
+        IAdroitRepository<CustomerReasonToDecline> repo,
         IGenericRepository<Bank> repoBank, IGenericRepository<GovernmentIDCardType> repoGovernmentIDCardType,  IGenericRepository<RegularLoanTenor> repoRegularLoanTenor, IGenericRepository<EmploymentSector> repoEmploymentSector, IGenericRepository<Applicationchannel> repoApplicationchannel, IGenericRepository<Educationallevel> repoEducationallevel,
             IGenericRepository<Employmentstatus> repoEmploymentstatus, IGenericRepository<Employmenttype> repoEmploymenttype, IGenericRepository<Gender> repoGender, IGenericRepository<Lga> repoLga,
            IMapper mapper, IGenericRepository<DeclineReason> repoDeclineReason, IGenericRepository<Maritalstatus> repoMaritalstatus, IGenericRepository<Nationality> repoNationality, IGenericRepository<Noofdependant> repoNoofdependant,
@@ -78,6 +83,7 @@ namespace Adroit_v8.Controllers
             _repoRegularLoanCharge = repoRegularLoanCharge;
             _repoRegularLoanInterestRate = repoRegularLoanInterestRate;
             _repoFixedDepositInterestRate = repoFixedDepositInterestRate;
+            _repo = repo;
             _repoBank = repoBank;
             _repoLateFeeType = repoLateFeeType;
             _repoFeeFrequency = repoFeeFrequency;
@@ -109,6 +115,120 @@ namespace Adroit_v8.Controllers
 
         }
 
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("getCustomerReasonToDecline")]
+        public async Task<IActionResult> GetAllCustomerReasonToDecline()
+        {
+            var r = new ReturnObject();
+            try
+            {
+                var res =_repo.AsQueryable();
+                r.status = true;
+                r.message = "Record Found Successfully";
+                r.data = res;
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
+      
+        [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("addCustomerReasonToDecline")]
+        public async Task<IActionResult> AddCustomerReasonToDecline([FromBody] UtilityReasonFormModel obj)
+        {
+            var RequestTime = DateTime.UtcNow;
+            string actionUrl = $"{ControllerContext.RouteData.Values["controller"]}/{ControllerContext.RouteData.Values["action"]}";
+            try
+            {
+                CustomerReasonToDecline la = new()
+                {
+                    Name = obj.Name,
+                };
+                var res = await _repo.InsertOneAsync(la);
+                _ = LogService_Old.LoggerCreateAsync(JsonConvert.SerializeObject(obj), actionUrl, RequestTime, JsonConvert.SerializeObject(res), "", (int)ServiceLogLevel.Information);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _ = LogService_Old.LoggerCreateAsync(JsonConvert.SerializeObject(obj), actionUrl, RequestTime, "", ex.InnerException.ToString(), (int)ServiceLogLevel.Error);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("CustomerReasonToDeclinebyuniqueid/{id}")]
+        public async Task<IActionResult> GetCustomerReasonToDeclineById([FromRoute] string id)
+        {
+            try
+            {
+                return Ok(_repo.FindById(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
+        [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("UpdateCustomerReasonToDecline")]
+        public async Task<IActionResult> UpdateCustomerReasonToDecline([FromBody] UtilityReasonFormModelFoUpda obj)
+        {
+            var RequestTime = DateTime.UtcNow;
+            string actionUrl = $"{ControllerContext.RouteData.Values["controller"]}/{ControllerContext.RouteData.Values["action"]}";
+            try
+            {
+                var pcu = _repo.FindById(obj.UniqueId);
+                if (pcu != null)
+                {
+                    pcu.Name = obj.Name;
+                    _repo.ReplaceOne(pcu);
+                }
+                else
+                {
+                    _ = LogService_Old.LoggerCreateAsync(JsonConvert.SerializeObject(obj), actionUrl, RequestTime, JsonConvert.SerializeObject(pcu), "", (int)ServiceLogLevel.Warning);
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                    {
+                        status = false,
+                        message = "Record not Valid"
+                    });
+                }
+                _ = LogService_Old.LoggerCreateAsync(JsonConvert.SerializeObject(obj), actionUrl, RequestTime, JsonConvert.SerializeObject(pcu), "", (int)ServiceLogLevel.Information);
+                return Ok(new ReturnObject
+                {
+                    status = true,
+                    message = "Record Update Successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                _ = LogService_Old.LoggerCreateAsync(JsonConvert.SerializeObject(obj), actionUrl, RequestTime, "", ex.InnerException.ToString(), (int)ServiceLogLevel.Warning);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
         #region LateFeePrincipal
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Adroit_v8.MongoConnections.CustomerCentric;
 using Adroit_v8.Model;
 using System.Text.RegularExpressions;
+using System.Net.Http;
+using System.Text;
 
 namespace Adroit_v8.Controllers.LoanUnderwriting
 {
@@ -85,7 +87,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 }
                 r.status = eget ? true : false;
                 r.message = eget ? "Record Fetched Successfully" : "No Record Found";
-                r.data =  eget ? fneRes.ToList(): new List<RegularLoan>();
+                r.data = eget ? fneRes.ToList() : new List<RegularLoan>();
                 r.recordCount = query.Count();
                 r.recordPageNumber = obj.PageNumber;
                 return Ok(r);
@@ -108,7 +110,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             var r = new ReturnObject();
             try
             {
-                var res = _repo.AsQueryable().FirstOrDefault(o => o.CustomerId == cusId&&o.Status == (int)AdroitLoanApplicationStatus.Disburse);
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.CustomerId == cusId && o.Status == (int)AdroitLoanApplicationStatus.Disburse);
                 if (res != null)
                 {
                     var ld = _repoLD.AsQueryable().FirstOrDefault(o => o.CustomerId == cusId && o.LoanApplicationId == res.LoanApplicationId);
@@ -136,7 +138,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -154,7 +156,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 });
             }
         }
-          [HttpGet]
+        [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyLoanId/{loanId}")]
@@ -163,7 +165,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             var r = new ReturnObject();
             try
             {
-                var res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == loanId&&o.Status == (int)AdroitLoanApplicationStatus.Disburse);
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == loanId && o.Status == (int)AdroitLoanApplicationStatus.Disburse);
                 if (res != null)
                 {
                     var ld = _repoLD.AsQueryable().FirstOrDefault(o => o.CustomerId == res.CustomerId && o.LoanApplicationId == res.LoanApplicationId);
@@ -191,7 +193,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -231,7 +233,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-      
+
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
@@ -595,7 +597,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 r.status = false;
                 r.message = "Not Found";
                 return Ok(r);
-               
+
             }
             catch (Exception ex)
             {
@@ -647,6 +649,58 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 r.data = res;
                 r.status = res != null ? true : false;
                 r.message = res != null ? "Record Found Successfully" : "Not Found";
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
+        [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("manualDisbursement")]
+        public async Task<IActionResult> manualDisbursement([FromBody] RegularLoanManualDis obj)
+        {
+            var r = new ReturnObject();
+            try
+            {
+                RegularLoanManualDisII disII = new();
+                disII.LoanApplicationId = obj.LoanApplicationId;
+                disII.Comment = obj.Comment;
+                disII.AmountPaid = obj.AmountPaid;
+                disII.ProcessedBy = obj.ProcessedBy;
+                int statusCode = 0;
+                StringContent? requestApi = null;
+                HttpResponseMessage? rawResponse = null;
+                var disburseUrl = _config.GetSection("DisburseTo:UrlTwo").Value;
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == obj.LoanApplicationId);
+                if (res != null)
+                {
+                    using var httpclient = new HttpClient();
+                    disII.ClientId = res.ClientId;
+                    var stringContent = JsonConvert.SerializeObject(disII);
+                    requestApi = new StringContent(stringContent, Encoding.UTF8, "application/json");
+                    rawResponse = await httpclient.PostAsync(disburseUrl, requestApi);
+                    statusCode = (int)rawResponse.StatusCode;
+                    if (statusCode != 200)
+                    {
+                        r.status = false;
+                        r.message = "Error From Repayment API";
+                        return Ok(r);
+                    }
+                    r.status = true;
+                    r.message = "Disbuserment Done Manually";
+                }
+                else
+                {
+                    r.status = false;
+                    r.message = "Incorrect Loan Application Id";
+                }
                 return Ok(r);
             }
             catch (Exception ex)

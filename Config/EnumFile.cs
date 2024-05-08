@@ -29,7 +29,8 @@ namespace Adroit_v8.EnumFile
             Adjust,
             Declined,
             Disburse,
-            Closed
+            Closed,
+            CustomerDeclineOfferLetter
         }
         public enum DisbursementEnum
         {
