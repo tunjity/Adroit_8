@@ -16,7 +16,6 @@ namespace Adroit_v8.Controllers.BridgeLoan
     {
         private readonly IMongoRepository<GeneralSetUpFacilityType> _repo;
         string errMsg = "Unable to process request, kindly try again";
-       // string _CreatedBy = "0";
         public GeneralSetUpFacilityTypeController(IMongoRepository<GeneralSetUpFacilityType> repo, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _repo = repo;
