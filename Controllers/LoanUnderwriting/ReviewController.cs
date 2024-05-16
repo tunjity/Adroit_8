@@ -13,6 +13,9 @@ using Nancy.Json;
 using Newtonsoft.Json;
 using Adroit_v8.Models.Administration;
 using Adroit_v8.Config;
+using System.Net.Http;
+using System.Text;
+using Adroit_v8.MongoConnections.CRM;
 
 namespace Adroit_v8.Controllers.LoanUnderwriting
 {
@@ -23,6 +26,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
     {
         private readonly AdroitDbContext _context;
         private readonly IAdroitRepository<RegularLoan> _repo;
+        private readonly IAdroitRepository<RegularLoanTemp> _repoTemp;
         private readonly IAdroitRepository<MobileAppCustomerAddressCollection> _repoCAC;
         private readonly IAdroitRepository<RegularLoanRepaymentPlan> _repoRegularLoanRepaymentPlan;
         private readonly IAdroitRepository<RegularLoanStepSix> _repoDoc;
@@ -30,16 +34,38 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
         private readonly IAdroitRepository<RegularLoanReasonToDecline> _repoRTD;
         private readonly IAdroitRepository<RegularLoanAdjustment> _repoRLA;
         private readonly ICustomerCentricRepository<RegularLoanRestructure> _repoRS;
+        private readonly ICustomerCentricRepository<RegularLoanRestructureTemp> _repoRSTemp;
+        private readonly IMongoRepository<ClientEmploymentHistory> _reo;
+        private readonly IMongoRepository<ClientNextOfKin> _repoNK;
         private readonly ICustomerCentricRepository<LoanTopUp> _repoTP;
         private readonly IMongoCollection<RegularLoan> _customerLoan;
         private readonly IFilterRepository _repoF;
         private readonly IConfiguration _config;
         string errMsg = "Unable to process request, kindly try again";
-        public ReviewController(IAdroitRepository<RegularLoan> repo, IAdroitRepository<RegularLoanRepaymentPlan> repoRegularLoanRepaymentPlan, AdroitDbContext context, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config, IFilterRepository repoF,
+
+        AuthDto auth = new AuthDto();
+        public ReviewController(IAdroitRepository<RegularLoan> repo, ICustomerCentricRepository<RegularLoanRestructureTemp> repoRSTemp, IAdroitRepository<RegularLoanTemp> repoTemp, IMongoRepository<ClientNextOfKin> repoNK, IMongoRepository<ClientEmploymentHistory> reo, IAdroitRepository<RegularLoanRepaymentPlan> repoRegularLoanRepaymentPlan, AdroitDbContext context, ICustomerCentricRepository<RegularLoanRestructure> repoRS, ICustomerCentricRepository<LoanTopUp> repoTP, IConfiguration config, IFilterRepository repoF,
             IAdroitRepository<RegularLoanAdjustment> repoRLA, IAdroitRepository<MobileAppCustomerAddressCollection> repoCAC, IAdroitRepository<RegularLoanReasonToDecline> repoRTD,
-            IAdroitRepository<RegularLoanComment> repoComment, IAdroitRepository<RegularLoanStepSix> repoDoc, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+            IAdroitRepository<RegularLoanComment> repoComment, IAdroitRepository<RegularLoanStepSix> repoDoc,
+           IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
+            if (auth.ClientId == null)
+            {
+                _httpContextAccessor = httpContextAccessor;
+                auth.ClientId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId") != null ? _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId").Value : "";
+                auth.FirstName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
+                auth.LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value;
+                auth.ApplicationId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ApplicationId")?.Value;
+                auth.email = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "email") != null ? _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "email").Value : "";
+                auth.UserName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserName").Value;
+                auth.UserId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId").Value;
+                auth.CreatedBy = $"{auth.UserName}, {auth.FirstName} {auth.LastName}| {auth.UserId}";
+            }
             _repo = repo;
+            _repoRSTemp = repoRSTemp;
+            _repoTemp = repoTemp;
+            _repoNK = repoNK;
+            _reo = reo;
             _repoRegularLoanRepaymentPlan = repoRegularLoanRepaymentPlan;
             _context = context;
             _repoRS = repoRS;
@@ -82,14 +108,14 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     return StatusCode(StatusCodes.Status404NotFound, r);
                 }
                 var ad = _repoCAC.AsQueryable().FirstOrDefault(o => o.CustomerId == allSav.Id);
-                var lga =( from l in _context.Lgas
-                          where l.Id == Convert.ToInt32(ad.LGA)
-                          join s in _context.States
-                          on l.Stateid equals Convert.ToString(s.Id)
-                          join c in _context.Nationalities
-                          on s.Countryid equals Convert.ToString(c.Id)
-                          select new
-                          { state = s.Name, lg = l.Name, coun = c.Name}).FirstOrDefault();
+                var lga = (from l in _context.Lgas
+                           where l.Id == Convert.ToInt32(ad.LGA)
+                           join s in _context.States
+                           on l.Stateid equals Convert.ToString(s.Id)
+                           join c in _context.Nationalities
+                           on s.Countryid equals Convert.ToString(c.Id)
+                           select new
+                           { state = s.Name, lg = l.Name, coun = c.Name }).FirstOrDefault();
                 List<RegularLoanRepaymentReturnModel> lstRes = new();
                 var rec = _repoRegularLoanRepaymentPlan.AsQueryable().Where(o => o.LoanApplicationId == obj.LoanApplicationId);
                 foreach (var o in rec)
@@ -355,7 +381,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -372,8 +398,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     message = ex.Message
                 });
             }
-        } 
-       
+        }
+
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
@@ -410,7 +436,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -510,6 +536,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 });
             }
         }
+
+
         [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
@@ -519,43 +547,203 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             var r = new ReturnObject();
             try
             {
+               // Models.CRM.Customer? cusII = null;
+                Customer cus = new();
+                var allSav = _context.Customers.ToList();
+                var o = new RegularLoanTemp();
+                int statusCode = 0;
+                StringContent? requestApi = null;
+                HttpResponseMessage? rawResponse = null;
+                var _passPhrase = _config.GetSection("PassPhrases:Key2").Value;
+                var disburseTo = _config.GetSection("DisburseTo:Key1").Value;
+                var disburseApiUrl = _config.GetSection("DisburseTo:Url").Value;
+                //  var r = new ReturnObject();
+                Random generator = new Random();
+                string rr = generator.Next(7, 1000000).ToString("D6");
+                var ap = $"APP-{DateTime.Now.ToString("dd.m.hh.mm.ss.fff").Replace(".", "")}-{rr}";
+
+
+
+                using var httpclient = new HttpClient();
+                var disburseUrl = _config.GetSection("Upload:mailUrl").Value;
+                var disburseUrlTemplate = _config.GetSection("Upload:mailTemplatUrl").Value;
+                var dd = new AcceptOfferLetterMail();
+                var ddd = new GeneralTemplate();
+                dd.NotificationType = 47;
+                dd.LoanApplicationId = obj.LoanApplicationId;
+                //type=@@type@@
+                dd.AcceptanceUrl = disburseUrlTemplate.Replace("@@loanId@@", $"{obj.LoanApplicationId}");
                 switch (Regex.Replace(obj.LoanCategory, @"\s", "").ToLower())
                 {
                     case "regularloan":
                         var res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
                         if (res != null)
                         {
+                            cus = allSav.FirstOrDefault(o => o.Id == res.CustomerId);
+                            dd.CustomerName = cus.FirstName + " " + cus.LastName;
+                            dd.LoanTenor = res.LoanDuration;
+                            dd.EmailTo = cus.EmailAddress;
+                            dd.LoanAmount = res.LoanAmount;
                             res.Status = (int)AdroitLoanApplicationStatus.Approved;
                             _repo.ReplaceOne(res);
                             r.data = res;
+                            dd.AcceptanceUrl = dd.AcceptanceUrl.Replace("@@type@@", "1");
                         }
                         r.status = res != null ? true : false;
                         r.message = res != null ? "Record Found Successfully" : "Not Found";
-                        return Ok(r);
+                        break;
                     case "loantopup":
+                        var rec = _repoRegularLoanRepaymentPlan.AsQueryable().Where(o => o.LoanApplicationId == obj.LoanApplicationId);
+
                         var resII = _repoTP.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
+                        res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == resII.CurrentLoanApplicationId);
+                        if (res == null)
+                        {
+                            r.status =  false;
+                            r.message =  "Corresponding Regular Loan Not Found";
+                            return Ok(r);
+                        }
                         if (resII != null)
                         {
+                            o.LoanApplicationId = obj.LoanApplicationId; o.ApplicantNumber = obj.LoanApplicationId;
+                            o.CVV = res.CVV;
+                            o.LoanDurationValue = resII.NewLoanTopUpTenor;
+                            o.LoanCategory = "Loan TopUp";
+                            o.CardNumber = res.CardNumber;
+                            o.WorkEmail = res.WorkEmail;
+                            o.AccountHolderName = res.AccountHolderName;
+                            o.ApplicationChannel = res.ApplicationChannel;
+                            o.BankAccount = res.BankAccount;
+                            o.Bank = res.Bank;
+                            o.BankName = res.BankName;
+                            o.LoanDuration = Convert.ToInt32(resII.NewLoanTopUpTenor);
+                            o.IsAcceptedOfferLetter = res.IsAcceptedOfferLetter;
+                            o.BankStatementOfAccount = res.BankStatementOfAccount;
+                            o.BusinessAddress = res.BusinessAddress;
+                            o.BusinessAge = res.BusinessAge;
+                            o.BusinessType = res.BusinessType;
+                            o.CardNumber = res.CardNumber;
+                            o.CardPin = res.CardPin;
+                            o.ClientId = res.ClientId;
+                            o.CreatedBy = res.CreatedBy;
+                            o.CustomerId = res.CustomerId;
+                            o.DocumentPassword = res.DocumentPassword;
+                            o.EncryptedCardDetails = res.EncryptedCardDetails;
+                            o.EmployerAddress = res.EmployerAddress;
+                            o.EmployerName = res.EmployerName;
+                            o.EmploymentType = res.EmploymentType;
+                            o.ExpiryDate = res.ExpiryDate;
+                            o.FirstName = res.FirstName;
+                            o.Interest = resII.Interest;
+                            o.InterestRate = Convert.ToDecimal(resII.InterestRate);
+                            o.GrossSalaryOrIncome = res.GrossSalaryOrIncome;
+                            o.LoanAmount = Convert.ToDecimal(resII.NewLoanTopUpAmount);
+                            o.StageName = res.StageName;
+                            o.ApplicationChannel = res.ApplicationChannel;
+                            o.Status = res.Status;
+                            o.BusinessAddress = res.BusinessAddress;
+                            o.BusinessName = res.BusinessName;
+                            o.BusinessType = res.BusinessType;
+                            o.Status = (int)AdroitLoanApplicationStatus.Disburse;
+                            _repoTemp.InsertOne(o);
+                         
+                            cus = allSav.FirstOrDefault(o => o.Id == resII.CustomerId);
+                            dd.CustomerName = cus.FirstName + " " + cus.LastName;
+                            dd.LoanTenor = resII.LoanDuration;
+                            dd.EmailTo = cus.EmailAddress;
+                            dd.LoanAmount = Convert.ToDecimal(resII.NewLoanAmount);
                             resII.Status = (int)AdroitLoanApplicationStatus.Approved;
                             _repoTP.ReplaceOne(resII);
                             r.data = resII;
+                            dd.AcceptanceUrl = dd.AcceptanceUrl.Replace("@@type@@", "2");
                         }
                         r.status = resII != null ? true : false;
                         r.message = resII != null ? "Record Found Successfully" : "Not Found";
-                        return Ok(r);
+                        break;
                     case "loanrestructure":
                         var resIII = _repoRS.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == obj.LoanApplicationId);
                         if (resIII != null)
                         {
+                            res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == resIII.CurrentLoanApplicationId);
+                            if (res == null)
+                            {
+                                r.status = false;
+                                r.message = "Corresponding Regular Loan Not Found";
+                                return Ok(r);
+                            }
+                            o.LoanApplicationId = obj.LoanApplicationId;
+                            o.ApplicantNumber = obj.LoanApplicationId;
+                            o.CVV = res.CVV;
+                            o.LoanCategory = "Loan Restructure";
+                            o.LoanDurationValue = resIII.TenorValue;
+                            o.CardNumber = res.CardNumber;
+                            o.WorkEmail = res.WorkEmail;
+                            o.AccountHolderName = res.AccountHolderName;
+                            o.ApplicationChannel = res.ApplicationChannel;
+                            o.BankAccount = res.BankAccount;
+                            o.Bank = res.Bank;
+                            o.LoanDuration = resIII.TenorId;
+                            o.BankName = res.BankName;
+                            o.BankStatementOfAccount = res.BankStatementOfAccount;
+                            o.BusinessAddress = res.BusinessAddress;
+                            o.BusinessAge = res.BusinessAge;
+                            o.BusinessType = res.BusinessType;
+                            o.CardNumber = res.CardNumber;
+                            o.CardPin = res.CardPin;
+                            o.ClientId = res.ClientId;
+                            o.IsAcceptedOfferLetter = res.IsAcceptedOfferLetter;
+                            o.CreatedBy = res.CreatedBy;
+                            o.CustomerId = res.CustomerId;
+                            o.DocumentPassword = res.DocumentPassword;
+                            o.EncryptedCardDetails = res.EncryptedCardDetails;
+                            o.EmployerAddress = res.EmployerAddress;
+                            o.EmployerName = res.EmployerName;
+                            o.EmploymentType = res.EmploymentType;
+                            o.ExpiryDate = res.ExpiryDate;
+                            o.FirstName = res.FirstName;
+                            o.Interest = res.Interest;
+                            o.InterestRate = res.InterestRate;
+                            o.GrossSalaryOrIncome = res.GrossSalaryOrIncome;
+                            o.LoanAmount = Convert.ToDecimal(resIII.LoanAmount);
+                            o.StageName = res.StageName;
+                            o.ApplicationChannel = res.ApplicationChannel;
+                            o.Status = res.Status;
+                            o.BusinessAddress = res.BusinessAddress;
+                            o.BusinessName = res.BusinessName;
+                            o.BusinessType = res.BusinessType;
+                            o.Status = (int)AdroitLoanApplicationStatus.Disburse;
+                            _repoTemp.InsertOne(o);
+
+                            cus = allSav.FirstOrDefault(o => o.Id == resIII.CustomerId);
+                            dd.CustomerName = cus.FirstName + " " + cus.LastName;
+                            dd.EmailTo = cus.EmailAddress;
+                            dd.LoanTenor = resIII.InitialTenorId;
+                            dd.LoanAmount = Convert.ToDecimal(resIII.LoanAmount);
                             resIII.Status = (int)AdroitLoanApplicationStatus.Approved;
                             _repoRS.ReplaceOne(resIII);
                             r.data = resIII;
+                            dd.AcceptanceUrl = dd.AcceptanceUrl.Replace("@@type@@", "3");
                         }
                         r.status = resIII != null ? true : false;
                         r.message = resIII != null ? "Record Found Successfully" : "Not Found";
-                        return Ok(r);
-                    default:
                         break;
+                    default:
+                        r.status = false;
+                        r.message = "Not Found";
+                        return Ok(r);
+                }
+                ddd.NotificationType = 47;
+                ddd.TemplateModel = dd;
+                var objApi = JsonConvert.SerializeObject(ddd);
+                requestApi = new StringContent(objApi, Encoding.UTF8, "application/json");
+                rawResponse = await httpclient.PostAsync(disburseUrl, requestApi);
+                var r1 = await rawResponse.Content.ReadAsStringAsync();
+                statusCode = (int)rawResponse.StatusCode;
+                if (statusCode != 200)
+                {
+                    r.status = false;
+                    r.message = "Error From Email API";
+                    return Ok(r);
                 }
                 r.status = false;
                 r.message = "Not Found";
@@ -580,6 +768,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 });
             }
         }
+
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]

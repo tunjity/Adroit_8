@@ -29,9 +29,29 @@ namespace Adroit_v8.MongoConnections.CustomerCentric
 
 
     [BsonIgnoreExtraElements]
+    [BsonCollection("RegularLoanRestructureTemp")]
+    public class RegularLoanRestructureTemp : CustomerCentricBaseDtoII
+    {
+        public string LoanApplicationId { get; set; }
+        public long CustomerId { get; set; }
+        public int TenorId { get; set; }
+        public bool DisbursementStatus { get; set; }
+        public int Status { get; set; }
+        public string TenorValue { get; set; }
+        public int InitialTenorId { get; set; }
+        public string InitialTenorValue { get; set; }
+        public string Comment { get; set; }
+        public string LoanAmount { get; set; }
+        public string LoanRestructureServiceCharge { get; set; }
+        public byte[] EncryptedCardDetails { get; set; }
+        public string BankStatementOfAccount { get; set; }
+        public object RepaymentPlan { get; set; }
+    }
+    [BsonIgnoreExtraElements]
     [BsonCollection("RegularLoanRestructure")]
     public class RegularLoanRestructure : CustomerCentricBaseDtoII
     {
+        public string CurrentLoanApplicationId { get; set; }
         public string LoanApplicationId { get; set; }
         public long CustomerId { get; set; }
         public int TenorId { get; set; }
@@ -69,6 +89,7 @@ namespace Adroit_v8.MongoConnections.CustomerCentric
     [BsonCollection("LoanTopUp")]
     public class LoanTopUp : CustomerCentricBaseDtoII
     {
+        public decimal PreviousLoanBalance { get; set; }
         public string InitialLoanAmount { get; set; }
         public bool DisbursementStatus { get; set; }
         public string TopUpAmount { get; set; }

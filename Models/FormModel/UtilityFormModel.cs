@@ -93,6 +93,22 @@ namespace Adroit_v8.Models.FormModel
     {
         public string Name { get; set; }
     }
+    public class GeneralTemplate
+    {
+        public int NotificationType { get; set; }
+        public dynamic TemplateModel { get; set; }
+    }
+
+    public class AcceptOfferLetterMail
+    {
+        public int NotificationType { get; set; }
+        public string CustomerName { get; set; }
+        public string EmailTo { get; set; }
+        public string LoanApplicationId { get; set; }
+        public decimal LoanAmount { get; set; }
+        public int LoanTenor { get; set; }
+        public string AcceptanceUrl { get; set; }
+    }
     public class UtilityReasonFormModelFoUpda
     {
         public string Name { get; set; }

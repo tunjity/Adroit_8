@@ -98,6 +98,7 @@ namespace Adroit_v8
     }
     public class LoanTopUpResponse
     {
+        public decimal PreviousLoanBalance { get; set; }
         public decimal NewLoanTopUpAmount { get; set; }
         public string NewLoanTopUpTenor { get; set; }
         public string StatusName { get; set; }

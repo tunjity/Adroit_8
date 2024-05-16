@@ -74,6 +74,62 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string StageName { get; set; }
         public byte[] EncryptedCardDetails { get; set; }
     }  
+     [BsonIgnoreExtraElements]
+    [BsonCollection("RegularLoanTemp")]
+    public class RegularLoanTemp : BaseDto
+    {
+        public decimal DisbursementAmount { get; set; }
+        public decimal ManagementFeePercentage { get; set; }
+        public decimal ManagementFeeAmount { get; set; }
+        public decimal InsuranceFeePercentage { get; set; }
+        public decimal InsuranceFeeAmount { get; set; }
+
+        public decimal TotalInterestCharge { get; set; }
+
+        public int CustomerId { get; set; }
+        public int LoanDuration { get; set; }
+        public string LoanDurationValue { get; set; }
+        public string ApplicantNumber { get; set; }
+        public string LoanCategory { get; set; }
+        public decimal InterestRate { get; set; }
+        public string? CustomerRef { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public decimal LoanAmount { get; set; }
+        public string EmploymentType { get; set; }
+        public string Bank { get; set; }
+        public string LoanApplicationId { get; set; }
+        public string DocumentPassword { get; set; }
+        public string BankStatementOfAccount { get; set; }
+        public string NameOnCard { get; set; }
+        public string CardNumber { get; set; }
+        public string ExpiryDate { get; set; }
+        public bool IsAcceptedOfferLetter { get; set; }
+        public string CVV { get; set; }
+        public string CardPin { get; set; }
+        public string BankName { get; set; }
+        public string BankAccount { get; set; }
+        public string AccountHolderName { get; set; }
+        public string JobTitle { get; set; }
+        public string Interest { get; set; }
+        public string EmployerName { get; set; }
+        public string WorkEmail { get; set; }
+        public string EmployerAddress { get; set; }
+        public string State { get; set; }
+        public string LGA { get; set; }
+        public string StartDate { get; set; }
+        public decimal GrossSalaryOrIncome { get; set; }
+        public string BusinessType { get; set; }
+        public string BusinessName { get; set; }
+        public string BusinessAddress { get; set; }
+        public string BusinessAge { get; set; }
+        public int Status { get; set; }
+        public string ApplicationChannel { get; set; }
+        public string StageName { get; set; }
+        public byte[] EncryptedCardDetails { get; set; }
+    }  
+
+
     [BsonIgnoreExtraElements]
     [BsonCollection("CustomerReasonToDecline")]
     public class CustomerReasonToDecline : BaseDto

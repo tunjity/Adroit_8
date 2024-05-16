@@ -200,6 +200,7 @@ namespace Adroit_v8.Config
                     c.NewLoanTopUpTenor = item.NewLoanTopUpTenor;
                     c.NewLoanTopUpAmount = item.NewLoanTopUpAmount;
                     c.Bvn = cus.bvn;
+                    c.PreviousLoanBalance = item.PreviousLoanBalance;
                     c.Tenor = item.LoanDurationValue;
                     c.Gender = cus.genderName;
                     c.NewLoanAmount = item.NewLoanAmount;

@@ -684,12 +684,18 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 RegularLoanDisbursement rd = null;
                 RegularLoan res = null;
                 res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
-                //if(res.IsAcceptedOfferLetter != true)
-                //{
-                //    r.status =false;
-                //    r.message =  "Offer Letter Not Accepted Yet";
-                //    return Ok(r);
-                //}
+                if (res.Status == (int)AdroitLoanApplicationStatus.CustomerDeclineOfferLetter)
+                {
+                    r.status = false;
+                    r.message = "offered letter has been declined";
+                    return Ok(r);
+                }  
+                if (res.IsAcceptedOfferLetter != true)
+                {
+                    r.status = false;
+                    r.message = "Offer Letter Not Accepted Yet";
+                    return Ok(r);
+                }
                 Models.CRM.Customer? cus = null;
                 List<ClientNextOfKin>? next = null;
                 List<ClientEmploymentHistory>? emp = null;
@@ -702,7 +708,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 {
                     var rec = _repoRegularLoanRepaymentPlan.AsQueryable().Where(o => o.LoanApplicationId == obj.LoanApplicationId);
                     var filter = Builders<RegularLoanDisbursement>.Filter.And(Builders<RegularLoanDisbursement>.Filter.Eq(o => o.ClientId, auth.ClientId),
-    Builders<RegularLoanDisbursement>.Filter.Eq(o => o.CustomerId, res.CustomerId));
+                                                                  Builders<RegularLoanDisbursement>.Filter.Eq(o => o.CustomerId, res.CustomerId));
 
                     var update = Builders<RegularLoanDisbursement>.Update.Set(o => o.IsClosed, true);
 

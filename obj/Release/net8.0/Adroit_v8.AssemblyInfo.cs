@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Adroit_v8")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a60bdc49640b2474e7f89224122a4ba4a622b7f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4792fcbfcee60b8f1c89c0d71de904a215a22f9c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Adroit_v8")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Adroit_v8")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
