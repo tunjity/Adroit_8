@@ -72,6 +72,10 @@ namespace Adroit_v8.MongoConnections.CustomerCentric
     [BsonCollection("RegularLoanRestructureRepaymentPlan")]
     public class RegularLoanRestructureRepaymentPlan : CustomerCentricBaseDtoII
     {
+        public decimal PrincipalAmount { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Fee { get; set; }
+        public decimal PaymentDue { get; set; }
         public string UniqueId { get; set; }
         public int Isdeleted { get; set; }
         public string ClientId { get; set; }
@@ -110,7 +114,8 @@ namespace Adroit_v8.MongoConnections.CustomerCentric
         public string StatusName { get; set; }
         public string Interest { get; set; }
         public string InterestRate { get; set; }
-        public byte[] EncryptedCardDetails { get; set; }
+        public List<CustomerCardDetails> EncryptedCardDetails { get; set; }
+
         public string BankStatementOfAccount { get; set; }
         public string CurrentLoanApplicationId { get; set; }
     }
@@ -119,6 +124,10 @@ namespace Adroit_v8.MongoConnections.CustomerCentric
     [BsonCollection("RegularLoanTopUpRepaymentPlan")]
     public class RegularLoanTopUpRepaymentPlan : CustomerCentricBaseDtoII
     {
+        public decimal PrincipalAmount { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Fee { get; set; }
+        public decimal PaymentDue { get; set; }
         public string UniqueId { get; set; }
         public int Isdeleted { get; set; }
         public string ClientId { get; set; }

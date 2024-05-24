@@ -35,6 +35,8 @@ namespace Adroit_v8.Repository
             {
                 _httpContextAccessor = httpContextAccessor;
                 var k = _httpContextAccessor.HttpContext.User.Claims.ToList();
+                auth.IsOtpVerified = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "IsOtpVerified").Value.ToString();
+
                 auth.ClientId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId") != null ? _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId").Value : "";
                 auth.FirstName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
                 auth.LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value;

@@ -45,6 +45,7 @@ namespace Adroit_v8.Models.FormModel
         public string Description { get; set; }
         public string AdjustedTenor { get; set; }
         public string AdjustedAmount { get; set; }
+        public List<string> Comments { get; set; }
     }
     public class Reassignment : RegularLoanCommentFormModelToGet
     {

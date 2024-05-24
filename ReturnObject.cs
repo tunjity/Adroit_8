@@ -12,6 +12,7 @@ namespace Adroit_v8
         public string email { get; set; }
         public string UserId { get; set; }
         public string FirstName { get; set; }
+        public string IsOtpVerified { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string ClientId { get; set; }
@@ -27,7 +28,8 @@ namespace Adroit_v8
         public int recordCount { get; set; }
         public int recordPageNumber { get; set; }
         public dynamic data { get; set; }
-    } public class NewPermissionReturnObject
+    }
+    public class NewPermissionReturnObject
     {
         public bool status { get; set; }
         public string message { get; set; }
@@ -366,7 +368,7 @@ public class ApplicationPermissionGetDto1 : BaseDtoII
     public bool CanDecide { get; set; }
     public bool CanEditRepayment { get; set; }
 }
-public class ApplicationPermissionGetDto1II 
+public class ApplicationPermissionGetDto1II
 {
     public string ApplicationId { get; set; }
     public string ApplicationRoleId { get; set; }
@@ -431,12 +433,15 @@ public class ApplicationGetPageDTO : BaseDtoII
 }
 
 
-public class APIResponseforAll
+public class APIResponseforAllWithoutData
 {
     public string id { get; set; }
     public bool status { get; set; }
     public string message { get; set; }
     public int statusCode { get; set; }
+}
+public class APIResponseforAll : APIResponseforAllWithoutData
+{
     public dynamic data { get; set; }
 }
 public class APIResponseWithToken

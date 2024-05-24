@@ -32,7 +32,9 @@ namespace Adroit_v8.Repository
             //in case of controller with many controller with many repo
             if (auth.ClientId == null)
             {
-                _httpContextAccessor = httpContextAccessor;
+                _httpContextAccessor = httpContextAccessor; 
+                auth.IsOtpVerified = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "IsOtpVerified").Value.ToString();
+
                 auth.ClientId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId") != null ? _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId").Value : "";
                 auth.FirstName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
                 auth.LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value;

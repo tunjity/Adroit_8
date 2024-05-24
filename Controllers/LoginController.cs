@@ -56,9 +56,17 @@ namespace Adroit_v8.Controllers
                     _ = LogService_Old.LoggerCreateAsync(JsonConvert.SerializeObject(obj), actionUrl, RequestTime, JsonConvert.SerializeObject(obj), rawResponse.Content.ReadAsStringAsync().ToString(), (int)ServiceLogLevel.Error);
                     return Ok("An Error Occured");
                 }
+                var rs = new APIResponseforAllWithoutData();
                 var res = rawResponse.Content.ReadAsStringAsync();
                 var newRes = JsonConvert.DeserializeObject<APIResponseforAll>(res.Result);
-                return Ok(newRes);
+                if (newRes != null)
+                {
+                    rs.id = newRes.id;
+                    rs.status = newRes.status;
+                    rs.message = newRes.message;
+                    rs.statusCode = newRes.statusCode;
+                }
+                return Ok(rs);
             }
             catch (Exception ex)
             {

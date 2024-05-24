@@ -548,17 +548,12 @@ namespace Adroit_v8.Controllers.LoanApplication
                 var rec = _repoRegularLoanRepaymentPlan.AsQueryable().Where(o => o.LoanApplicationId == obj.LoanApplicationId);
                 foreach (var o in rec)
                 {
-                    //calculate interest
-                    decimal inter = Convert.ToDecimal(o.InterestRate);
-                    decimal prin = Convert.ToDecimal(o.LoanAmount);
-
-                    var recVal = Helper.GetTotalLoanAmount(prin, inter);
                     lstRes.Add(new RegularLoanRepaymentReturnModel
                     {
                         repaymentDate = o.MonthlyRepaymentDate,
-                        principal = o.LoanAmount,
-                        Interest = recVal.FirstOrDefault().Key.ToString(),
-                        TotalPayment = recVal.FirstOrDefault().Value.ToString()
+                        principal = o.PrincipalAmount.ToString(),
+                        Interest = o.Interest.ToString(),
+                        TotalPayment = Math.Round(o.PrincipalAmount + o.Interest).ToString()
                     });
                 }
                

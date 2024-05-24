@@ -20,10 +20,12 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public int IsActive { get; set; }
         public string CustomerAddressId { get; set; }
     }
+ 
     [BsonIgnoreExtraElements]
     [BsonCollection("RegularLoan")]
     public class RegularLoan : BaseDto
     {
+        public List<CustomerCardDetails> EncryptedCardDetails { get; set; }
         public decimal DisbursementAmount { get; set; }
         public decimal ManagementFeePercentage { get; set; }
         public decimal ManagementFeeAmount { get; set; }
@@ -72,9 +74,8 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public int Status { get; set; }
         public string ApplicationChannel { get; set; }
         public string StageName { get; set; }
-        public byte[] EncryptedCardDetails { get; set; }
-    }  
-     [BsonIgnoreExtraElements]
+    }
+    [BsonIgnoreExtraElements]
     [BsonCollection("RegularLoanTemp")]
     public class RegularLoanTemp : BaseDto
     {
@@ -126,8 +127,8 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public int Status { get; set; }
         public string ApplicationChannel { get; set; }
         public string StageName { get; set; }
-        public byte[] EncryptedCardDetails { get; set; }
-    }  
+        public List<CustomerCardDetails> EncryptedCardDetails { get; set; }
+    }
 
 
     [BsonIgnoreExtraElements]
@@ -161,10 +162,16 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string Interest { get; set; }
         public string TotalPayment { get; set; }
     }
-
+    public class CustomerCardDetails
+    {
+        public DateTime DateCreated { get; set; }
+        public bool IsActive { get; set; }
+        public byte[] CardAuthorizationCode { get; set; }
+    }
     [BsonCollection("RegularLoanDisbursement")]
     public class RegularLoanDisbursement : BaseDtoII
     {
+        public decimal InterestRatePercentage { get; set; }
         public decimal TotalInterestCharge { get; set; }
         public long CustomerId { get; set; }
         public int RetryCount { get; set; }
@@ -192,7 +199,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public int EmploymentTypeId { get; set; }
         public string EmploymentType { get; set; }
         public List<PhoneNumber> CustomerPhoneNumber { get; set; }
-        public List<carddetail> Repaymentcarddetail { get; set; }
+        public List<CustomerCardDetails> Repaymentcarddetail { get; set; }
         public List<DisError> DisbursementError { get; set; }
         public List<ClientEmploymentHistory> WorkDetail { get; set; }
         public List<ClientEmploymentHistory> EmployerInformation { get; set; }
@@ -212,7 +219,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string ChannelId { get; set; }
         public string ChannelName { get; set; }
         public string InterestRate { get; set; }
-        public byte[] EncryptedCardDetails { get; set; }
+        public List<CustomerCardDetails> EncryptedCardDetails { get; set; }
     }
     public class PaymentDetails
     {
@@ -250,14 +257,7 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string Items { get; set; }
     }
 
-    public class carddetail
-    {
-        public string NameOnCard { get; set; }
-        public byte[] CardNumber { get; set; }
-        public string ExpiryDate { get; set; }
-        public byte[] CVV { get; set; }
-        public byte[] CardPin { get; set; }
-    }
+
     [BsonCollection("LoanTopUp")]
     public class LoanTopUpStepOne : BaseDto
     {
@@ -355,8 +355,20 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public string Description { get; set; }
         public string AdjustedTenor { get; set; }
         public string AdjustedAmount { get; set; }
+        public string InitialAdjustedTenor { get; set; }
+        public string InitialAdjustedAmount { get; set; }
         public string LoanCategory { get; set; }
+        public AdjustmentTracker Tracker { get; set; }
+
     }
+    public class AdjustmentTracker
+    {
+        public string LastModifiedBy { get; set; }
+        public DateTime DateModified { get; set; }
+        public List<string> Comments { get; set; }
+
+    }
+   
     //RegularLoanStageHolder
     [BsonCollection("RegularLoanStageHolder")]
     public class RegularLoanStageHolder : BaseDto

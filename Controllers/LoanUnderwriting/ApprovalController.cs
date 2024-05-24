@@ -303,7 +303,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -356,7 +356,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -684,12 +684,20 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 RegularLoanDisbursement rd = null;
                 RegularLoan res = null;
                 res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
+
+
+                //if (res.CardNumber == null || res.CardPin == null)
+                //{
+                //    r.status = false;
+                //    r.message = "Card Details Cant Be Null";
+                //    return Ok(r);
+                //}
                 if (res.Status == (int)AdroitLoanApplicationStatus.CustomerDeclineOfferLetter)
                 {
                     r.status = false;
                     r.message = "offered letter has been declined";
                     return Ok(r);
-                }  
+                }
                 if (res.IsAcceptedOfferLetter != true)
                 {
                     r.status = false;
@@ -703,7 +711,9 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 var encrpt = new Helper.DataEncryption();
                 var listOfNumbers = new List<PhoneNumber>();
                 string b = "";
-                List<carddetail> lstc = new();
+
+
+                List<CustomerCardDetails> lstc = new();
                 if (res != null)
                 {
                     var rec = _repoRegularLoanRepaymentPlan.AsQueryable().Where(o => o.LoanApplicationId == obj.LoanApplicationId);
@@ -720,14 +730,14 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     listOfString.Add(new DisError { Items = "No Error Yet" });
                     listOfNumbers.Add(new PhoneNumber { Numbers = cus.AlternativePhoneNumber });
                     listOfNumbers.Add(new PhoneNumber { Numbers = cus.PhoneNumber });
-                    lstc.Add(new carddetail
-                    {
-                        CardNumber = await encrpt.EncryptAsync(res.CardNumber, _passPhrase),
-                        CardPin = await encrpt.EncryptAsync(res.CardPin, _passPhrase),
-                        ExpiryDate = res.ExpiryDate,
-                        CVV = await encrpt.EncryptAsync(res.CVV, _passPhrase),
-                        NameOnCard = res.NameOnCard
-                    });
+                    //lstc.Add(new carddetail
+                    //{
+                    //    CardNumber = await encrpt.EncryptAsync(res.CardNumber, _passPhrase),
+                    //    CardPin = await encrpt.EncryptAsync(res.CardPin, _passPhrase),
+                    //    ExpiryDate = res.ExpiryDate,
+                    //    CVV = await encrpt.EncryptAsync(res.CVV, _passPhrase),
+                    //    NameOnCard = res.NameOnCard
+                    //});
                     b = string.IsNullOrEmpty(cus.Bvn) ? "123456789" : cus.Bvn;
                     RepaymentAPI ra = new();
                     ra.clientId = auth.ClientId;
@@ -747,6 +757,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     }
                     rd = new RegularLoanDisbursement
                     {
+
                         EncryptedCardDetails = res.EncryptedCardDetails,
                         LoanRepaymentSchedule = lo,
                         UniqueId = Guid.NewGuid().ToString(),
@@ -786,6 +797,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                         case "regularloan":
                             rd.LoanAmount = res.LoanAmount;
                             rd.LoanType = "Regular Loan";
+                            rd.InterestRatePercentage = res.InterestRate;
                             rd.LoanTenor = res.LoanDuration.ToString();
                             rd.LoanApplicationId = res.LoanApplicationId;
                             var recVal = Helper.GetTotalLoanAmount(res.LoanAmount, res.InterestRate);
@@ -820,6 +832,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                             {
                                 rd.LoanAmount = Convert.ToDecimal(resII.NewLoanTopUpAmount);
                                 rd.LoanType = "Loan TopUp";
+                                rd.InterestRatePercentage = Convert.ToDecimal(resII.InterestRate);
                                 rd.LoanTenor = resII.NewLoanTopUpTenor.ToString();
                                 rd.LoanApplicationId = ap;
                                 var recValII = Helper.GetTotalLoanAmount(Convert.ToDecimal(resII.NewLoanAmount), Convert.ToDecimal(resII.InterestRate));

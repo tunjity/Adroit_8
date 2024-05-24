@@ -16,6 +16,8 @@ using Adroit_v8.Config;
 using System.Net.Http;
 using System.Text;
 using Adroit_v8.MongoConnections.CRM;
+using System.Xml.Linq;
+using Adroit_v8.Models.CRM;
 
 namespace Adroit_v8.Controllers.LoanUnderwriting
 {
@@ -547,8 +549,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             var r = new ReturnObject();
             try
             {
-               // Models.CRM.Customer? cusII = null;
-                Customer cus = new();
+                // Models.CRM.Customer? cusII = null;
+                Model.Customer cus = new();
                 var allSav = _context.Customers.ToList();
                 var o = new RegularLoanTemp();
                 int statusCode = 0;
@@ -599,8 +601,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                         res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == resII.CurrentLoanApplicationId);
                         if (res == null)
                         {
-                            r.status =  false;
-                            r.message =  "Corresponding Regular Loan Not Found";
+                            r.status = false;
+                            r.message = "Corresponding Regular Loan Not Found";
                             return Ok(r);
                         }
                         if (resII != null)
@@ -646,7 +648,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                             o.BusinessType = res.BusinessType;
                             o.Status = (int)AdroitLoanApplicationStatus.Disburse;
                             _repoTemp.InsertOne(o);
-                         
+
                             cus = allSav.FirstOrDefault(o => o.Id == resII.CustomerId);
                             dd.CustomerName = cus.FirstName + " " + cus.LastName;
                             dd.LoanTenor = resII.LoanDuration;
@@ -745,19 +747,9 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     r.message = "Error From Email API";
                     return Ok(r);
                 }
-                r.status = false;
-                r.message = "Not Found";
+
                 return Ok(r);
-                //var res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
-                //if (res != null)
-                //{
-                //    res.Status = (int)AdroitLoanApplicationStatus.Approved;
-                //    _repo.ReplaceOne(res);
-                //    r.data = res;
-                //}
-                //r.status = res != null ? true : false;
-                //r.message = res != null ? "Record Found Successfully" : "Not Found";
-                //return Ok(r);
+
             }
             catch (Exception ex)
             {
@@ -778,47 +770,106 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             var r = new ReturnObject();
             try
             {
-
-                switch (Regex.Replace(obj.LoanCategory, @"\s", "").ToLower())
-                {
-                    case "regularloan":
-                        var res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
-                        if (res != null)
-                        {
-                            res.Status = (int)AdroitLoanApplicationStatus.Adjust;
-                            _repo.ReplaceOne(res);
-                            r.data = res;
-                        }
-                        break;
-                    case "loantopup":
-                        var resII = _repoTP.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
-                        if (resII != null)
-                        {
-                            resII.Status = (int)AdroitLoanApplicationStatus.Adjust;
-                            _repoTP.ReplaceOne(resII);
-                            r.data = resII;
-                        }
-                        break;
-                    case "loanrestructure":
-                        var resIII = _repoRS.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == obj.LoanApplicationId);
-                        if (resIII != null)
-                        {
-                            resIII.Status = (int)AdroitLoanApplicationStatus.Adjust;
-                            _repoRS.ReplaceOne(resIII);
-                            r.data = resIII;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                int statusCode = 0;
+                StringContent? requestApi = null;
+                HttpResponseMessage? rawResponse = null;
+                using var httpclient = new HttpClient();
+                var disburseUrl = _config.GetSection("DisburseTo:RepaymentLoanAdjustmentUrl").Value;
                 var com = new RegularLoanAdjustment
                 {
                     LoanApplicationId = obj.LoanApplicationId,
                     Description = obj.Description,
                     AdjustedAmount = obj.AdjustedAmount,
                     LoanCategory = obj.LoanCategory,
-                    AdjustedTenor = obj.AdjustedTenor
+                    AdjustedTenor = obj.AdjustedTenor,
                 };
+                string customerId = "";
+                var res = _repo.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
+                var resII = _repoTP.AsQueryable().FirstOrDefault(o => o.ApplicantNumber == obj.LoanApplicationId);
+                var resIII = _repoRS.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == obj.LoanApplicationId);
+
+                if (res != null)
+                    customerId = res.CustomerId.ToString();
+                else if (resII != null)
+                    customerId = resII.CustomerId.ToString();
+                else if (resIII != null)
+                    customerId = resIII.CustomerId.ToString();
+
+
+
+                var ra = new
+                {
+                    loanAmount = obj.AdjustedAmount,
+                    loanApplicationId = obj.LoanApplicationId,
+                    loanTenor = obj.AdjustedTenor,
+                    adroitUserId = auth.UserId,
+                    loanType = obj.LoanCategory,
+                    customerId
+                };
+
+                var objApi = JsonConvert.SerializeObject(ra);
+                requestApi = new StringContent(objApi, Encoding.UTF8, "application/json");
+                rawResponse = await httpclient.PostAsync(disburseUrl, requestApi);
+                var r1 = await rawResponse.Content.ReadAsStringAsync();
+                statusCode = (int)rawResponse.StatusCode;
+                if (statusCode != 200)
+                {
+                    r.status = false;
+                    r.message = $"Error From Loan Adjustment API";
+                    return Ok(r);
+                }
+                switch (Regex.Replace(obj.LoanCategory, @"\s", "").ToLower())
+                {
+                    case "regularloan":
+                        if (res != null)
+                        {
+                            com.InitialAdjustedAmount = res.LoanAmount.ToString();
+                            com.InitialAdjustedTenor = res.LoanDuration.ToString();
+
+                            //res.LoanDurationValue = obj.AdjustedTenor;
+                            //res.LoanAmount = Convert.ToDecimal(com.AdjustedAmount);
+                            //res.LoanDuration = Convert.ToInt32(obj.AdjustedTenor);
+                            //res.Status = (int)AdroitLoanApplicationStatus.Adjust;
+                            //_repo.ReplaceOne(res);
+                            r.data = res;
+                        }
+                        break;
+                    case "loantopup":
+                        if (resII != null)
+                        {
+                            com.InitialAdjustedAmount = resII.LoanAmount.ToString();
+                            com.InitialAdjustedTenor = resII.LoanDuration.ToString();
+
+                            //resII.LoanDurationValue = obj.AdjustedTenor;
+                            //resII.LoanAmount = com.AdjustedAmount;
+                            //resII.LoanDuration = Convert.ToInt32(obj.AdjustedTenor);
+                            //resII.Status = (int)AdroitLoanApplicationStatus.Adjust;
+                            //_repoTP.ReplaceOne(resII);
+                            r.data = resII;
+                        }
+                        break;
+                    case "loanrestructure":
+                        if (resIII != null)
+                        {
+                            //resIII.LoanAmount = com.AdjustedAmount;
+                            //resIII.InitialTenorId = Convert.ToInt32(obj.AdjustedTenor);
+                            //resIII.InitialTenorValue = obj.AdjustedTenor;
+
+                            com.InitialAdjustedAmount = resIII.LoanAmount.ToString();
+                            com.InitialAdjustedTenor = resIII.TenorValue.ToString();
+                            //resIII.Status = (int)AdroitLoanApplicationStatus.Adjust;
+                            //_repoRS.ReplaceOne(resIII);
+                            r.data = resIII;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                AdjustmentTracker trackerc = new();
+                trackerc.LastModifiedBy = auth.CreatedBy;
+                trackerc.DateModified = DateTime.Now;
+                trackerc.Comments = obj.Comments;
+                com.Tracker = trackerc;
                 var repo = await _repoRLA.InsertOneAsync(com);
 
                 return Ok(repo);
