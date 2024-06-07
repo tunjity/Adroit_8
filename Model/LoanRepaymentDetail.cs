@@ -29,5 +29,13 @@
         public decimal? PartialRepaymentAmount { get; set; }
 
         public decimal? RepaymentAmountToBalance { get; set; }
+        public decimal? TotalLateFee { get; set; }
+        public long? LateFeeNumberOfDays { get; set; }
+        public bool? IsLateFeeCleared { get; set; }
+        public DateTime? LateFeeStoppedDate { get; set; }
+        public DateTime? LateFeeClearedDate { get; set; }
+        public string? LateFeeStoppedBy { get; set; }
+        public DateTime? LateFeeLastUpdatedDate { get; set; }
+
     }
 }

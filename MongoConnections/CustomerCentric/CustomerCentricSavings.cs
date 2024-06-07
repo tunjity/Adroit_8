@@ -63,7 +63,7 @@ namespace Adroit_v8.MongoConnections.CustomerCentric
         public string Comment { get; set; }
         public string LoanAmount { get; set; }
         public string LoanRestructureServiceCharge { get; set; }
-        public byte[] EncryptedCardDetails { get; set; }
+public List<CustomerCardDetails> EncryptedCardDetails { get; set; }
         public string BankStatementOfAccount { get; set; }
         public object RepaymentPlan { get; set; }
     }

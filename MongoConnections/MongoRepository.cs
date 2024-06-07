@@ -11,6 +11,7 @@ namespace Adroit_v8.MongoConnections
     /// <typeparam name="TBaseDto"></typeparam>
     public interface IMongoRepository<TBaseDto> where TBaseDto : IBaseDto
     {
+        IQueryable<TBaseDto> AsQueryableWithOutClientId();
         IQueryable<TBaseDto> AsQueryable();
         IEnumerable<TBaseDto> FilterBy(
             Expression<Func<TBaseDto, bool>> filterExpression);
@@ -60,6 +61,8 @@ namespace Adroit_v8.MongoConnections
             if (auth.ClientId == null)
             {
                 _httpContextAccessor = httpContextAccessor;
+                auth.IsOtpVerified = Convert.ToBoolean(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "IsOtpVerified").Value);
+
                 auth.ClientId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId") != null ? _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId").Value : "";
                 auth.FirstName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
                 auth.LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value;
@@ -98,6 +101,10 @@ namespace Adroit_v8.MongoConnections
         public virtual IQueryable<TBaseDto> AsQueryable()
         {
             return _collection.AsQueryable().Where(o => o.ClientId == auth.ClientId);
+        }
+        public virtual IQueryable<TBaseDto> AsQueryableWithOutClientId()
+        {
+            return _collection.AsQueryable();
         }
 
 

@@ -17,15 +17,15 @@ namespace Adroit_v8.Controllers.BridgeLoan
         private readonly IMongoRepository<Documentation> _repo;
         private readonly IMongoRepository<DocumentationDoc> _repoDoc;
         private string errMsg = "Unable to process request, kindly try again";
-
-        // string _CreatedBy = "0";
+        private readonly FileFolderSettings _FileFolderSettings;
         private readonly IConfiguration _config;
 
         private readonly IMongoCollection<DocumentationDoc> _ApplicationGet;
 
-        public DocumentationController(IMongoRepository<Documentation> repo, IConfiguration config,
+        public DocumentationController(IMongoRepository<Documentation> repo, FileFolderSettings FileFolderSettings, IConfiguration config,
             IMongoRepository<DocumentationDoc> repoDoc, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
+            _FileFolderSettings = FileFolderSettings;
             _repo = repo;
             _config = config;
             _repoDoc = repoDoc; string? connectionURI = _config.GetSection("MongoDB").GetSection("ConnectionURI").Value;
@@ -97,7 +97,11 @@ namespace Adroit_v8.Controllers.BridgeLoan
                 var res = await _repo.InsertOneAsync(la);
                 if (obj.DocumentationDoc != null)
                 {
-                    var SavePath = $"{_config["FileFolder:Path"]}{"DocumentationDoc"}";
+                    // _gamSwitchConfiguration.GamSwitchBaseUrl + _gamSwitchConfiguration.GamSwitchNameEnquiryUrl + _gamSwitchConfiguration.GamSwitchInterchangeProd;
+
+                    var SavePath = _FileFolderSettings.Path + "DocumentationDoc";
+                    //    $"{_config["FileFolder:Path"]}{"DocumentationDoc"}";
+                    //var SavePath = $"{_config["FileFolder:Path"]}{"DocumentationDoc"}";
                     var doc = new DocumentationDoc()
                     {
                         UniqueId = Guid.NewGuid().ToString(),
@@ -214,7 +218,7 @@ namespace Adroit_v8.Controllers.BridgeLoan
                         string? SavePath = "";
                         if (obj.DocumentationDoc != null)
                         {
-                            SavePath = $"{_config["FileFolder:Path"]}{"DocumentationDoc"}";
+                            SavePath = _FileFolderSettings.Path + "DocumentationDoc";
                             fileName = $"{pcuDoc.UniqueId}{"_Updated_"}{Path.GetFileName(obj.DocumentationDoc.FileName)}";
                             _ = Task.Run(() => { Helper.ProcessFileUpload(obj.DocumentationDoc, pcuDoc.UniqueId, fileName, SavePath); });
 

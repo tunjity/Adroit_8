@@ -1710,11 +1710,17 @@
   {
     "ContainingType": "Adroit_v8.Controllers.ApplicationPermissionController",
     "Method": "GetUserApplicationPagesAndPermission",
-    "RelativePath": "api/ApplicationPermission/GetUserApplicationPagesAndPermission",
+    "RelativePath": "api/ApplicationPermission/get_user_application_pages_permission/{UserId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "UserId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "Adroit_v8.NewPermissionReturnObject",
@@ -6703,7 +6709,7 @@
   {
     "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
     "Method": "GetRepaymentPlanByCustomerId",
-    "RelativePath": "api/CustomerCentric/GetRepaymentPlanByCusId/{cusId}",
+    "RelativePath": "api/CustomerCentric/GetRepaymentPlanByCusId/{cusId}/{loanId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -6711,6 +6717,11 @@
       {
         "Name": "cusId",
         "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "loanId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -6781,6 +6792,41 @@
       {
         "Name": "cusId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
+    "Method": "GetVerificationDetailByCusId",
+    "RelativePath": "api/CustomerCentric/GetVerificationDetailByCusId/{cusId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cusId",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -7061,6 +7107,41 @@
       {
         "Name": "MonthlyId",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.CustomerCentricController",
+    "Method": "UpdateRepaymentCloseLateFee",
+    "RelativePath": "api/CustomerCentric/UpdateRepaymentCloseLateFee",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "obj",
+        "Type": "Adroit_v8.Models.FormModel.UtilityModificationFormModelII",
         "IsRequired": true
       }
     ],

@@ -27,6 +27,7 @@ namespace Adroit_v8.Controllers.Administration
 
 
         [HttpPost]
+       //                                 [CustomAuth]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("add")]

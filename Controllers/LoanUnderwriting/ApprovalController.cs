@@ -51,6 +51,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             if (auth.ClientId == null)
             {
                 _httpContextAccessor = httpContextAccessor;
+                auth.IsOtpVerified = Convert.ToBoolean(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "IsOtpVerified").Value);
                 auth.ClientId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId") != null ? _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientId").Value : "";
                 auth.FirstName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
                 auth.LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value;
@@ -757,7 +758,6 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                     }
                     rd = new RegularLoanDisbursement
                     {
-
                         EncryptedCardDetails = res.EncryptedCardDetails,
                         LoanRepaymentSchedule = lo,
                         UniqueId = Guid.NewGuid().ToString(),

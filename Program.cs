@@ -26,6 +26,13 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.Configure<SSMongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.Configure<FileFolderSettings>(builder.Configuration.GetSection("FileFolder"));
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<PassPhrasesSettings>(builder.Configuration.GetSection("PassPhrases"));
+builder.Services.Configure<DisburseToSettings>(builder.Configuration.GetSection("DisburseTo"));
+builder.Services.Configure<UploadSettings>(builder.Configuration.GetSection("Upload"));
+builder.Services.Configure<SSOSettings>(builder.Configuration.GetSection("SSO"));
 builder.Services.AddSingleton<MongoDbSettings>(serviceProvider => serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
 builder.Services.AddDbContext<CreditWaveContext>(Options => Options.UseNpgsql("Host=104.248.202.214;Database=adroit_db;Username=tayo;Password=rollingdollar;Integrated Security = true;Pooling = true;Timeout=300;CommandTimeout=300"));

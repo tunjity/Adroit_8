@@ -1,6 +1,8 @@
 ﻿using Adroit_v8.MongoConnections.CRM;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Adroit_v8.MongoConnections.LoanApplication
 {
@@ -167,6 +169,18 @@ namespace Adroit_v8.MongoConnections.LoanApplication
         public DateTime DateCreated { get; set; }
         public bool IsActive { get; set; }
         public byte[] CardAuthorizationCode { get; set; }
+    }
+    [BsonCollection("VerificationForAll")]
+    public class VerificationForAll : BaseDtoII
+    {
+        public string CustomerId { get; set; }
+        public string ChannelId { get; set; }
+        public string Type { get; set; }
+        public string RequestJsonDetail { get; set; }
+        public string ResponseJsonDetail { get; set; }
+        public string TimeStamp { get; set; }
+        public string HttpStatusCode { get; set; }
+        public string ResponseStatusCode { get; set; }
     }
     [BsonCollection("RegularLoanDisbursement")]
     public class RegularLoanDisbursement : BaseDtoII

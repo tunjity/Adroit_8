@@ -3,32 +3,64 @@
   "WorkspaceRootPath": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\administration\\loantenorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\administration\\loantenorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\applicationpermissioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\applicationpermissioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\config\\mongodbsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:config\\mongodbsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\adroit_v8.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:adroit_v8.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\returnobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:returnobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\mongoconnections\\customercentric\\customercentricsavings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:mongoconnections\\customercentric\\customercentricsavings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\crm\\documentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\crm\\documentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\loanunderwriting\\approvalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\loanunderwriting\\approvalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\loanunderwriting\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\loanunderwriting\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\loanunderwriting\\disbursementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\loanunderwriting\\disbursementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\mongoconnections\\loanapplication\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:mongoconnections\\loanapplication\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\bridgeloan\\documentationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\bridgeloan\\documentationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\administration\\adminproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\administration\\adminproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\config\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:config\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\adroit_v8.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:adroit_v8.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\loanapplication\\adjustcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,16 +71,28 @@
       "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\loanapplication\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\crm\\residentialinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\crm\\residentialinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\crm\\nextofkincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\crm\\nextofkincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\crm\\employmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\crm\\employmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\crm\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\crm\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\crm\\bankcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\crm\\bankcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\controllers\\generalsetupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:controllers\\generalsetupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|c:\\users\\temitayo oyetunji\\desktop\\fromxlaptop\\creditwave\\adroit_8\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D138E395-D727-4085-A5D3-0DF49E435D81}|Adroit_v8.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,45 +102,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 18,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Adroit_v8.http",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Adroit_v8.http",
+              "RelativeDocumentMoniker": "Adroit_v8.http",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Adroit_v8.http",
+              "RelativeToolTip": "Adroit_v8.http",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAACCAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2024-06-03T13:33:48.496Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "LoanTenorController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\Administration\\LoanTenorController.cs",
-              "RelativeDocumentMoniker": "Controllers\\Administration\\LoanTenorController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\Administration\\LoanTenorController.cs",
-              "RelativeToolTip": "Controllers\\Administration\\LoanTenorController.cs",
-              "ViewState": "AQIAAAQAAAAAAAAAAAAIwBIAAAAXAAAA",
+              "Title": "ApplicationPermissionController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\ApplicationPermissionController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ApplicationPermissionController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\ApplicationPermissionController.cs",
+              "RelativeToolTip": "Controllers\\ApplicationPermissionController.cs",
+              "ViewState": "AQIAAB0AAAAAAAAAAAAqwCgAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-24T07:41:50.417Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\AuthController.cs*",
-              "RelativeToolTip": "Controllers\\AuthController.cs*",
-              "ViewState": "AQIAAAUAAAAAAAAAAAAQwBEAAACRAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-24T07:39:44.036Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CustomerCentricSavings.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\MongoConnections\\CustomerCentric\\CustomerCentricSavings.cs",
-              "RelativeDocumentMoniker": "MongoConnections\\CustomerCentric\\CustomerCentricSavings.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\MongoConnections\\CustomerCentric\\CustomerCentricSavings.cs",
-              "RelativeToolTip": "MongoConnections\\CustomerCentric\\CustomerCentricSavings.cs",
-              "ViewState": "AQIAAG8AAAAAAAAAAAAIwHUAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-24T07:08:04.551Z",
+              "WhenOpened": "2024-06-04T11:32:27.423Z",
+              "IsPinned": true,
               "EditorCaption": ""
             },
             {
@@ -165,113 +198,276 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Customer.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\MongoConnections\\LoanApplication\\Customer.cs",
-              "RelativeDocumentMoniker": "MongoConnections\\LoanApplication\\Customer.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\MongoConnections\\LoanApplication\\Customer.cs",
-              "RelativeToolTip": "MongoConnections\\LoanApplication\\Customer.cs",
-              "ViewState": "AQIAAH4AAAAAAAAAAIA9wIEAAABLAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-23T13:52:50.02Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ApprovalController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\ApprovalController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LoanUnderwriting\\ApprovalController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\ApprovalController.cs",
-              "RelativeToolTip": "Controllers\\LoanUnderwriting\\ApprovalController.cs",
-              "ViewState": "AQIAABcAAAAAAAAAAAAYwCEAAAA5AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-23T11:13:36.616Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AdjustController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\AdjustController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LoanApplication\\AdjustController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\AdjustController.cs",
-              "RelativeToolTip": "Controllers\\LoanApplication\\AdjustController.cs",
-              "ViewState": "AQIAAJUBAAAAAAAAAAAiwHoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-22T15:54:33.785Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "CustomerController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\CustomerController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LoanApplication\\CustomerController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\CustomerController.cs",
-              "RelativeToolTip": "Controllers\\LoanApplication\\CustomerController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-22T15:53:54.382Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ReviewController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\ReviewController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LoanUnderwriting\\ReviewController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\ReviewController.cs",
-              "RelativeToolTip": "Controllers\\LoanUnderwriting\\ReviewController.cs",
-              "ViewState": "AQIAAKcCAAAAAAAAAAAnwLsCAAA1AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-22T15:51:52.32Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ReturnObject.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\ReturnObject.cs",
-              "RelativeDocumentMoniker": "ReturnObject.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\ReturnObject.cs*",
-              "RelativeToolTip": "ReturnObject.cs*",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAjAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-22T09:43:18.226Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "LoginController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoginController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LoginController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoginController.cs",
-              "RelativeToolTip": "Controllers\\LoginController.cs",
-              "ViewState": "AQIAADQAAAAAAAAAAAAkwCMAAABEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-22T09:26:45.621Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "GeneralSetUpController.cs",
-              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\GeneralSetUpController.cs",
-              "RelativeDocumentMoniker": "Controllers\\GeneralSetUpController.cs",
-              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\GeneralSetUpController.cs",
-              "RelativeToolTip": "Controllers\\GeneralSetUpController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAiAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-21T22:39:23.356Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAACcAAAAAAAAAAAAAADgAAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-05-21T22:38:37.801Z"
+              "WhenOpened": "2024-06-06T10:51:49.263Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ReturnObject.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\ReturnObject.cs",
+              "RelativeDocumentMoniker": "ReturnObject.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\ReturnObject.cs",
+              "RelativeToolTip": "ReturnObject.cs",
+              "ViewState": "AQIAACEAAAAAAAAAAAAzwCYAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T19:33:37.416Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MongoDBSettings.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Config\\MongoDBSettings.cs",
+              "RelativeDocumentMoniker": "Config\\MongoDBSettings.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Config\\MongoDBSettings.cs",
+              "RelativeToolTip": "Config\\MongoDBSettings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAoAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-07T21:15:32.743Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAAACIAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:23:15.635Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LoginController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoginController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LoginController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoginController.cs",
+              "RelativeToolTip": "Controllers\\LoginController.cs",
+              "ViewState": "AQIAAFAAAAAAAAAAAAAUwGEAAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:10:57.711Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DocumentController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\DocumentController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRM\\DocumentController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\DocumentController.cs",
+              "RelativeToolTip": "Controllers\\CRM\\DocumentController.cs",
+              "ViewState": "AQIAABIAAAAAAAAAAAAqwBcAAABzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:20:53.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-07T21:24:39.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ApprovalController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\ApprovalController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LoanUnderwriting\\ApprovalController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\ApprovalController.cs",
+              "RelativeToolTip": "Controllers\\LoanUnderwriting\\ApprovalController.cs",
+              "ViewState": "AQIAACsAAAAAAAAAAAAQwDMAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:10:57.757Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DisbursementController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\DisbursementController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LoanUnderwriting\\DisbursementController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanUnderwriting\\DisbursementController.cs",
+              "RelativeToolTip": "Controllers\\LoanUnderwriting\\DisbursementController.cs",
+              "ViewState": "AQIAAN8AAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:10:57.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DocumentationController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\BridgeLoan\\DocumentationController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BridgeLoan\\DocumentationController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\BridgeLoan\\DocumentationController.cs",
+              "RelativeToolTip": "Controllers\\BridgeLoan\\DocumentationController.cs",
+              "ViewState": "AQIAABEAAAAAAAAAAAAQwBoAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:45:26.619Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AdminProductController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\Administration\\AdminProductController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Administration\\AdminProductController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\Administration\\AdminProductController.cs",
+              "RelativeToolTip": "Controllers\\Administration\\AdminProductController.cs",
+              "ViewState": "AQIAABoAAAAAAAAAAAAAACQAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-07T12:05:19.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Adroit_v8",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Adroit_v8.csproj",
+              "RelativeDocumentMoniker": "Adroit_v8.csproj",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Adroit_v8.csproj",
+              "RelativeToolTip": "Adroit_v8.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-06-06T12:46:00.377Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Helper.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Config\\Helper.cs",
+              "RelativeDocumentMoniker": "Config\\Helper.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Config\\Helper.cs",
+              "RelativeToolTip": "Config\\Helper.cs",
+              "ViewState": "AQIAAAUBAAAAAAAAAAAAwBMBAAB0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T12:47:06.357Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AdjustController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\AdjustController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LoanApplication\\AdjustController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\AdjustController.cs",
+              "RelativeToolTip": "Controllers\\LoanApplication\\AdjustController.cs",
+              "ViewState": "AQIAACoAAAAAAAAAAAAlwDAAAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:10:57.746Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CustomerController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\CustomerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LoanApplication\\CustomerController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\LoanApplication\\CustomerController.cs",
+              "RelativeToolTip": "Controllers\\LoanApplication\\CustomerController.cs",
+              "ViewState": "AQIAAD0CAAAAAAAAAAAUwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:22:52.862Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ResidentialInfoController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\ResidentialInfoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRM\\ResidentialInfoController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\ResidentialInfoController.cs",
+              "RelativeToolTip": "Controllers\\CRM\\ResidentialInfoController.cs",
+              "ViewState": "AQIAAJoAAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:22:15.439Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "EmploymentController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\EmploymentController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRM\\EmploymentController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\EmploymentController.cs",
+              "RelativeToolTip": "Controllers\\CRM\\EmploymentController.cs",
+              "ViewState": "AQIAAKMAAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:21:46.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "NextOfKinController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\NextOfKinController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRM\\NextOfKinController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\NextOfKinController.cs",
+              "RelativeToolTip": "Controllers\\CRM\\NextOfKinController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:20:03.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ClientController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\ClientController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRM\\ClientController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\ClientController.cs",
+              "RelativeToolTip": "Controllers\\CRM\\ClientController.cs",
+              "ViewState": "AQIAADYBAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:20:22.903Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "BankController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\BankController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRM\\BankController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\CRM\\BankController.cs",
+              "RelativeToolTip": "Controllers\\CRM\\BankController.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAAowAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:20:18.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "GeneralSetUpController.cs",
+              "DocumentMoniker": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\GeneralSetUpController.cs",
+              "RelativeDocumentMoniker": "Controllers\\GeneralSetUpController.cs",
+              "ToolTip": "C:\\Users\\Temitayo Oyetunji\\Desktop\\FromXLaptop\\CreditWave\\Adroit_8\\Controllers\\GeneralSetUpController.cs",
+              "RelativeToolTip": "Controllers\\GeneralSetUpController.cs",
+              "ViewState": "AQIAAEoAAAAAAAAAAAAgwAsAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T09:10:57.688Z",
+              "EditorCaption": ""
             }
           ]
         }

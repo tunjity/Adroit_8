@@ -7,6 +7,7 @@ using Adroit_v8.Service;
 using Microsoft.AspNetCore.Authorization;
 using Adroit_v8.Config;
 using Adroit_v8.MongoConnections.Models;
+using Microsoft.Extensions.Options;
 
 namespace Adroit_v8.Controllers.CRM
 {
@@ -19,12 +20,14 @@ namespace Adroit_v8.Controllers.CRM
         private readonly IMongoRepository<CustomerStageHolder> _repoCustomerStageHolder;
         string errMsg = "Unable to process request, kindly try again";
         private readonly IConfiguration _config;
-        public DocumentController(IMongoRepository<ClientDoc> repo,
+        private readonly FileFolderSettings _FileFolderSettings;
+        public DocumentController(IMongoRepository<ClientDoc> repo, IOptions<FileFolderSettings> fileFolderSettings,
             IMongoRepository<CustomerStageHolder> repoCustomerStageHolder, IConfiguration config, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _repo = repo;
             _repoCustomerStageHolder = repoCustomerStageHolder;
             _config = config;
+            _FileFolderSettings = fileFolderSettings.Value;
         }
 
         [HttpPost]
@@ -33,6 +36,8 @@ namespace Adroit_v8.Controllers.CRM
         [Route("add")]
         public async Task<IActionResult> Add([FromForm] ClientDocFM obj)
         {
+
+            var SPath = _FileFolderSettings.Path;
             var RequestTime = DateTime.UtcNow;
             string actionUrl = $"{ControllerContext.RouteData.Values["controller"]}/{ControllerContext.RouteData.Values["action"]}";
             try

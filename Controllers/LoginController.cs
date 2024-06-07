@@ -41,7 +41,7 @@ namespace Adroit_v8.Controllers
 
             try
             {
-                string? clientId = _config.GetSection("SSO").GetSection("clientId").Value;
+                string? clientId = obj.clientId;
                 string? xApiKey = _config.GetSection("SSO").GetSection("XApiKey").Value;
                 string? loggerServiceUrl = _config.GetSection("SSO").GetSection("baseurl").Value;
 
@@ -87,7 +87,7 @@ namespace Adroit_v8.Controllers
             resp.message = "Incorrect Username Or Password";
             try
             {
-                string? clientId = _config.GetSection("SSO").GetSection("clientId").Value;
+                string? clientId = obj.clientId;
                 string? xApiKey = _config.GetSection("SSO").GetSection("XApiKey").Value;
                 string? loggerServiceUrl = _config.GetSection("SSO").GetSection("baseurl").Value;
 

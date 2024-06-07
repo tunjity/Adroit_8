@@ -266,6 +266,14 @@ namespace Adroit_v8.Config
             services.AddScoped(typeof(ISSMongoRepository<>), typeof(SSMongoRepository<>));
             services.AddScoped(typeof(ICustomerCentricRepository<>), typeof(CustomerCentricRepository<>));
             services.AddScoped(typeof(IAdroitRepository<>), typeof(AdroitRepository<>));
+            //services.AddSingleton(configuration.GetSection(nameof(SSOSettings)).Get<SSOSettings>());
+            //services.AddSingleton(configuration.GetSection(nameof(UploadSettings)).Get<UploadSettings>());
+            //services.AddSingleton(configuration.GetSection(nameof(PassPhrasesSettings)).Get<PassPhrasesSettings>());
+            //services.AddSingleton(configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>());
+            //services.AddSingleton(configuration.GetSection(nameof(FileFolderSettings)).Get<FileFolderSettings>());
+            //services.AddSingleton(configuration.GetSection(nameof(SSMongoDBSettings)).Get<SSMongoDBSettings>());
+            //services.AddSingleton(configuration.GetSection(nameof(MongoDB)).Get<MongoDB>());
+            //services.AddSingleton(configuration.GetSection(nameof(DisburseToSettings)).Get<DisburseToSettings>());
             services.AddSingleton(configuration.GetSection(nameof(MongoDBSettings)).Get<MongoDBSettings>());
         }
         public static List<ScheduleResponse> getScheduleAndAmount(decimal interestRate, decimal loanAmount, int duration)

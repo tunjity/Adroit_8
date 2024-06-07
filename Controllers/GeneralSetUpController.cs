@@ -9,7 +9,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using static Adroit_v8.Config.Helper;
 using static Adroit_v8.EnumFile.EnumHelper;
-
 namespace Adroit_v8.Controllers
 {
     [Route("api/[controller]")]

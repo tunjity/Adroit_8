@@ -127,6 +127,10 @@ namespace Adroit_v8.Models.FormModel
     public class UtilityModificationFormModel : UtilityFormModel
     {
         public int Id { get; set; }
+    }  
+    public class UtilityModificationFormModelII
+    {
+        public long Id { get; set; }
     }
     public class AdminProductModificationFormModel : AdminproductFormMode
     {

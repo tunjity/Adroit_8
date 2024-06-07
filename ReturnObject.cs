@@ -12,7 +12,7 @@ namespace Adroit_v8
         public string email { get; set; }
         public string UserId { get; set; }
         public string FirstName { get; set; }
-        public string IsOtpVerified { get; set; }
+        public bool IsOtpVerified { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string ClientId { get; set; }
@@ -35,6 +35,93 @@ namespace Adroit_v8
         public string message { get; set; }
         public int statusCode { get; set; }
         public dynamic data { get; set; }
+    }
+    public class ApiResponse
+    {
+        public Guid? Id { get; set; }
+        public bool Status { get; set; }
+        public string StatusMessage { get; set; }
+        public int StatusCode { get; set; }
+        public Data Data { get; set; }
+    }
+
+    public class Data
+    {
+        public List<Module> Modules { get; set; }
+    }
+
+    public class Module
+    {
+        public Guid ApplicationModuleId { get; set; }
+        public string ApplicationModuleName { get; set; }
+        public List<Page> Pages { get; set; }
+    }
+
+    public class Page
+    {
+        public Guid PageId { get; set; }
+        public string PageName { get; set; }
+        public Permission Permission { get; set; }
+    }
+
+    public class Permission
+    {
+        public bool CanView { get; set; }
+        public bool CanAdd { get; set; }
+        public bool CanUpdate { get; set; }
+        public bool CanRemove { get; set; }
+        public bool CanApprove { get; set; }
+        public bool CanReject { get; set; }
+        public bool CanDecline { get; set; }
+        public bool CanAssign { get; set; }
+        public bool CanReAssign { get; set; }
+        public bool CanReview { get; set; }
+        public bool CanAdjust { get; set; }
+        public bool CanComment { get; set; }
+        public bool CanDownload { get; set; }
+        public bool CanUpload { get; set; }
+        public bool CanSearch { get; set; }
+        public bool CanDisburse { get; set; }
+        public bool CanReturn { get; set; }
+        public bool CanDecide { get; set; }
+        public bool CanEditRepayment { get; set; }
+    }
+    public class NewPermissionObject
+    {
+        public string ModuleName { get; set; }
+        public NewPermissionObjectII NewPermissionObjects { get; set; }
+    }
+    public class NewPermissionObjectII
+    {
+        public string PageId { get; set; }
+        public string PageName { get; set; }
+        public NewPermissionObjectPerm Permissions { get; set; }
+    }    
+    public class NewPermissionObjectPerm
+    {
+        public string ApplicationId { get; set; }
+        public string ApplicationRoleId { get; set; }
+        public string ApplicationPageId { get; set; }
+        public string ApplicationPermissionId { get; set; }
+        public bool CanView { get; set; }
+        public bool CanAdd { get; set; }
+        public bool CanUpdate { get; set; }
+        public bool CanRemove { get; set; }
+        public bool CanApprove { get; set; }
+        public bool CanReject { get; set; }
+        public bool CanDecline { get; set; }
+        public bool CanAssign { get; set; }
+        public bool CanReAssign { get; set; }
+        public bool CanReview { get; set; }
+        public bool CanAdjust { get; set; }
+        public bool CanComment { get; set; }
+        public bool CanDownload { get; set; }
+        public bool CanUpload { get; set; }
+        public bool CanSearch { get; set; }
+        public bool CanDisburse { get; set; }
+        public bool CanReturn { get; set; }
+        public bool CanDecide { get; set; }
+        public bool CanEditRepayment { get; set; }
     }
     public class CustomerCentricResponseEscrow
     {
@@ -127,11 +214,14 @@ namespace Adroit_v8
     }
     public class LoanTransaction
     {
+        public decimal TotalLateFee { get; set; }
+        public long LateFeeNumberOfDays { get; set; }
         public string LoanAmount { get; set; }
         public string LoanApplicationId { get; set; }
-        public string LoanRepaymentId { get; set; }
+        public long LoanRepaymentId { get; set; }
         public string Tenor { get; set; }
-        public string Status { get; set; }
+        public int CustomerId { get; set; }
+        public bool Status { get; set; }
         public bool IsBankDebit { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -208,8 +298,13 @@ public class ApplicationPermissionGetDTo
     public string ApplicationPermissionId { get; set; }
     public string ApplicationPageId { get; set; }
     public string ApplicationId { get; set; }
+    public string ApplicationRoleId { get; set; }
+    public string ApplicationName { get; set; }
+    public string ApplicationModuleName { get; set; }
     public string ApplicationRoleName { get; set; }
     public string ApplicationPageName { get; set; }
+    public string ApplicationPageCode { get; set; }
+    public string ApplicationPageDescription { get; set; }
     public int Status { get; set; }
     public int IsDeleted { get; set; }
     public DateTime DateCreated { get; set; }
@@ -288,6 +383,25 @@ public class ApplicationGetModuleDTO : BaseDtoII
     public string ApplicationModuleCode { get; set; }
     public string ApplicationModuleDescription { get; set; }
 }
+
+
+
+[BsonIgnoreExtraElements]
+[BsonCollection("SSO_UsersCollection")]
+public class SSOUser : BaseDtoII
+{
+    public string UserId { get; set; }
+    public string UserName { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Description { get; set; }
+    public int IsTemporaryStaff { get; set; }
+    public int Status { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+}
+
 
 [BsonIgnoreExtraElements]
 [BsonCollection("SSO_ApplicationPageCollection")]
