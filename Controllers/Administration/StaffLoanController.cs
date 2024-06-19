@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using static Adroit_v8.Config.Helper;
 using static Adroit_v8.EnumFile.EnumHelper;
+using Adroit_v8.Config;
 
 namespace Adroit_v8.Controllers.Administration
 {
@@ -37,6 +38,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("UpdateStaffLoanApprovalStatus")]
@@ -66,7 +68,7 @@ namespace Adroit_v8.Controllers.Administration
                 });
             }
         }
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetStaffLoan")]
@@ -144,7 +146,7 @@ namespace Adroit_v8.Controllers.Administration
                 }));
             }
         }
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetStaffDisbursedLoan")]
@@ -222,7 +224,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
 
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ViewStaffLoan/{loanId}")]
@@ -263,7 +265,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
 
-        [HttpPost]
+        [HttpPost][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("AddStaffLoanInterestRate")]

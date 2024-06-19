@@ -3,6 +3,7 @@ using Adroit_v8.MongoConnections;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Adroit_v8.Config;
 
 namespace Adroit_v8.Controllers.Administration
 {
@@ -18,6 +19,7 @@ namespace Adroit_v8.Controllers.Administration
         }
         #region Manage
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Manage, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addManage")]
@@ -52,6 +54,8 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+
+        [CustomAuthorizeAttribute(AllForms.Manage, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallManage")]
@@ -82,6 +86,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Manage, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getManagebyuniqueid/id")]
@@ -105,6 +110,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpDelete]
+        [CustomAuthorizeAttribute(AllForms.Manage, FormPermissions.CanRemove)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("deleteManagebyuniqueid/id")]
@@ -128,6 +134,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.Manage, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateManage")]

@@ -1,4 +1,5 @@
-﻿using Adroit_v8.Models.Administration;
+﻿using Adroit_v8.Config;
+using Adroit_v8.Models.Administration;
 using Adroit_v8.Models.FormModel;
 using Microsoft.AspNetCore.Authorization;
 
@@ -21,6 +22,7 @@ namespace Adroit_v8.Controllers.Administration
 
         #region LoanTenors
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.LoanTenor, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addLoanTenors")]
@@ -54,6 +56,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.LoanTenor, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallLoanTenors")]
@@ -87,6 +90,7 @@ namespace Adroit_v8.Controllers.Administration
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getall")]
+        [CustomAuthorizeAttribute(AllForms.LoanTenor, FormPermissions.CanView)]
         public Task<IActionResult> GetAll()
         {
             var r = new ReturnObject();
@@ -105,6 +109,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.LoanTenor, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidLoanTenors")]
@@ -135,6 +140,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.LoanTenor, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getLoanTenorbyid/id")]
@@ -158,6 +164,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpDelete]
+        [CustomAuthorizeAttribute(AllForms.LoanTenor, FormPermissions.CanRemove)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("deleteLoanTenorbyid/id")]
@@ -182,6 +189,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.LoanTenor, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateLoanTenor")]

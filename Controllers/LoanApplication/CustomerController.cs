@@ -64,7 +64,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             _repoDoc = repoDoc;
         }
 
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("get")]
@@ -116,7 +116,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyCusId/{cusId}")]
@@ -170,7 +170,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyLoanId/{loanId}")]
@@ -224,9 +224,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-
-
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getCustomerLoanDecision/{cusId}")]
@@ -285,7 +283,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpPost]
+         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addComment")]
@@ -308,7 +306,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getComments/{loanapplicationId}")]
@@ -335,7 +333,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-        [HttpPost]
+         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Decline")]
@@ -401,7 +399,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-        [HttpPost]
+         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addSupportingDocumentGuarantorForm")]
@@ -427,7 +425,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-        [HttpPost]
+         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addSupportingDocumentOtherForms")]
@@ -449,7 +447,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-        [HttpPost]
+         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addRequestedDocument")]
@@ -471,7 +469,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpPut]
+         [HttpPut][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Update")]
@@ -535,7 +533,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRepaymentDetails")]
@@ -572,7 +570,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
        
-        [HttpPost]
+         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Reassignment")]
@@ -601,7 +599,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getReassignmentByUserId/{UserId}")]
@@ -628,7 +626,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-        [HttpGet]
+         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getCustomerDecisionByCusIdByApplicannumber")]

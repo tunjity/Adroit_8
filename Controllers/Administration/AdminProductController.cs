@@ -1,4 +1,5 @@
-﻿using Adroit_v8.Models.Administration;
+﻿using Adroit_v8.Config;
+using Adroit_v8.Models.Administration;
 using Adroit_v8.Models.FormModel;
 using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
@@ -27,7 +28,7 @@ namespace Adroit_v8.Controllers.Administration
 
 
         [HttpPost]
-       //                                 [CustomAuth]
+        [CustomAuthorizeAttribute(AllForms.AdminProduct, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("add")]
@@ -89,6 +90,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.AdminProduct, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getall")]
@@ -102,12 +104,12 @@ namespace Adroit_v8.Controllers.Administration
                 var pro = _repoAdminProduct.GetAll().ToList();
                 foreach (var be in pro)
                 {
-                    if(be.AsEndDate == false)
+                    if (be.AsEndDate == false)
                     {
                         be.Enddate = null;
                     }
                 }
-                    
+
                 var query = from parent in pro
                             join child in ad on parent.Id equals child.ProductId into childGroup
                             join childII in ls on parent.Id equals childII.ProductId into childGroupII
@@ -139,6 +141,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpDelete]
+        [CustomAuthorizeAttribute(AllForms.AdminProduct, FormPermissions.CanRemove)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("deletebyid/id")]
@@ -164,6 +167,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.AdminProduct, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("update")]
@@ -224,118 +228,5 @@ namespace Adroit_v8.Controllers.Administration
                 }));
             }
         }
-        //[HttpGet]
-        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
-        //[SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
-        //[Route("getallvald")]
-        //public Task<IActionResult> GetAllValidBanks()
-        //{
-        //    var r = new ReturnObject();
-        //    r.status = true;
-        //    r.message = "Record Fetched Successfully";
-        //    try
-        //    {
-        //        r.data = _repoBank.GetAllIsValid();
-        //        return Task.FromResult<IActionResult>(Ok(r));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Task.FromResult<IActionResult>(StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
-        //        {
-        //            status = false,
-        //            message =ex.Message
-        //        }));
-        //    }
-        //}
-        //[HttpGet]
-        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
-        //[SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
-        //[Route("getbankbyid/id")]
-        //public Task<IActionResult> GetBanks(int id)
-        //{
-        //    var r = new ReturnObject();
-        //    r.status = true;
-        //    r.message = "Record Fetched Successfully";
-        //    try
-        //    {
-        //        r.data = _repoBank.Get(id);
-        //        return Task.FromResult<IActionResult>(Ok(r));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Task.FromResult<IActionResult>(StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
-        //        {
-        //            status = false,
-        //            message =ex.Message
-        //        }));
-        //    }
-        //}
-        //[HttpDelete]
-        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
-        //[SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
-        //[Route("deletebankbyid/id")]
-        //public Task<IActionResult> DeleteBanks(int id)
-        //{
-        //    var r = new ReturnObject();
-        //    r.status = true;
-        //    r.message = "Record Deleted Successfully";
-        //    try
-        //    {
-        //        var rec = _repoBank.Get(id);
-        //        _repoBank.SoftDelete(rec);
-        //        return Task.FromResult<IActionResult>(Ok(r));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Task.FromResult<IActionResult>(StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
-        //        {
-        //            status = false,
-        //            message =ex.Message
-        //        }));
-        //    }
-        //}
-        //[HttpPut]
-        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
-        //[SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
-        //[Route("updatebank")]
-        //public Task<IActionResult> UpdateBank([FromBody] UtilityModificationFormModel obj)
-        //{
-        //    var r = new ReturnObject();
-        //    r.status = true;
-        //    r.message = "Record updated Successfully";
-        //    try
-        //    {
-        //        var retChecker = _context.Banks.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.Isdeleted == 0);
-        //        if (retChecker is null)
-        //        {
-        //            var ret = _context.Banks.FirstOrDefault(o => o.Name.ToLower() == obj.Name.ToLower() && o.Isdeleted == 0);
-        //            if (ret != null)
-        //            {
-        //                r.status = false;
-        //                r.message = "Record Already Exist";
-        //            }
-        //            else
-        //            {
-        //                r.status = false;
-        //                r.message = "Record Not Found";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            retChecker.Name = obj.Name;
-        //            _repoBank.Update(retChecker);
-        //        }
-
-        //        return Task.FromResult<IActionResult>(Ok(r));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Task.FromResult<IActionResult>(StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject
-        //        {
-        //            status = false,
-        //            message =ex.Message
-        //        }));
-        //    }
-        //}
     }
 }

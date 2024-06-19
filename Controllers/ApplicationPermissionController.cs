@@ -33,6 +33,7 @@ namespace Adroit_v8.Controllers
 
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.ApplicationPermission, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(NewPermissionReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(NewPermissionReturnObject))]
         [Route("get_user_application_pages_permission/{UserId}")]

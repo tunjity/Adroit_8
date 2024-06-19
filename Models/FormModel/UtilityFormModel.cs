@@ -96,6 +96,7 @@ namespace Adroit_v8.Models.FormModel
     }
     public class GeneralTemplate
     {
+        public string ClientId { get; set; }
         public int NotificationType { get; set; }
         public dynamic TemplateModel { get; set; }
     }

@@ -1569,6 +1569,41 @@
   },
   {
     "ContainingType": "Adroit_v8.Controllers.LoginController",
+    "Method": "GetCompanyLogo",
+    "RelativePath": "api/Adroit/Login/GetByClientId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clientId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Adroit_v8.ReturnObject",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 500
+      }
+    ]
+  },
+  {
+    "ContainingType": "Adroit_v8.Controllers.LoginController",
     "Method": "GetByUserId",
     "RelativePath": "api/Adroit/Login/GetByUserId",
     "HttpMethod": "GET",

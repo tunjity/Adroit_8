@@ -1,4 +1,5 @@
 ﻿
+using Adroit_v8.Config;
 using Adroit_v8.MongoConnections;
 using Adroit_v8.MongoConnections.UnderWriterModel;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,7 @@ namespace Adroit_v8.Controllers.Administration
         }
         #region RegularLoanInterestRate
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addRegularLoanInterestRate")]
@@ -54,6 +56,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallRegularLoanInterestRate")]
@@ -84,6 +87,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRegularLoanInterestRatebyuniqueid/id")]
@@ -107,6 +111,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpDelete]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanRemove)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("deleteRegularLoanInterestRatebyuniqueid/id")]
@@ -130,6 +135,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateRegularLoanInterestRate")]
@@ -171,6 +177,7 @@ namespace Adroit_v8.Controllers.Administration
 
         #region RegularLoanCharge
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addRegularLoanCharge")]
@@ -206,6 +213,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallRegularLoanCharge")]
@@ -237,6 +245,7 @@ namespace Adroit_v8.Controllers.Administration
         
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRegularLoanChargebyuniqueid/id")]
@@ -260,6 +269,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetLoanCharge")]
@@ -292,6 +302,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetLoanInterestRate")]
@@ -323,6 +334,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpDelete]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanRemove)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("deleteRegularLoanChargebyuniqueid/id")]
@@ -346,6 +358,7 @@ namespace Adroit_v8.Controllers.Administration
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.UnderRegularLoan, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateRegularLoanCharge")]

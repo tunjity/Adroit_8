@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using Adroit_v8.Config;
 using Adroit_v8.Model;
 using Adroit_v8.Models.CRM;
 using Adroit_v8.Models.FormModel;
@@ -85,6 +86,7 @@ namespace Adroit_v8.Controllers
 
         #region  fixeddeposit
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallfixeddeposits")]
@@ -175,6 +177,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetAllfixeddepositsStattus")]
@@ -202,6 +205,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallfixeddepositsForFilter")]
@@ -249,6 +253,8 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ModifyfixeddepositsWithReferenceId")]
@@ -286,6 +292,7 @@ namespace Adroit_v8.Controllers
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetfixeddepositByCusId/{cusId}")]
@@ -339,6 +346,7 @@ namespace Adroit_v8.Controllers
 
         #region  Savings
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetAllSavingStattus")]
@@ -366,6 +374,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallSavings")]
@@ -460,6 +469,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallSavingsForFilter")]
@@ -498,6 +508,7 @@ namespace Adroit_v8.Controllers
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetSavingsByCusId/{cusId}")]
@@ -544,6 +555,7 @@ namespace Adroit_v8.Controllers
 
         #region  billspayment
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetAllbillspaymentsStattus")]
@@ -572,6 +584,7 @@ namespace Adroit_v8.Controllers
 
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallbillspayments")]
@@ -666,6 +679,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallbillspaymentsForFilter")]
@@ -702,7 +716,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ModifybillsPaymentsStatusWithTransactionReference")]
@@ -738,6 +752,7 @@ namespace Adroit_v8.Controllers
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetbillspaymentByCusId/{cusId}")]
@@ -780,6 +795,7 @@ namespace Adroit_v8.Controllers
         #endregion
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetVerificationDetailByCusId/{cusId}")]
@@ -808,6 +824,7 @@ namespace Adroit_v8.Controllers
         }
         #region  loanRepayment
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallloanRepayment")]
@@ -903,7 +920,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("UpdateRepaymentCloseLateFee")]
@@ -953,6 +970,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetloanRepaymentByCusId/{cusId}")]
@@ -1017,6 +1035,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetRepaymentPlanByCusId/{cusId}/{loanId}")]
@@ -1056,6 +1075,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ManualRepayment")]
@@ -1109,6 +1129,7 @@ namespace Adroit_v8.Controllers
 
         #region  transfer
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getalltransfers")]
@@ -1207,6 +1228,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetAlltransfersStattus")]
@@ -1235,6 +1257,7 @@ namespace Adroit_v8.Controllers
 
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getalltransfersForFilter")]
@@ -1271,7 +1294,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ModifytransferStatusWithTransactionReference")]
@@ -1315,6 +1338,7 @@ namespace Adroit_v8.Controllers
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GettransferByCusId/{cusId}")]
@@ -1357,6 +1381,7 @@ namespace Adroit_v8.Controllers
 
         #region  airtime
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallairtimes")]
@@ -1453,6 +1478,7 @@ namespace Adroit_v8.Controllers
 
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallairtimesForFilter")]
@@ -1489,7 +1515,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ModifyairtimePaymentsStatusWithTransactionReference")]
@@ -1525,6 +1551,7 @@ namespace Adroit_v8.Controllers
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetairtimeByCusId/{cusId}")]
@@ -1565,6 +1592,7 @@ namespace Adroit_v8.Controllers
 
         #region  P2p
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallp2ps")]
@@ -1750,6 +1778,7 @@ namespace Adroit_v8.Controllers
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Getp2pByP2PLoanRequestId/{P2PLoanRequestId}")]
@@ -1793,7 +1822,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Updatep2pById/{MonthlyId}")]
@@ -1824,6 +1853,7 @@ namespace Adroit_v8.Controllers
 
         #region  data
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getalldatas")]
@@ -1918,6 +1948,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getalldatasForFilter")]
@@ -1954,7 +1985,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ModifydataPaymentsStatusWithTransactionReference")]
@@ -1990,6 +2021,7 @@ namespace Adroit_v8.Controllers
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetdataByCusId/{cusId}")]
@@ -2030,6 +2062,7 @@ namespace Adroit_v8.Controllers
 
         #region  loanbidding
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallloanbiddings")]
@@ -2094,6 +2127,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetloanbiddingByLoanOfferId/{loanOfferId}")]
@@ -2125,6 +2159,7 @@ namespace Adroit_v8.Controllers
 
         #region  escrow
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetAllEscrowStatus")]
@@ -2152,6 +2187,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallescrows")]
@@ -2302,7 +2338,7 @@ namespace Adroit_v8.Controllers
 
         // Method for getting all savings by customer ID
         // Returns a list of savings or an error message with status code
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.CustomerCentric, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ModifyescrowPaymentsStatusWithTransactionReference")]

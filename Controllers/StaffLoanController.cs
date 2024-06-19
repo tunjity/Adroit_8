@@ -1,4 +1,5 @@
 
+using Adroit_v8.Config;
 using Adroit_v8.Models.FormModel;
 using Adroit_v8.MongoConnections;
 using Adroit_v8.Service;
@@ -37,6 +38,7 @@ namespace Adroit_v8.Controllers
             _CustomerLoanStage = database.GetCollection<StaffLoanModel>("StaffLoan");
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetStaffLoanType")]
@@ -64,7 +66,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetStaffLoanApprovalStatus")]
@@ -94,7 +96,7 @@ namespace Adroit_v8.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("UpdateStaffLoanApprovalStatus")]
@@ -124,7 +126,7 @@ namespace Adroit_v8.Controllers
                 });
             }
         }
-        [HttpPost]
+        [HttpPost][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addStaffLoan")]
@@ -152,7 +154,7 @@ namespace Adroit_v8.Controllers
                 });
             }
         }
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetEndDate")]
@@ -164,7 +166,7 @@ namespace Adroit_v8.Controllers
             r.data = Convert.ToDateTime(startDate).AddMonths(tenor);
             return Ok(r);
         }
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("GetStaffLoanInterestRate")]
@@ -187,7 +189,7 @@ namespace Adroit_v8.Controllers
                 }));
             }
         }
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ViewStaffLoan/{loanId}")]
@@ -228,7 +230,7 @@ namespace Adroit_v8.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost][CustomAuthorizeAttribute(AllForms.StaffLoan, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("AddStaffLoanInterestRate")]

@@ -19,6 +19,11 @@ namespace Adroit_v8
         public string ApplicationId { get; set; }
         public string CreatedBy { get; set; }
     }
+    public class ReturnObjectImage
+    {
+        public byte[] Data { get; set; }
+        public string ContentType { get; set; }
+    }
     public class ReturnObject
     {
         public string id { get; set; }
@@ -85,6 +90,10 @@ namespace Adroit_v8
         public bool CanReturn { get; set; }
         public bool CanDecide { get; set; }
         public bool CanEditRepayment { get; set; }
+        public bool canModify { get; set; }
+        public bool canStopDisbursement { get; set; }
+        public bool canDisburseManually { get; set; }
+        public bool canRepayManually { get; set; }
     }
     public class NewPermissionObject
     {
@@ -105,6 +114,10 @@ namespace Adroit_v8
         public string ApplicationPermissionId { get; set; }
         public bool CanView { get; set; }
         public bool CanAdd { get; set; }
+        public bool canModify { get; set; }
+        public bool canStopDisbursement { get; set; }
+        public bool canDisburseManually { get; set; }
+        public bool canRepayManually { get; set; }
         public bool CanUpdate { get; set; }
         public bool CanRemove { get; set; }
         public bool CanApprove { get; set; }
@@ -123,6 +136,8 @@ namespace Adroit_v8
         public bool CanDecide { get; set; }
         public bool CanEditRepayment { get; set; }
     }
+    //
+    //07062025957
     public class CustomerCentricResponseEscrow
     {
         public string TransactionReference { get; set; }

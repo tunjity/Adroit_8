@@ -1,4 +1,5 @@
-﻿using Adroit_v8.Models.FormModel;
+﻿using Adroit_v8.Config;
+using Adroit_v8.Models.FormModel;
 using Adroit_v8.MongoConnections.LoanApplication;
 using Adroit_v8.MongoConnections.Models;
 using Adroit_v8.Service;
@@ -66,7 +67,7 @@ namespace Adroit_v8.Controllers
        IGenericRepository<RegularLoanInterestRate> repoRegularLoanInterestRate,
        IGenericRepository<FixedDepositInterestRate> repoFixedDepositInterestRate,
         IAdroitRepository<CustomerReasonToDecline> repo,
-        IGenericRepository<Bank> repoBank, IGenericRepository<GovernmentIDCardType> repoGovernmentIDCardType,  IGenericRepository<RegularLoanTenor> repoRegularLoanTenor, IGenericRepository<EmploymentSector> repoEmploymentSector, IGenericRepository<Applicationchannel> repoApplicationchannel, IGenericRepository<Educationallevel> repoEducationallevel,
+        IGenericRepository<Bank> repoBank, IGenericRepository<GovernmentIDCardType> repoGovernmentIDCardType, IGenericRepository<RegularLoanTenor> repoRegularLoanTenor, IGenericRepository<EmploymentSector> repoEmploymentSector, IGenericRepository<Applicationchannel> repoApplicationchannel, IGenericRepository<Educationallevel> repoEducationallevel,
             IGenericRepository<Employmentstatus> repoEmploymentstatus, IGenericRepository<Employmenttype> repoEmploymenttype, IGenericRepository<Gender> repoGender, IGenericRepository<Lga> repoLga,
            IMapper mapper, IGenericRepository<DeclineReason> repoDeclineReason, IGenericRepository<Maritalstatus> repoMaritalstatus, IGenericRepository<Nationality> repoNationality, IGenericRepository<Noofdependant> repoNoofdependant,
             IGenericRepository<Noofyearofresidence> repoNoofyearofresidence, IGenericRepository<Organization> repoOrganization, IGenericRepository<Residentialstatus> repoResidentialstatus,
@@ -88,7 +89,7 @@ namespace Adroit_v8.Controllers
             _repoFeeFrequency = repoFeeFrequency;
             _repoLateFeePrincipal = repoLateFeePrincipal;
             _repoGovernmentIDCardType = repoGovernmentIDCardType;
-          //  _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            //  _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _repoRegularLoanTenor = repoRegularLoanTenor;
             _repoEmploymentSector = repoEmploymentSector;
             _repoApplicationchannel = repoApplicationchannel;
@@ -115,6 +116,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getCustomerReasonToDecline")]
@@ -123,7 +125,7 @@ namespace Adroit_v8.Controllers
             var r = new ReturnObject();
             try
             {
-                var res =_repo.AsQueryable();
+                var res = _repo.AsQueryable();
                 r.status = true;
                 r.message = "Record Found Successfully";
                 r.data = res;
@@ -138,8 +140,9 @@ namespace Adroit_v8.Controllers
                 });
             }
         }
-      
+
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addCustomerReasonToDecline")]
@@ -168,6 +171,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("CustomerReasonToDeclinebyuniqueid/{id}")]
@@ -187,6 +191,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("UpdateCustomerReasonToDecline")]
@@ -230,6 +235,7 @@ namespace Adroit_v8.Controllers
         }
         #region LateFeePrincipal
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addLateFeePrincipal")]
@@ -267,6 +273,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallLateFeePrincipals")]
@@ -290,6 +297,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidLateFeePrincipals")]
@@ -313,6 +321,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getLateFeePrincipalbyid/id")]
@@ -360,6 +369,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateLateFeePrincipal")]
@@ -399,6 +409,7 @@ namespace Adroit_v8.Controllers
 
         #region LateFeeType
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addLateFeeTypes")]
@@ -433,6 +444,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallLateFeeTypes")]
@@ -456,6 +468,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidLateFeeTypes")]
@@ -479,6 +492,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getLateFeeTypebyid/id")]
@@ -526,6 +540,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateLateFeeType")]
@@ -564,6 +579,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region DeclineReason
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addDeclineReasons")]
@@ -598,6 +614,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallDeclineReason")]
@@ -621,6 +638,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidDeclineReasons")]
@@ -644,6 +662,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getDeclineReasonbyid/id")]
@@ -691,6 +710,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateDeclineReason")]
@@ -729,6 +749,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region FeeFrequency
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addFeeFrequencys")]
@@ -763,6 +784,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallFeeFrequencys")]
@@ -786,6 +808,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidFeeFrequencys")]
@@ -809,6 +832,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getFeeFrequencybyid/id")]
@@ -856,6 +880,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateFeeFrequency")]
@@ -894,6 +919,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region GovernmentIDCardType
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addGovernmentIDCardTypes")]
@@ -929,6 +955,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallGovernmentIDCardTypes")]
@@ -952,6 +979,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidGovernmentIDCardTypes")]
@@ -975,6 +1003,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getGovernmentIDCardTypebyid/id")]
@@ -1022,6 +1051,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateGovernmentIDCardType")]
@@ -1060,6 +1090,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region FixedDepositTenor
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addFixedDepositTenor")]
@@ -1094,6 +1125,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallFixedDepositTenor")]
@@ -1117,6 +1149,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidFixedDepositTenors")]
@@ -1140,6 +1173,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getFixedDepositTenorbyid/id")]
@@ -1187,6 +1221,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateFixedDepositTenor")]
@@ -1227,6 +1262,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region FixedDepositPreliquidationCharges
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addFixedDepositPreliquidationCharges")]
@@ -1260,6 +1296,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallFixedDepositPreliquidationCharges")]
@@ -1283,6 +1320,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidFixedDepositAmountRange")]
@@ -1306,6 +1344,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getFixedDepositAmountRangebyid/id")]
@@ -1353,6 +1392,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateFixedDepositAmountRange")]
@@ -1391,6 +1431,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region FixedDepositAmountRange
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addFixedDepositAmountRange")]
@@ -1422,6 +1463,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallFixedDepositAmountRange")]
@@ -1445,6 +1487,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidFixedDepositPreliquidationCharges")]
@@ -1468,6 +1511,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getFixedDepositPreliquidationChargesbyid/id")]
@@ -1515,6 +1559,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateFixedDepositPreliquidationCharges")]
@@ -1555,6 +1600,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region RegularLoanInterestRate
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addRegularLoanInterestRate")]
@@ -1588,6 +1634,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallRegularLoanInterestRate")]
@@ -1611,6 +1658,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidRegularLoanInterestRate")]
@@ -1634,6 +1682,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRegularLoanInterestRatebyid/id")]
@@ -1681,6 +1730,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateRegularLoanInterestRate")]
@@ -1721,6 +1771,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region FixedDepositInterestRate
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addFixedDepositInterestRate")]
@@ -1755,6 +1806,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallFixedDepositInterestRate")]
@@ -1778,6 +1830,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidFixedDepositInterestRate")]
@@ -1801,6 +1854,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getFixedDepositInterestRatebyid/id")]
@@ -1848,6 +1902,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateFixedDepositInterestRate")]
@@ -1888,6 +1943,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region RegularLoanCharge
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addRegularLoanCharge")]
@@ -1923,6 +1979,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallRegularLoanCharge")]
@@ -1946,6 +2003,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidRegularLoanCharge")]
@@ -1969,6 +2027,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRegularLoanChargebyid/id")]
@@ -2016,6 +2075,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateRegularLoanCharge")]
@@ -2058,6 +2118,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region FixedDepositStatus
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addFixedDepositStatus")]
@@ -2091,6 +2152,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallFixedDepositStatus")]
@@ -2114,6 +2176,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidFixedDepositStatus")]
@@ -2137,6 +2200,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getFixedDepositStatusbyid/id")]
@@ -2184,6 +2248,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateFixedDepositStatus")]
@@ -2221,6 +2286,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region banks
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addbanks")]
@@ -2254,6 +2320,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallbanks")]
@@ -2277,6 +2344,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidbanks")]
@@ -2300,6 +2368,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbankbyid/id")]
@@ -2347,6 +2416,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateBank")]
@@ -2387,6 +2457,7 @@ namespace Adroit_v8.Controllers
         #region RegularLoanTenor
         /// RegularLoanTenors region
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addRegularLoanTenors")]
@@ -2420,6 +2491,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallRegularLoanTenors")]
@@ -2443,6 +2515,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidRegularLoanTenors")]
@@ -2466,6 +2539,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRegularLoanTenorbyid/id")]
@@ -2513,6 +2587,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateRegularLoanTenor")]
@@ -2551,6 +2626,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Applicationchannels
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addApplicationchannels")]
@@ -2584,6 +2660,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallApplicationchannels")]
@@ -2607,6 +2684,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidApplicationchannels")]
@@ -2630,6 +2708,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getApplicationchannelbyid/id")]
@@ -2677,6 +2756,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateApplicationchannel")]
@@ -2714,6 +2794,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region EducationalLevel
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addeducationallevels")]
@@ -2747,6 +2828,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallEducationalLevels")]
@@ -2770,6 +2852,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidEducationalLevels")]
@@ -2793,6 +2876,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getEducationalLevelbyid/id")]
@@ -2840,6 +2924,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateEducationalLevel")]
@@ -2877,6 +2962,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Employmentstatuss
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addEmploymentstatuss")]
@@ -2910,6 +2996,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallEmploymentstatuss")]
@@ -2933,6 +3020,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidEmploymentstatuss")]
@@ -2956,6 +3044,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getEmploymentstatusbyid/id")]
@@ -3003,6 +3092,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateEmploymentstatus")]
@@ -3040,6 +3130,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region EmploymentSector
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addEmploymentSector")]
@@ -3074,6 +3165,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallEmploymentSector")]
@@ -3097,6 +3189,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidEmploymentSector")]
@@ -3120,6 +3213,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getEmploymentSectorbyid/id")]
@@ -3167,6 +3261,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateEmploymentSector")]
@@ -3205,6 +3300,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Employmenttypes
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addEmploymenttypes")]
@@ -3239,6 +3335,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallEmploymenttypes")]
@@ -3262,6 +3359,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidEmploymenttypes")]
@@ -3285,6 +3383,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getEmploymenttypebyid/id")]
@@ -3332,6 +3431,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateEmploymenttype")]
@@ -3369,6 +3469,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Genders
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addGenders")]
@@ -3403,6 +3504,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallGenders")]
@@ -3426,6 +3528,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidGenders")]
@@ -3449,6 +3552,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getGenderbyid/id")]
@@ -3496,6 +3600,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateGender")]
@@ -3534,6 +3639,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Lgas
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addLgas")]
@@ -3569,6 +3675,7 @@ namespace Adroit_v8.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallLgasByStateId")]
@@ -3592,6 +3699,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallLgas")]
@@ -3615,6 +3723,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidLgas")]
@@ -3638,6 +3747,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getLgabyid/id")]
@@ -3685,6 +3795,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateLga")]
@@ -3723,6 +3834,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Maritalstatuss
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addMaritalstatuss")]
@@ -3757,6 +3869,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallMaritalstatuss")]
@@ -3780,6 +3893,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidMaritalstatuss")]
@@ -3803,6 +3917,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getMaritalstatusbyid/id")]
@@ -3850,6 +3965,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateMaritalstatus")]
@@ -3888,6 +4004,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Country
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addCountry")]
@@ -3922,6 +4039,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallCountry")]
@@ -3945,6 +4063,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidCountry")]
@@ -3968,6 +4087,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getCountrybyid/id")]
@@ -4015,6 +4135,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateCountry")]
@@ -4053,6 +4174,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Nationalitys
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addNationalitys")]
@@ -4087,6 +4209,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallNationalitys")]
@@ -4110,6 +4233,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidNationalitys")]
@@ -4133,6 +4257,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getNationalitybyid/id")]
@@ -4180,6 +4305,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateNationality")]
@@ -4218,6 +4344,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Noofdependants
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addNoofdependants")]
@@ -4252,6 +4379,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallNoofdependants")]
@@ -4275,6 +4403,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidNoofdependants")]
@@ -4298,6 +4427,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getNoofdependantbyid/id")]
@@ -4345,6 +4475,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateNoofdependant")]
@@ -4383,6 +4514,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Noofyearofresidences
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addNoofyearofresidences")]
@@ -4417,6 +4549,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallNoofyearofresidences")]
@@ -4440,6 +4573,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidNoofyearofresidences")]
@@ -4463,6 +4597,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getNoofyearofresidencebyid/id")]
@@ -4510,6 +4645,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateNoofyearofresidence")]
@@ -4548,6 +4684,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Organizations
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addOrganizations")]
@@ -4582,6 +4719,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallOrganizations")]
@@ -4605,6 +4743,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidOrganizations")]
@@ -4628,6 +4767,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getOrganizationbyid/id")]
@@ -4675,6 +4815,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateOrganization")]
@@ -4712,6 +4853,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Residentialstatuss
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addResidentialstatuss")]
@@ -4746,6 +4888,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallResidentialstatuss")]
@@ -4769,6 +4912,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidResidentialstatuss")]
@@ -4792,6 +4936,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getResidentialstatusbyid/id")]
@@ -4839,6 +4984,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateResidentialstatus")]
@@ -4877,6 +5023,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Salarypaymentdates
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addSalarypaymentdates")]
@@ -4911,6 +5058,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallSalarypaymentdates")]
@@ -4934,6 +5082,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidSalarypaymentdates")]
@@ -4957,6 +5106,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getSalarypaymentdatebyid/id")]
@@ -5004,6 +5154,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateSalarypaymentdate")]
@@ -5042,6 +5193,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Salaryranges
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addSalaryranges")]
@@ -5076,6 +5228,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallSalaryranges")]
@@ -5099,6 +5252,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidSalaryranges")]
@@ -5122,6 +5276,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getSalaryrangebyid/id")]
@@ -5169,6 +5324,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateSalaryrange")]
@@ -5207,6 +5363,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region States
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addStates")]
@@ -5241,6 +5398,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallStates")]
@@ -5264,6 +5422,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidStates")]
@@ -5287,6 +5446,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallStatesByCountryId")]
@@ -5310,6 +5470,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getStatebyid/id")]
@@ -5357,6 +5518,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateState")]
@@ -5395,6 +5557,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region Titles
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addTitles")]
@@ -5429,6 +5592,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallTitles")]
@@ -5452,6 +5616,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidTitles")]
@@ -5475,6 +5640,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getTitlebyid/id")]
@@ -5522,6 +5688,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateTitle")]
@@ -5560,6 +5727,7 @@ namespace Adroit_v8.Controllers
         #endregion
         #region UtilityBillTypes
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addUtilityBillTypes")]
@@ -5594,6 +5762,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallUtilityBillTypes")]
@@ -5617,6 +5786,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidUtilityBillTypes")]
@@ -5640,6 +5810,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getUtilityBillTypebyid/id")]
@@ -5687,6 +5858,7 @@ namespace Adroit_v8.Controllers
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.GeneralSetUp, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateUtilityBillType")]

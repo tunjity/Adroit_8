@@ -1,4 +1,5 @@
-﻿using Adroit_v8.Models.Administration;
+﻿using Adroit_v8.Config;
+using Adroit_v8.Models.Administration;
 using Adroit_v8.Models.FormModel;
 using Microsoft.AspNetCore.Authorization;
 
@@ -27,6 +28,8 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.UnderwriterLevel, FormPermissions.CanAdd)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addUnderwriterLevels")]
@@ -75,6 +78,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderwriterLevel, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallUnderwriterLevels")]
@@ -105,6 +109,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderwriterLevel, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getall")]
@@ -126,6 +131,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderwriterLevel, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalidUnderwriterLevels")]
@@ -158,6 +164,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.UnderwriterLevel, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getUnderwriterLevelbyid/id")]
@@ -181,6 +188,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpDelete]
+        [CustomAuthorizeAttribute(AllForms.UnderwriterLevel, FormPermissions.CanRemove)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("deleteUnderwriterLevelbyid/id")]
@@ -207,6 +215,7 @@ namespace Adroit_v8.Controllers.Administration
         }
 
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.UnderwriterLevel, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("updateUnderwriterLevel")]

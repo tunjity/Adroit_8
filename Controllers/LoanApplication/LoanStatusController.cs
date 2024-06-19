@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using static Adroit_v8.EnumFile.EnumHelper;
 using Adroit_v8.MongoConnections.LoanApplication;
 using Newtonsoft.Json;
+using Adroit_v8.Config;
 
 namespace Adroit_v8.Controllers.LoanApplication
 {
@@ -22,7 +23,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             _repo = repo;
         }
 
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.LoanStatus, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("get")]
@@ -46,7 +47,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.LoanStatus, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getallvalid")]
@@ -72,6 +73,8 @@ namespace Adroit_v8.Controllers.LoanApplication
         }
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.LoanStatus, FormPermissions.CanAdd)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("add")]
@@ -102,7 +105,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.LoanStatus, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("byuniqueid/{id}")]
@@ -125,6 +128,8 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.LoanStatus, FormPermissions.CanUpdate)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Update")]

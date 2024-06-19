@@ -54,6 +54,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             clientId = GetAuthData().ClientId;
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Adjust, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("get")]
@@ -107,6 +108,7 @@ namespace Adroit_v8.Controllers.LoanApplication
 
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Adjust, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyCusId/{cusId}")]
@@ -171,6 +173,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Adjust, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyLoanId/{loanId}")]
@@ -237,6 +240,7 @@ namespace Adroit_v8.Controllers.LoanApplication
 
 
         [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Adjust, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyloantype")]
@@ -373,6 +377,7 @@ namespace Adroit_v8.Controllers.LoanApplication
 
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Adjust, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Update")]
@@ -402,6 +407,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Adjust, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("UpdateWithBankStatement")]
@@ -512,6 +518,7 @@ namespace Adroit_v8.Controllers.LoanApplication
         }
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Adjust, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Decline")]

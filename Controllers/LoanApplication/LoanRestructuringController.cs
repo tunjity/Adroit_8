@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using static Adroit_v8.EnumFile.EnumHelper;
 using static Adroit_v8.Config.Helper;
 using Adroit_v8.MongoConnections.LoanApplication;
+using Adroit_v8.Config;
 
 namespace Adroit_v8.Controllers.LoanApplication
 {
@@ -25,7 +26,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             _repo = repo;
         }
 
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.LoanRestructuring, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("get")]
@@ -87,7 +88,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                 }));
             }
         }
-        [HttpPost]
+        [HttpPost][CustomAuthorizeAttribute(AllForms.LoanRestructuring, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Update")]
@@ -118,7 +119,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.LoanRestructuring, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ViewLoan/{loanId}")]
@@ -166,10 +167,5 @@ namespace Adroit_v8.Controllers.LoanApplication
                 }));
             }
         }
-
-
-
     }
 }
-
-//api/LoanApplication/Adjust/UpdateWithBankStatement

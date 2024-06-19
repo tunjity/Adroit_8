@@ -5,6 +5,7 @@ using static Adroit_v8.EnumFile.EnumHelper;
 using static Adroit_v8.Config.Helper;
 using Adroit_v8.MongoConnections.CustomerCentric;
 using Adroit_v8.Model;
+using Adroit_v8.Config;
 
 namespace Adroit_v8.Controllers.LoanApplication
 {
@@ -31,7 +32,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             _repoDoc = repoDoc;
         }
 
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.Declined, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("get")]
@@ -82,7 +83,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.Declined, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyCusId/{cusId}")]
@@ -123,7 +124,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
         
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.Declined, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyLoanId/{loanId}")]
@@ -164,7 +165,7 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-        [HttpGet]
+        [HttpGet][CustomAuthorizeAttribute(AllForms.Declined, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyloantype")]

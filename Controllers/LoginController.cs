@@ -1,8 +1,10 @@
-﻿using Adroit_v8.MongoConnections;
+﻿using Adroit_v8.Config;
+using Adroit_v8.MongoConnections;
 using Adroit_v8.MongoConnections.LoanApplication;
 using Adroit_v8.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System.Text;
@@ -15,16 +17,21 @@ namespace Adroit_v8.Controllers
     [ApiController]
     public class LoginController : AuthController
     {
+        private readonly SSOSettings _FileFolderSettings;
         // private Microsoft.Extensions.Caching.Memory.IMemoryCache cache;
         private readonly IConfiguration _config;
         string errMsg = "Unable to process request, kindly try again";
         string clientId = "";
         private readonly IMapper _mapper;
-        public LoginController(IConfiguration config, IMapper mapper,
+        private readonly IWebHostEnvironment _environment;
+        public LoginController(IConfiguration config, IWebHostEnvironment environment, IMapper mapper,
+            IOptions<SSOSettings> fileFolderSettings,
             IHttpContextAccessor httpContextAccessor)
             : base(httpContextAccessor)
         {
             _config = config;
+            _environment = environment;
+            _FileFolderSettings = fileFolderSettings.Value;
             clientId = _config.GetSection("MongoDB").GetSection("ConnectionURI").Value;
             _mapper = mapper;
         }
@@ -306,6 +313,46 @@ namespace Adroit_v8.Controllers
 
         //    return new ReturnObject { status = true, statusCode = 200, message = "Successful", data = p };
         //}
+        
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
+        [Route("GetByClientId")]
+        public async Task<ReturnObjectImage> GetCompanyLogo(string clientId)
+        {
+            using var httpclient = new HttpClient();
+            StringContent? requestApi = null;
+            HttpResponseMessage? rawResponse = null;
+            var url = _FileFolderSettings.PermissionUrl;
+            string xApiKey = _FileFolderSettings.XApiKey;
+            url = url.Replace("@@ClientId", clientId);
+            httpclient.DefaultRequestHeaders.Add("XApiKey", xApiKey);
+            rawResponse = await httpclient.GetAsync(url);
+            var r1 = await rawResponse.Content.ReadAsStringAsync();
+            int statusCode = (int)rawResponse.StatusCode;
+            var r = JsonConvert.DeserializeObject<newRootobject>(r1);
+            //
+            var imagePath = Path.Combine(_environment.ContentRootPath, "LogoPath", "testLogo.jpg");
+
+            var imageUrl = r.data.clientLogo;
+
+            var response = await httpclient.GetAsync(imageUrl);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+
+            // var imagePath = Path.Combine(@"C:\Users\Temitayo Oyetunji\Desktop\FromXLaptop\CreditWave\LoanOfferLetter\LogoPath", "testLogo.jpg");
+            var returnObject = new ReturnObjectImage();
+
+
+            returnObject.Data = await response.Content.ReadAsByteArrayAsync();
+            returnObject.ContentType = response.Content.Headers.ContentType?.ToString() ?? "application/octet-stream";
+
+            return returnObject;
+        }
 
     }
 }

@@ -83,7 +83,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             _customerDet = database.GetCollection<RegularLoanDisbursement>("RegularLoanDisbursement");
             _repoDoc = repoDoc;
         }
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyloantype")]
@@ -218,7 +218,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
         }
 
 
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("get")]
@@ -269,7 +269,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 });
             }
         }
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyCusId/{cusId}")]
@@ -322,7 +322,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
                 });
             }
         }
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyLoanId/{loanId}")]
@@ -377,6 +377,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
         }
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanAdd)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addComment")]
@@ -398,6 +400,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             }
         }
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanAdd)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Decline")]
@@ -430,7 +434,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             }
         }
 
-        [HttpPost]
+        [HttpPost][CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getComments")]
@@ -460,6 +464,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
 
 
         [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanAdd)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("ManualDisbursementDeterminate")]
@@ -542,6 +548,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanUpdate)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Update")]
@@ -602,6 +610,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanUpdate)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Return")]
@@ -662,6 +672,8 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             }
         }
         [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanUpdate)]
+
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Disburse")]
@@ -1002,7 +1014,7 @@ namespace Adroit_v8.Controllers.LoanUnderwriting
             }
         }
 
-        [HttpGet]
+      [HttpGet][CustomAuthorizeAttribute(AllForms.Approval, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRepaymentDetails")]

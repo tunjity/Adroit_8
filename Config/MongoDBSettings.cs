@@ -3,6 +3,7 @@
     public class SSOSettings
     {
         public string Permission { get; set; } = null!;
+        public string PermissionUrl { get; set; } = null!;
         public string applicationId { get; set; } = null!;
         public string clientId { get; set; } = null!;
         public string XApiKey { get; set; } = null!;
