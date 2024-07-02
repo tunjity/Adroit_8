@@ -227,7 +227,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                     aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
 
-                    var finalres = new { Information = aa, bankStatement = resBs != null ? resBs : resBsII };
+                    var finalres = new { Information = aa, bankStatement = res.BankStatementType.ToLower() == "mono" ? resBsII : resBs };
                     r.data = finalres;
                 }
                 r.status = res != null ? true : false;
