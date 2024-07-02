@@ -64,7 +64,9 @@ namespace Adroit_v8.Controllers.LoanApplication
             _repoDoc = repoDoc;
         }
 
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("get")]
@@ -116,7 +118,8 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyCusId/{cusId}")]
@@ -151,7 +154,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -170,34 +173,50 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getbyLoanId/{loanId}")]
         public async Task<IActionResult> GetByLoanId([FromRoute] string loanId)
         {
+            RegularLoanStepSix? resBsII = new RegularLoanStepSix();
             var r = new ReturnObject();
             try
             {
+                LoanApplicationVM aa = new LoanApplicationVM();
                 RegularLoan? res = _repo.AsQueryable().FirstOrDefault(o => o.LoanApplicationId == loanId && o.Status == (int)AdroitLoanApplicationStatus.Under_Review);
                 if (res != null)
                 {
-                    RegularLoanStepSix? resBs = _repoDoc.AsQueryable().FirstOrDefault(o => o.CustomerId == res.CustomerId && o.LoanApplicationId == res.ApplicantNumber);
-                    if (resBs is not null)
+                    var resBs = _repoDoc.AsQueryable().FirstOrDefault(o => o.CustomerId == res.CustomerId && o.LoanApplicationId == res.ApplicantNumber);
+
+                    switch (res.BankStatementType.ToLower())
                     {
-                        var SavePath = $"{_config["FileFolder:BankStatementPath"]}/{resBs.BankStatementOfAccount}";
+                        case "manual":
+                            if (resBs is not null)
+                            {
+                                var SavePath = $"{_config["FileFolder:BankStatementPath"]}/{resBs.BankStatementOfAccount}";
 
-                        var client = new HttpClient();
-                        var request = new HttpRequestMessage(HttpMethod.Get, SavePath);
+                                var client = new HttpClient();
+                                var request = new HttpRequestMessage(HttpMethod.Get, SavePath);
 
-                        var response = await client.SendAsync(request);
-                        response.EnsureSuccessStatusCode();
-                        var image = await response.Content.ReadAsByteArrayAsync();
+                                var response = await client.SendAsync(request);
+                                response.EnsureSuccessStatusCode();
+                                var image = await response.Content.ReadAsByteArrayAsync();
 
-                        resBs.BankStatementOfAccount = Convert.ToBase64String(image);
+                                resBs.BankStatementOfAccount = Convert.ToBase64String(image);
+                            }
+                            break;
+                        case "mono":
+                            ////// to work on later
+                            resBsII.BankStatementOfAccount = "";
+                            aa.MonoResType = "pdf";//"json"
+                            break;
+                        default:
+                            break;
                     }
                     string? enumName = Enum.GetName(typeof(AdroitLoanApplicationStatus), res.Status);
-                    LoanApplicationVM aa = new LoanApplicationVM();
+
                     aa.ApplicationId = res.ApplicantNumber;
                     aa.SubmissionDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
                     aa.ApplicationDate = res.DateCreated.ToString("dddd, dd MMMM yyyy");
@@ -205,9 +224,10 @@ namespace Adroit_v8.Controllers.LoanApplication
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
-                    var finalres = new { Information = aa, bankStatement = resBs };
+
+                    var finalres = new { Information = aa, bankStatement = resBs != null ? resBs : resBsII };
                     r.data = finalres;
                 }
                 r.status = res != null ? true : false;
@@ -224,7 +244,8 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getCustomerLoanDecision/{cusId}")]
@@ -264,7 +285,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                     aa.Duration = res.LoanDuration.ToString();
                     aa.AssignedLoanOfficer = "N/A";
                     aa.Status = enumName != null ? enumName : "N/A";
-                    aa.AmountRequested = res.LoanAmount.ToString();aa.Interest = res.Interest.ToString();
+                    aa.AmountRequested = res.LoanAmount.ToString(); aa.Interest = res.Interest.ToString();
                     aa.TotalAmount = res.LoanAmount.ToString();
                     var finalres = new { Information = aa, bankStatement = resBs };
                     r.data = finalres;
@@ -283,7 +304,8 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
+        [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addComment")]
@@ -306,7 +328,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getComments/{loanapplicationId}")]
@@ -333,7 +356,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
+        [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Decline")]
@@ -399,7 +423,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
+        [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addSupportingDocumentGuarantorForm")]
@@ -425,7 +450,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
+        [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addSupportingDocumentOtherForms")]
@@ -447,7 +473,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                 return StatusCode(StatusCodes.Status500InternalServerError, new ReturnObject { status = false, message = "Error occured while processing request, please try again." });
             }
         }
-         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
+        [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("addRequestedDocument")]
@@ -469,7 +496,8 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-         [HttpPut][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanUpdate)]
+        [HttpPut]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanUpdate)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Update")]
@@ -533,7 +561,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getRepaymentDetails")]
@@ -554,7 +583,7 @@ namespace Adroit_v8.Controllers.LoanApplication
                         TotalPayment = Math.Round(o.PrincipalAmount + o.Interest).ToString()
                     });
                 }
-               
+
                 r.data = lstRes;
                 r.status = lstRes != null ? true : false;
                 r.message = lstRes != null ? "Record Found Successfully" : "Not Found";
@@ -569,8 +598,9 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-       
-         [HttpPost][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
+
+        [HttpPost]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanAdd)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("Reassignment")]
@@ -599,7 +629,8 @@ namespace Adroit_v8.Controllers.LoanApplication
             }
         }
 
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getReassignmentByUserId/{UserId}")]
@@ -626,7 +657,8 @@ namespace Adroit_v8.Controllers.LoanApplication
                 });
             }
         }
-         [HttpGet][CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
+        [HttpGet]
+        [CustomAuthorizeAttribute(AllForms.Customer, FormPermissions.CanView)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ReturnObject))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ReturnObject))]
         [Route("getCustomerDecisionByCusIdByApplicannumber")]

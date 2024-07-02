@@ -27,6 +27,10 @@ namespace Adroit_v8.MongoConnections.LoanApplication
     [BsonCollection("RegularLoan")]
     public class RegularLoan : BaseDto
     {
+        public string BankStatementType
+        {
+            get; set;
+        }
         public List<CustomerCardDetails> EncryptedCardDetails { get; set; }
         public decimal DisbursementAmount { get; set; }
         public decimal ManagementFeePercentage { get; set; }

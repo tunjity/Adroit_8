@@ -13,5 +13,6 @@
         public string AssignedLoanOfficer { get; set; }
         public string ApplicationDate { get; set; }
         public string SubmissionDate { get; set; }
+        public string MonoResType { get; set; }
     }
 }
